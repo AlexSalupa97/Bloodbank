@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.alexsalupa97.bloodbank">
+
     <uses-permission android:name="android.permission.INTERNET" />
 
     <application
@@ -25,8 +26,10 @@
             android:name=".Activitati.SignupActivity"
             android:label="Sign Up" />
         <activity android:name=".Activitati.AlegereLoginActivity" />
-        <activity android:name=".Activitati.PrimaPaginaActivity"
-            android:label="Pagina Principala"></activity>
+        <activity
+            android:name=".Activitati.PrimaPaginaActivity"
+            android:label="Pagina Principala" />
+        <activity android:name=".Activitati.IntrebariActivity"></activity>
     </application>
 
 </manifest>

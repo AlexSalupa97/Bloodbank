@@ -5,7 +5,7 @@ import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 
-import com.example.alexsalupa97.bloodbank.Adaptoare.AdaptorFragmenteSignup;
+import com.example.alexsalupa97.bloodbank.AdaptoareFragmente.AdaptorFragmenteSignup;
 import com.example.alexsalupa97.bloodbank.R;
 
 public class SignupActivity extends AppCompatActivity {

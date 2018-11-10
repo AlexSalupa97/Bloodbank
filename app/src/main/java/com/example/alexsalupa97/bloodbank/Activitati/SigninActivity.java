@@ -19,6 +19,7 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 import com.example.alexsalupa97.bloodbank.R;
+import com.example.alexsalupa97.bloodbank.Utile.Utile;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -61,7 +62,7 @@ public class SigninActivity extends AppCompatActivity {
                 final String username = etUsername.getText().toString();
                 if (spSignin.getSelectedItem().toString().toLowerCase().equals("donator")) {
 
-                    String url = "http://4e266df6.ngrok.io/ProiectLicentaBloodBank/webresources/domain.donatori/" + username;
+                    String url = Utile.URL+"domain.donatori/" + username;
 
                     final RequestQueue requestQueue = Volley.newRequestQueue(SigninActivity.this);
 
