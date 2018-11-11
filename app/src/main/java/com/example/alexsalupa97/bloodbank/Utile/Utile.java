@@ -6,6 +6,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import com.example.alexsalupa97.bloodbank.Clase.Compatibilitati;
 import com.example.alexsalupa97.bloodbank.Clase.Intrebari;
 import com.example.alexsalupa97.bloodbank.R;
 
@@ -17,9 +18,18 @@ public class Utile {
     public static String URL="http://986ee3c2.ngrok.io/ProiectLicentaBloodBank/webresources/";
 
     public static ArrayList<Intrebari> intrebari;
+    public static ArrayList<Compatibilitati> compatibilitati;
 
 
     public static String preluareUsername(Context context) {
+        String dePreluat;
+        SharedPreferences sharedPreferences = context.getSharedPreferences(fisier, Context.MODE_PRIVATE);
+        String defaultName = "N/A";
+        dePreluat = sharedPreferences.getString("login_name", defaultName);
+        return dePreluat;
+    }
+
+    public static String preluareGrupaSanguina(Context context) {
         String dePreluat;
         SharedPreferences sharedPreferences = context.getSharedPreferences(fisier, Context.MODE_PRIVATE);
         String defaultName = "N/A";

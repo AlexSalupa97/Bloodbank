@@ -23,8 +23,8 @@ import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonArrayRequest;
-import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
+import com.example.alexsalupa97.bloodbank.Clase.Compatibilitati;
 import com.example.alexsalupa97.bloodbank.Clase.Intrebari;
 import com.example.alexsalupa97.bloodbank.Utile.Utile;
 import com.example.alexsalupa97.bloodbank.R;
@@ -32,8 +32,6 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
 import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -50,9 +48,12 @@ public class PrimaPaginaActivity extends AppCompatActivity implements Navigation
     TextView tvNavDrawer;
 
     Button btnVreauSaDonez;
+    Button btnVeziCompatibilitati;
 
-    Gson gson;
+    Gson gsonIntrebari;
+    Gson gsonCompatibilitati;
     List<Intrebari> intrebariList;
+    List<Compatibilitati> compatibilitatiList;
 
 
     @Override
@@ -83,7 +84,6 @@ public class PrimaPaginaActivity extends AppCompatActivity implements Navigation
 
 
         btnVreauSaDonez = (Button) findViewById(R.id.btnVreauSaDonez);
-
         btnVreauSaDonez.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -102,14 +102,115 @@ public class PrimaPaginaActivity extends AppCompatActivity implements Navigation
                             public void onResponse(JSONArray response) {
                                 GsonBuilder gsonBuilder = new GsonBuilder();
                                 gsonBuilder.setDateFormat("M/d/yy hh:mm a");
-                                gson = gsonBuilder.create();
+                                gsonIntrebari = gsonBuilder.create();
 
 
                                 {
-                                    intrebariList = Arrays.asList(gson.fromJson(response.toString(), Intrebari[].class));
+                                    intrebariList = Arrays.asList(gsonIntrebari.fromJson(response.toString(), Intrebari[].class));
                                     Utile.intrebari = new ArrayList<>(intrebariList);
 
                                     Intent intent = new Intent(getApplicationContext(), IntrebariActivity.class);
+                                    //intent.putParcelableArrayListExtra("listaIntrebari", Utile.intrebari);
+
+                                    startActivity(intent);
+                                }
+
+
+
+
+
+                            }
+                        },
+                        new Response.ErrorListener() {
+                            @Override
+                            public void onErrorResponse(VolleyError error) {
+                                Log.d("RestResponse", error.toString());
+                            }
+                        }
+
+                );
+
+                requestQueue.add(objectRequest);
+
+
+//                JsonObjectRequest objectRequest = new JsonObjectRequest(
+//                        Request.Method.GET,
+//                        url,
+//                        null,
+//                        new Response.Listener<JSONObject>() {
+//
+//                            @Override
+//                            public void onResponse(JSONObject response) {
+//                                GsonBuilder gsonBuilder = new GsonBuilder();
+//                                gsonBuilder.setDateFormat("M/d/yy hh:mm a");
+//                                gson = gsonBuilder.create();
+//
+//                                try {
+//                                    JSONArray array = response.getJSONArray("intrebari");
+//
+//                                    if (array.length() > 0) {
+//                                        intrebariList = Arrays.asList(gson.fromJson(array.toString(), Intrebari[].class));
+//                                        Utile.intrebari = new ArrayList<>(intrebariList);
+//                                        int x=1;
+//                                        Intent intent = new Intent(getApplicationContext(), IntrebariActivity.class);
+//                                        intent.putParcelableArrayListExtra("listaIntrebari", Utile.intrebari);
+//
+//                                        startActivityForResult(intent, 0);
+//                                    }
+//
+//                                } catch (JSONException e) {
+//                                    e.printStackTrace();
+//                                }
+//
+//
+//                            }
+//                        },
+//                        new Response.ErrorListener() {
+//                            @Override
+//                            public void onErrorResponse(VolleyError error) {
+//                                Log.d("RestResponse", error.toString());
+//                            }
+//                        }
+//
+//                );
+//
+//                requestQueue.add(objectRequest);
+
+
+            }
+
+
+        });
+
+
+        btnVeziCompatibilitati=(Button)findViewById(R.id.btnVeziCompatibilitati);
+        btnVeziCompatibilitati.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String url = Utile.URL+"domain.compatibilitati/"+Utile.preluareGrupaSanguina(getApplicationContext());
+
+                final RequestQueue requestQueue = Volley.newRequestQueue(PrimaPaginaActivity.this);
+
+
+                JsonArrayRequest objectRequest = new JsonArrayRequest(
+                        Request.Method.GET,
+                        url,
+                        null,
+                        new Response.Listener<JSONArray>() {
+
+                            @Override
+                            public void onResponse(JSONArray response) {
+                                GsonBuilder gsonBuilder = new GsonBuilder();
+                                gsonBuilder.setDateFormat("M/d/yy hh:mm a");
+                                gsonCompatibilitati = gsonBuilder.create();
+
+
+                                {
+                                    compatibilitatiList = Arrays.asList(gsonCompatibilitati.fromJson(response.toString(), Compatibilitati[].class));
+                                    Utile.compatibilitati = new ArrayList<>(compatibilitatiList);
+                                    
+
+                                    Intent intent = new Intent(getApplicationContext(), CompatibilitatiActivity.class);
                                     //intent.putParcelableArrayListExtra("listaIntrebari", Utile.intrebari);
 
                                     startActivity(intent);

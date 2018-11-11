@@ -31,7 +31,8 @@
             android:label="Pagina Principala" />
         <activity android:name=".Activitati.IntrebariActivity" />
         <activity android:name=".Activitati.FinalizareSuccesIntrebariActivity" />
-        <activity android:name=".Activitati.FinalizareFailIntrebariActivity"></activity>
+        <activity android:name=".Activitati.FinalizareFailIntrebariActivity" />
+        <activity android:name=".Activitati.CompatibilitatiActivity"></activity>
     </application>
 
 </manifest>
