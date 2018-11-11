@@ -1,5 +1,6 @@
 package com.example.alexsalupa97.bloodbank.Activitati;
 
+import android.content.Intent;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
@@ -39,13 +40,17 @@ public class IntrebariActivity extends AppCompatActivity {
         btnDa.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(viewPager.getCurrentItem()==(Utile.intrebari.size()-1)&&Utile.intrebari.get(viewPager.getCurrentItem()).getRaspunsIntrebare().toLowerCase().equals(btnDa.getText().toString().toLowerCase()))
+                if (viewPager.getCurrentItem() == (Utile.intrebari.size() - 1) && Utile.intrebari.get(viewPager.getCurrentItem()).getRaspunsIntrebare().toLowerCase().equals(btnDa.getText().toString().toLowerCase())) {
+                    Intent intent = new Intent(getApplicationContext(), FinalizareSuccesIntrebariActivity.class);
+                    startActivity(intent);
                     finish();
-                else
-                if(Utile.intrebari.get(viewPager.getCurrentItem()).getRaspunsIntrebare().toLowerCase().equals(btnDa.getText().toString().toLowerCase()))
+                } else if (Utile.intrebari.get(viewPager.getCurrentItem()).getRaspunsIntrebare().toLowerCase().equals(btnDa.getText().toString().toLowerCase()))
                     viewPager.arrowScroll(View.FOCUS_RIGHT);
-                else
-                    finish();;
+                else {
+                    Intent intent = new Intent(getApplicationContext(), FinalizareFailIntrebariActivity.class);
+                    startActivity(intent);
+                    finish();
+                }
 
             }
 
@@ -54,13 +59,17 @@ public class IntrebariActivity extends AppCompatActivity {
         btnNu.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(viewPager.getCurrentItem()==(Utile.intrebari.size()-1)&&Utile.intrebari.get(viewPager.getCurrentItem()).getRaspunsIntrebare().toLowerCase().equals(btnNu.getText().toString().toLowerCase()))
+                if (viewPager.getCurrentItem() == (Utile.intrebari.size() - 1) && Utile.intrebari.get(viewPager.getCurrentItem()).getRaspunsIntrebare().toLowerCase().equals(btnNu.getText().toString().toLowerCase())) {
+                    Intent intent = new Intent(getApplicationContext(), FinalizareSuccesIntrebariActivity.class);
+                    startActivity(intent);
                     finish();
-                else
-                if(Utile.intrebari.get(viewPager.getCurrentItem()).getRaspunsIntrebare().toLowerCase().equals(btnNu.getText().toString().toLowerCase()))
+                } else if (Utile.intrebari.get(viewPager.getCurrentItem()).getRaspunsIntrebare().toLowerCase().equals(btnNu.getText().toString().toLowerCase()))
                     viewPager.arrowScroll(View.FOCUS_RIGHT);
-                else
+                else {
+                    Intent intent = new Intent(getApplicationContext(), FinalizareFailIntrebariActivity.class);
+                    startActivity(intent);
                     finish();
+                }
             }
         });
 

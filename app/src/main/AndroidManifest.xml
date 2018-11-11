@@ -29,7 +29,9 @@
         <activity
             android:name=".Activitati.PrimaPaginaActivity"
             android:label="Pagina Principala" />
-        <activity android:name=".Activitati.IntrebariActivity"></activity>
+        <activity android:name=".Activitati.IntrebariActivity" />
+        <activity android:name=".Activitati.FinalizareSuccesIntrebariActivity" />
+        <activity android:name=".Activitati.FinalizareFailIntrebariActivity"></activity>
     </application>
 
 </manifest>

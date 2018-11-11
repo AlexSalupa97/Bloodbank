@@ -20,6 +20,7 @@ import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 import com.example.alexsalupa97.bloodbank.R;
 import com.example.alexsalupa97.bloodbank.Utile.Utile;
+import com.google.gson.JsonObject;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -78,10 +79,14 @@ public class SigninActivity extends AppCompatActivity {
                                     String DBUsername = null;
                                     String DBParola = null;
                                     String DBNume=null;
+                                    String DBGrupaSanguina=null;
                                     try {
+                                        JSONObject jsonGrupaSanguina=response.getJSONObject("idgrupasanguina");
                                         DBUsername = response.getString("emaildonator");
                                         DBParola = response.getString("paroladonator");
                                         DBNume = response.getString("numedonator");
+                                        DBGrupaSanguina=jsonGrupaSanguina.getString("idgrupasanguina");
+
 
                                         if (DBUsername.equals(etUsername.getText().toString()) && DBParola.equals(etPassword.getText().toString())) {
 
@@ -91,6 +96,7 @@ public class SigninActivity extends AppCompatActivity {
 
                                             editor.putString("login_name", DBNume);
                                             editor.putString("tip_user", spSignin.getSelectedItem().toString().toLowerCase());
+                                            editor.putString("grupaSanguina",DBGrupaSanguina);
 
 
                                             editor.commit();
