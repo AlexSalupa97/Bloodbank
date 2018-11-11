@@ -39,7 +39,7 @@ public class Utile {
 
     public static void updateMenuItem(Context context, Menu menu)
     {
-        String name=preluareUsername(context);
+        String name=preluareGrupaSanguina(context);
         MenuItem item1 = menu.findItem(R.id.item_meniuGrupaSanguina);
         Log.i("Verificare gasire item", "da");
         item1.setTitle(name);

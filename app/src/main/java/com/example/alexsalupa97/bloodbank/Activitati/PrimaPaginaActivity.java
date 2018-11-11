@@ -208,10 +208,9 @@ public class PrimaPaginaActivity extends AppCompatActivity implements Navigation
                                 {
                                     compatibilitatiList = Arrays.asList(gsonCompatibilitati.fromJson(response.toString(), Compatibilitati[].class));
                                     Utile.compatibilitati = new ArrayList<>(compatibilitatiList);
-                                    
+
 
                                     Intent intent = new Intent(getApplicationContext(), CompatibilitatiActivity.class);
-                                    //intent.putParcelableArrayListExtra("listaIntrebari", Utile.intrebari);
 
                                     startActivity(intent);
                                 }
