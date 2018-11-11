@@ -37,6 +37,12 @@ public class CompatibilitatiActivity extends AppCompatActivity {
         lvPrimesteDeLa=(ListView)findViewById(R.id.lvPrimesteDeLa);
 
         for (Compatibilitati c : Utile.compatibilitati) {
+            if(c.getGrupaSanguinaDonatoare().getGrupaSanguina().equals(Utile.preluareGrupaSanguina(getApplicationContext()))&&c.getGrupaSanguinaReceiver().getGrupaSanguina().equals(Utile.preluareGrupaSanguina(getApplicationContext())))
+            {
+                listaDoneazaLa.add(c.getGrupaSanguinaDonatoare().getGrupaSanguina());
+                listaPrimesteDeLa.add(c.getGrupaSanguinaDonatoare().getGrupaSanguina());
+            }
+            else
             if(c.getGrupaSanguinaDonatoare().getGrupaSanguina().equals(Utile.preluareGrupaSanguina(getApplicationContext())))
                 listaDoneazaLa.add(c.getGrupaSanguinaReceiver().getGrupaSanguina());
             else
