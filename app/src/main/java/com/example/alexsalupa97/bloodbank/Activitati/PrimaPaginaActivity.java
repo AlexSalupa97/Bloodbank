@@ -23,6 +23,7 @@ import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonArrayRequest;
+import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 import com.example.alexsalupa97.bloodbank.Clase.Compatibilitati;
 import com.example.alexsalupa97.bloodbank.Clase.Intrebari;
@@ -32,6 +33,8 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
 import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -39,7 +42,7 @@ import java.util.List;
 
 public class PrimaPaginaActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
-    String fisier="SharedPreferences";
+    String fisier = "SharedPreferences";
     SharedPreferences sharedPreferences;
 
     NavigationView navigationView;
@@ -87,7 +90,7 @@ public class PrimaPaginaActivity extends AppCompatActivity implements Navigation
         btnVreauSaDonez.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String url = Utile.URL+"domain.intrebari";
+                String url = Utile.URL + "domain.intrebari";
 
                 final RequestQueue requestQueue = Volley.newRequestQueue(PrimaPaginaActivity.this);
 
@@ -143,20 +146,19 @@ public class PrimaPaginaActivity extends AppCompatActivity implements Navigation
 //                            public void onResponse(JSONObject response) {
 //                                GsonBuilder gsonBuilder = new GsonBuilder();
 //                                gsonBuilder.setDateFormat("M/d/yy hh:mm a");
-//                                gson = gsonBuilder.create();
+//                                gsonIntrebari = gsonBuilder.create();
 //
 //                                try {
 //                                    JSONArray array = response.getJSONArray("intrebari");
 //
-//                                    if (array.length() > 0) {
-//                                        intrebariList = Arrays.asList(gson.fromJson(array.toString(), Intrebari[].class));
-//                                        Utile.intrebari = new ArrayList<>(intrebariList);
-//                                        int x=1;
-//                                        Intent intent = new Intent(getApplicationContext(), IntrebariActivity.class);
-//                                        intent.putParcelableArrayListExtra("listaIntrebari", Utile.intrebari);
 //
-//                                        startActivityForResult(intent, 0);
-//                                    }
+//                                    intrebariList = Arrays.asList(gsonIntrebari.fromJson(array.toString(), Intrebari[].class));
+//                                    Utile.intrebari = new ArrayList<>(intrebariList);
+//
+//                                    Intent intent = new Intent(getApplicationContext(), IntrebariActivity.class);
+//                                    //intent.putParcelableArrayListExtra("listaIntrebari", Utile.intrebari);
+//
+//                                    startActivity(intent);
 //
 //                                } catch (JSONException e) {
 //                                    e.printStackTrace();
@@ -183,11 +185,11 @@ public class PrimaPaginaActivity extends AppCompatActivity implements Navigation
         });
 
 
-        btnVeziCompatibilitati=(Button)findViewById(R.id.btnVeziCompatibilitati);
+        btnVeziCompatibilitati = (Button) findViewById(R.id.btnVeziCompatibilitati);
         btnVeziCompatibilitati.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String url = Utile.URL+"domain.compatibilitati/"+Utile.preluareGrupaSanguina(getApplicationContext());
+                String url = Utile.URL + "domain.compatibilitati/" + Utile.preluareGrupaSanguina(getApplicationContext());
 
                 final RequestQueue requestQueue = Volley.newRequestQueue(PrimaPaginaActivity.this);
 
@@ -243,20 +245,19 @@ public class PrimaPaginaActivity extends AppCompatActivity implements Navigation
 //                            public void onResponse(JSONObject response) {
 //                                GsonBuilder gsonBuilder = new GsonBuilder();
 //                                gsonBuilder.setDateFormat("M/d/yy hh:mm a");
-//                                gson = gsonBuilder.create();
+//                                gsonCompatibilitati = gsonBuilder.create();
 //
 //                                try {
-//                                    JSONArray array = response.getJSONArray("intrebari");
+//                                    JSONArray array = response.getJSONArray("compatibilitati");
+//                                    compatibilitatiList = Arrays.asList(gsonCompatibilitati.fromJson(array.toString(), Compatibilitati[].class));
+//                                    Utile.compatibilitati = new ArrayList<>(compatibilitatiList);
+//                                    int x = 1;
 //
-//                                    if (array.length() > 0) {
-//                                        intrebariList = Arrays.asList(gson.fromJson(array.toString(), Intrebari[].class));
-//                                        Utile.intrebari = new ArrayList<>(intrebariList);
-//                                        int x=1;
-//                                        Intent intent = new Intent(getApplicationContext(), IntrebariActivity.class);
-//                                        intent.putParcelableArrayListExtra("listaIntrebari", Utile.intrebari);
 //
-//                                        startActivityForResult(intent, 0);
-//                                    }
+//                                    Intent intent = new Intent(getApplicationContext(), CompatibilitatiActivity.class);
+//
+//                                    startActivity(intent);
+//
 //
 //                                } catch (JSONException e) {
 //                                    e.printStackTrace();
@@ -285,13 +286,11 @@ public class PrimaPaginaActivity extends AppCompatActivity implements Navigation
     }
 
     @Override
-    public boolean onCreateOptionsMenu(Menu menu)
-    {
+    public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.meniu_grupa_sanguina, menu);
-        Utile.updateMenuItem(getApplicationContext(),menu);
+        Utile.updateMenuItem(getApplicationContext(), menu);
         return true;
     }
-
 
 
     @Override

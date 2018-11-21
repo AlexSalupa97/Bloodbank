@@ -80,12 +80,14 @@ public class SigninActivity extends AppCompatActivity {
                                     String DBParola = null;
                                     String DBNume=null;
                                     String DBGrupaSanguina=null;
+                                    String DBStareAnalize=null;
                                     try {
                                         JSONObject jsonGrupaSanguina=response.getJSONObject("idgrupasanguina");
                                         DBUsername = response.getString("emaildonator");
                                         DBParola = response.getString("paroladonator");
                                         DBNume = response.getString("numedonator");
                                         DBGrupaSanguina=jsonGrupaSanguina.getString("idgrupasanguina");
+                                        DBStareAnalize=response.getString("stareanalize");
 
 
                                         if (DBUsername.equals(etUsername.getText().toString()) && DBParola.equals(etPassword.getText().toString())) {
@@ -97,6 +99,7 @@ public class SigninActivity extends AppCompatActivity {
                                             editor.putString("login_name", DBNume);
                                             editor.putString("tip_user", spSignin.getSelectedItem().toString().toLowerCase());
                                             editor.putString("grupaSanguina",DBGrupaSanguina);
+                                            editor.putString("stareAnalize",DBStareAnalize);
 
 
                                             editor.commit();

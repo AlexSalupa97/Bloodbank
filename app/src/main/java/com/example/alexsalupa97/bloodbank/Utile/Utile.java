@@ -15,7 +15,7 @@ import java.util.ArrayList;
 public class Utile {
 
     public static String fisier = "SharedPreferences";
-    public static String URL="http://986ee3c2.ngrok.io/ProiectLicentaBloodBank/webresources/";
+    public static String URL="http://dc469214.ngrok.io/ProiectLicentaBloodBank/webresources/";
 
     public static ArrayList<Intrebari> intrebari;
     public static ArrayList<Compatibilitati> compatibilitati;
@@ -34,6 +34,14 @@ public class Utile {
         SharedPreferences sharedPreferences = context.getSharedPreferences(fisier, Context.MODE_PRIVATE);
         String defaultName = "N/A";
         dePreluat = sharedPreferences.getString("grupaSanguina", defaultName);
+        return dePreluat;
+    }
+
+    public static String preluareStareAnalize(Context context) {
+        String dePreluat;
+        SharedPreferences sharedPreferences = context.getSharedPreferences(fisier, Context.MODE_PRIVATE);
+        String defaultName = "N/A";
+        dePreluat = sharedPreferences.getString("stareAnalize", defaultName);
         return dePreluat;
     }
 
