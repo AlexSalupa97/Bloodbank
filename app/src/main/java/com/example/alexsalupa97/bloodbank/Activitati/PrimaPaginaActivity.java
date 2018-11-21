@@ -95,45 +95,43 @@ public class PrimaPaginaActivity extends AppCompatActivity implements Navigation
                 final RequestQueue requestQueue = Volley.newRequestQueue(PrimaPaginaActivity.this);
 
 
-                JsonArrayRequest objectRequest = new JsonArrayRequest(
-                        Request.Method.GET,
-                        url,
-                        null,
-                        new Response.Listener<JSONArray>() {
+                if (Utile.preluareStareAnalize(getApplicationContext()).equals("ok")) {
+                    JsonArrayRequest objectRequest = new JsonArrayRequest(
+                            Request.Method.GET,
+                            url,
+                            null,
+                            new Response.Listener<JSONArray>() {
 
-                            @Override
-                            public void onResponse(JSONArray response) {
-                                GsonBuilder gsonBuilder = new GsonBuilder();
-                                gsonBuilder.setDateFormat("M/d/yy hh:mm a");
-                                gsonIntrebari = gsonBuilder.create();
+                                @Override
+                                public void onResponse(JSONArray response) {
+                                    GsonBuilder gsonBuilder = new GsonBuilder();
+                                    gsonBuilder.setDateFormat("M/d/yy hh:mm a");
+                                    gsonIntrebari = gsonBuilder.create();
 
 
-                                {
-                                    intrebariList = Arrays.asList(gsonIntrebari.fromJson(response.toString(), Intrebari[].class));
-                                    Utile.intrebari = new ArrayList<>(intrebariList);
+                                    {
+                                        intrebariList = Arrays.asList(gsonIntrebari.fromJson(response.toString(), Intrebari[].class));
+                                        Utile.intrebari = new ArrayList<>(intrebariList);
 
-                                    Intent intent = new Intent(getApplicationContext(), IntrebariActivity.class);
-                                    //intent.putParcelableArrayListExtra("listaIntrebari", Utile.intrebari);
+                                        Intent intent = new Intent(getApplicationContext(), IntrebariActivity.class);
+                                        //intent.putParcelableArrayListExtra("listaIntrebari", Utile.intrebari);
 
-                                    startActivity(intent);
+                                        startActivity(intent);
+                                    }
+
+
                                 }
-
-
-
-
-
+                            },
+                            new Response.ErrorListener() {
+                                @Override
+                                public void onErrorResponse(VolleyError error) {
+                                    Log.d("RestResponse", error.toString());
+                                }
                             }
-                        },
-                        new Response.ErrorListener() {
-                            @Override
-                            public void onErrorResponse(VolleyError error) {
-                                Log.d("RestResponse", error.toString());
-                            }
-                        }
 
-                );
+                    );
 
-                requestQueue.add(objectRequest);
+                    requestQueue.add(objectRequest);
 
 
 //                JsonObjectRequest objectRequest = new JsonObjectRequest(
@@ -179,10 +177,22 @@ public class PrimaPaginaActivity extends AppCompatActivity implements Navigation
 //                requestQueue.add(objectRequest);
 
 
+                }
+
+                if(Utile.preluareStareAnalize(getApplicationContext()).equals("!ok"))
+                {
+                    Intent intent=new Intent(getApplicationContext(),AnalizeNotOkActivity.class);
+                    startActivity(intent);
+                }
+                if(Utile.preluareStareAnalize(getApplicationContext()).equals("neefectuate"))
+                {
+                    Intent intent=new Intent(getApplicationContext(),AnalizeNeefectuateActivity.class);
+                    startActivity(intent);
+                }
+
             }
-
-
         });
+
 
 
         btnVeziCompatibilitati = (Button) findViewById(R.id.btnVeziCompatibilitati);
