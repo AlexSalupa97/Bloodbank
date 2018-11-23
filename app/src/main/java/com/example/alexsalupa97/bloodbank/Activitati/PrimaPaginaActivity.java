@@ -8,6 +8,7 @@ import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
+import android.support.v4.widget.ViewDragHelper;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -36,6 +37,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -64,9 +66,48 @@ public class PrimaPaginaActivity extends AppCompatActivity implements Navigation
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_prima_pagina);
 
+
         sharedPreferences = getSharedPreferences(fisier, Context.MODE_PRIVATE);
 
         drawerLayout = (DrawerLayout) findViewById(R.id.drawer);
+
+        Field mDragger = null;//mRightDragger for right obviously
+        try {
+            mDragger = drawerLayout.getClass().getDeclaredField(
+                    "mLeftDragger");
+        } catch (NoSuchFieldException e) {
+            e.printStackTrace();
+        }
+        mDragger.setAccessible(true);
+        ViewDragHelper draggerObj = null;
+        try {
+            draggerObj = (ViewDragHelper) mDragger
+                    .get(drawerLayout);
+        } catch (IllegalAccessException e) {
+            e.printStackTrace();
+        }
+
+        Field mEdgeSize = null;
+        try {
+            mEdgeSize = draggerObj.getClass().getDeclaredField(
+                    "mEdgeSize");
+        } catch (NoSuchFieldException e) {
+            e.printStackTrace();
+        }
+        mEdgeSize.setAccessible(true);
+        int edge = 0;
+        try {
+            edge = mEdgeSize.getInt(draggerObj);
+        } catch (IllegalAccessException e) {
+            e.printStackTrace();
+        }
+
+        try {
+            mEdgeSize.setInt(draggerObj, edge * 15);
+        } catch (IllegalAccessException e) {
+            e.printStackTrace();
+        }
+
 
         navigationView = (NavigationView) findViewById(R.id.navigation_drawer);
         navigationView.setNavigationItemSelectedListener(this);
