@@ -5,11 +5,11 @@ import android.os.Bundle;
 
 import com.example.alexsalupa97.bloodbank.R;
 
-public class FinalizareSuccesIntrebariActivity extends AppCompatActivity {
+public class ListaCentreActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_finalizare_succes_intrebari);
+        setContentView(R.layout.activity_lista_centre);
     }
 }

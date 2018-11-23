@@ -71,7 +71,7 @@ public class PrimaPaginaActivity extends AppCompatActivity implements Navigation
 
         drawerLayout = (DrawerLayout) findViewById(R.id.drawer);
 
-        Field mDragger = null;//mRightDragger for right obviously
+        Field mDragger = null;
         try {
             mDragger = drawerLayout.getClass().getDeclaredField(
                     "mLeftDragger");
