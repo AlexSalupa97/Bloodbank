@@ -131,6 +131,7 @@ public class PrimaPaginaActivity extends AppCompatActivity implements Navigation
         btnVreauSaDonez.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                btnVreauSaDonez.setEnabled(false);
                 String url = Utile.URL + "domain.intrebari";
 
                 final RequestQueue requestQueue = Volley.newRequestQueue(PrimaPaginaActivity.this);
@@ -240,6 +241,7 @@ public class PrimaPaginaActivity extends AppCompatActivity implements Navigation
         btnVeziCompatibilitati.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                btnVeziCompatibilitati.setEnabled(false);
                 String url = Utile.URL + "domain.compatibilitati/" + Utile.preluareGrupaSanguina(getApplicationContext());
 
                 final RequestQueue requestQueue = Volley.newRequestQueue(PrimaPaginaActivity.this);
@@ -374,4 +376,10 @@ public class PrimaPaginaActivity extends AppCompatActivity implements Navigation
         return true;
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        btnVreauSaDonez.setEnabled(true);
+        btnVeziCompatibilitati.setEnabled(true);
+    }
 }

@@ -34,7 +34,8 @@
         <activity android:name=".Activitati.FinalizareFailIntrebariActivity" />
         <activity android:name=".Activitati.CompatibilitatiActivity" />
         <activity android:name=".Activitati.AnalizeNeefectuateActivity" />
-        <activity android:name=".Activitati.AnalizeNotOkActivity"></activity>
+        <activity android:name=".Activitati.AnalizeNotOkActivity" />
+        <activity android:name=".Activitati.FinalizareSuccesIntrebariActivity"></activity>
     </application>
 
 </manifest>

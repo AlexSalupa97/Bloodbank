@@ -8,19 +8,19 @@ import android.widget.Button;
 
 import com.example.alexsalupa97.bloodbank.R;
 
-public class AnalizeNeefectuateActivity extends AppCompatActivity {
+public class FinalizareSuccesIntrebariActivity extends AppCompatActivity {
 
-    Button btnCentreAnalize;
+    Button btnCentreRecoltare;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_analize_neefectuate);
+        setContentView(R.layout.activity_finalizare_succes_intrebari);
 
-        btnCentreAnalize=(Button)findViewById(R.id.btnCentreAnalize);
-        btnCentreAnalize.setOnClickListener(new View.OnClickListener() {
+        btnCentreRecoltare=(Button)findViewById(R.id.btnCentreRecoltare);
+        btnCentreRecoltare.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                btnCentreAnalize.setEnabled(false);
+//                btnCentreRecoltare.setEnabled(false);
                 Intent intent=new Intent(getApplicationContext(),ListaCentreActivity.class);
                 startActivity(intent);
                 finish();

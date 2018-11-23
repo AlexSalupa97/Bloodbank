@@ -39,7 +39,7 @@ public class IntrebariActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 if (viewPager.getCurrentItem() == (Utile.intrebari.size() - 1) && Utile.intrebari.get(viewPager.getCurrentItem()).getRaspunsIntrebare().toLowerCase().equals(btnDa.getText().toString().toLowerCase())) {
-                    Intent intent = new Intent(getApplicationContext(), ListaCentreActivity.class);
+                    Intent intent = new Intent(getApplicationContext(), FinalizareSuccesIntrebariActivity.class);
                     startActivity(intent);
                     finish();
                 } else if (Utile.intrebari.get(viewPager.getCurrentItem()).getRaspunsIntrebare().toLowerCase().equals(btnDa.getText().toString().toLowerCase()))
@@ -58,7 +58,7 @@ public class IntrebariActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 if (viewPager.getCurrentItem() == (Utile.intrebari.size() - 1) && Utile.intrebari.get(viewPager.getCurrentItem()).getRaspunsIntrebare().toLowerCase().equals(btnNu.getText().toString().toLowerCase())) {
-                    Intent intent = new Intent(getApplicationContext(), ListaCentreActivity.class);
+                    Intent intent = new Intent(getApplicationContext(), FinalizareSuccesIntrebariActivity.class);
                     startActivity(intent);
                     finish();
                 } else if (Utile.intrebari.get(viewPager.getCurrentItem()).getRaspunsIntrebare().toLowerCase().equals(btnNu.getText().toString().toLowerCase()))
