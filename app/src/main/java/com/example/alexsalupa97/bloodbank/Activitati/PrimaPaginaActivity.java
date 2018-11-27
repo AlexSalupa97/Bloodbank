@@ -126,6 +126,9 @@ public class PrimaPaginaActivity extends AppCompatActivity implements Navigation
 
         tvNavDrawer.setText(nume);
 
+        String stare=Utile.preluareStareAnalize(getApplicationContext());
+        int x=1;
+
 
         btnVreauSaDonez = (Button) findViewById(R.id.btnVreauSaDonez);
         btnVreauSaDonez.setOnClickListener(new View.OnClickListener() {
@@ -241,7 +244,9 @@ public class PrimaPaginaActivity extends AppCompatActivity implements Navigation
         btnVeziCompatibilitati.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
                 btnVeziCompatibilitati.setEnabled(false);
+
                 String url = Utile.URL + "domain.compatibilitati/" + Utile.preluareGrupaSanguina(getApplicationContext());
 
                 final RequestQueue requestQueue = Volley.newRequestQueue(PrimaPaginaActivity.this);

@@ -15,7 +15,7 @@ import java.util.ArrayList;
 public class Utile {
 
     public static String fisier = "SharedPreferences";
-    public static String URL="http://0fbf42b7.ngrok.io/ProiectLicentaBloodBank/webresources/";
+    public static String URL="http://0ef11729.ngrok.io/ProiectLicentaBloodbank/webresources/";
 
     public static ArrayList<Intrebari> intrebari;
     public static ArrayList<Compatibilitati> compatibilitati;

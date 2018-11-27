@@ -63,7 +63,7 @@ public class SigninActivity extends AppCompatActivity {
                 final String username = etUsername.getText().toString();
                 if (spSignin.getSelectedItem().toString().toLowerCase().equals("donator")) {
 
-                    String url = Utile.URL+"domain.donatori/" + username;
+                    String url = Utile.URL + "domain.stareanalize/" + username;
 
                     final RequestQueue requestQueue = Volley.newRequestQueue(SigninActivity.this);
 
@@ -78,16 +78,17 @@ public class SigninActivity extends AppCompatActivity {
 
                                     String DBUsername = null;
                                     String DBParola = null;
-                                    String DBNume=null;
-                                    String DBGrupaSanguina=null;
-                                    String DBStareAnalize=null;
+                                    String DBNume = null;
+                                    String DBGrupaSanguina = null;
+                                    String DBStareAnalize = null;
                                     try {
-                                        JSONObject jsonGrupaSanguina=response.getJSONObject("idgrupasanguina");
-                                        DBUsername = response.getString("emaildonator");
-                                        DBParola = response.getString("paroladonator");
-                                        DBNume = response.getString("numedonator");
-                                        DBGrupaSanguina=jsonGrupaSanguina.getString("idgrupasanguina");
-                                        DBStareAnalize=response.getString("stareanalize");
+                                        JSONObject jsonDonator = response.getJSONObject("iddonator");
+                                        JSONObject jsonGrupaSanguina = jsonDonator.getJSONObject("idgrupasanguina");
+                                        DBUsername = jsonDonator.getString("emaildonator");
+                                        DBParola = jsonDonator.getString("paroladonator");
+                                        DBNume = jsonDonator.getString("numedonator");
+                                        DBGrupaSanguina = jsonGrupaSanguina.getString("idgrupasanguina");
+                                        DBStareAnalize = response.getString("stareanalize");
 
 
                                         if (DBUsername.equals(etUsername.getText().toString()) && DBParola.equals(etPassword.getText().toString())) {
@@ -98,20 +99,19 @@ public class SigninActivity extends AppCompatActivity {
 
                                             editor.putString("login_name", DBNume);
                                             editor.putString("tip_user", spSignin.getSelectedItem().toString().toLowerCase());
-                                            editor.putString("grupaSanguina",DBGrupaSanguina);
-                                            editor.putString("stareAnalize",DBStareAnalize);
-
+                                            editor.putString("grupaSanguina", DBGrupaSanguina);
+                                            editor.putString("stareAnalize", DBStareAnalize);
 
                                             editor.commit();
+
 
                                             Intent intent = new Intent(getApplicationContext(), PrimaPaginaActivity.class);
                                             setResult(1);
                                             startActivity(intent);
                                             finish();
-                                        }
-                                        else
-                                            Toast.makeText(getApplicationContext(), "Introduceti credentialele corecte", Toast.LENGTH_LONG).show();
 
+                                        } else
+                                            Toast.makeText(getApplicationContext(), "Introduceti credentialele corecte", Toast.LENGTH_LONG).show();
 
 
                                     } catch (JSONException e) {
