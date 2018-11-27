@@ -12,30 +12,32 @@ import com.example.alexsalupa97.bloodbank.Fragmente.SignupCTSFragment;
 import com.example.alexsalupa97.bloodbank.Fragmente.SignupDonatorFragment;
 import com.example.alexsalupa97.bloodbank.Fragmente.SignupReceiverFragment;
 
-public class AdaptorFragmenteSignup extends FragmentPagerAdapter {
+public class AdaptorFragmenteCTS extends FragmentPagerAdapter {
 
-    public AdaptorFragmenteSignup(FragmentManager fm) {
+    private Context mContext;
+
+    public AdaptorFragmenteCTS(FragmentManager fm) {
         super(fm);
     }
 
     @Override
     public CharSequence getPageTitle(int position) {
         if (position == 0)
-            return "Donator";
+            return "In apropiere";
         else if (position == 1)
-            return "Receiver";
+            return "Toate centrele";
         else
-            return "CTS";
+            return "Maps";
     }
 
     @Override
     public Fragment getItem(int position) {
         if (position == 0)
-            return new SignupDonatorFragment();
+            return new ListaCTSInApropiereFragment();
         else if (position == 1)
-            return new SignupReceiverFragment();
+            return new ListaCTSFragment();
         else
-            return new SignupCTSFragment();
+            return new MapsCTSFragment();
     }
 
     @Override
@@ -43,3 +45,4 @@ public class AdaptorFragmenteSignup extends FragmentPagerAdapter {
         return 3;
     }
 }
+
