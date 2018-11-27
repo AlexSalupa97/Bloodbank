@@ -35,7 +35,7 @@ public class ListaCTSInApropiereFragment extends Fragment {
         rootView = inflater.inflate(R.layout.fragment_cts_apropiate, container, false);
 
         ArrayList<CTS> listaCTSInApropiere=new ArrayList<>();
-        
+
         for(CTS c:Utile.CTS)
             if(c.getOras().getJudet().equals(Utile.preluareJudet(getActivity())))
                 listaCTSInApropiere.add(c);
