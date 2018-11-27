@@ -81,14 +81,19 @@ public class SigninActivity extends AppCompatActivity {
                                     String DBNume = null;
                                     String DBGrupaSanguina = null;
                                     String DBStareAnalize = null;
+                                    String DBOras=null;
+                                    String DBJudet=null;
                                     try {
                                         JSONObject jsonDonator = response.getJSONObject("iddonator");
                                         JSONObject jsonGrupaSanguina = jsonDonator.getJSONObject("idgrupasanguina");
+                                        JSONObject jsonOras=jsonDonator.getJSONObject("idoras");
                                         DBUsername = jsonDonator.getString("emaildonator");
                                         DBParola = jsonDonator.getString("paroladonator");
                                         DBNume = jsonDonator.getString("numedonator");
                                         DBGrupaSanguina = jsonGrupaSanguina.getString("idgrupasanguina");
                                         DBStareAnalize = response.getString("stareanalize");
+                                        DBJudet=jsonOras.getString("judet");
+                                        DBOras=jsonOras.getString("numeoras");
 
 
                                         if (DBUsername.equals(etUsername.getText().toString()) && DBParola.equals(etPassword.getText().toString())) {
@@ -101,6 +106,8 @@ public class SigninActivity extends AppCompatActivity {
                                             editor.putString("tip_user", spSignin.getSelectedItem().toString().toLowerCase());
                                             editor.putString("grupaSanguina", DBGrupaSanguina);
                                             editor.putString("stareAnalize", DBStareAnalize);
+                                            editor.putString("orasUser",DBOras);
+                                            editor.putString("judetUser",DBJudet);
 
                                             editor.commit();
 

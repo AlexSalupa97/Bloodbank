@@ -6,11 +6,14 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import com.example.alexsalupa97.bloodbank.Clase.CTS;
 import com.example.alexsalupa97.bloodbank.Clase.Compatibilitati;
 import com.example.alexsalupa97.bloodbank.Clase.Intrebari;
+import com.example.alexsalupa97.bloodbank.Clase.Orase;
 import com.example.alexsalupa97.bloodbank.R;
 
 import java.util.ArrayList;
+import java.util.Set;
 
 public class Utile {
 
@@ -19,6 +22,8 @@ public class Utile {
 
     public static ArrayList<Intrebari> intrebari;
     public static ArrayList<Compatibilitati> compatibilitati;
+    public static ArrayList<CTS> CTS;
+    public static Set<Orase> orase;
 
 
     public static String preluareUsername(Context context) {
@@ -26,6 +31,14 @@ public class Utile {
         SharedPreferences sharedPreferences = context.getSharedPreferences(fisier, Context.MODE_PRIVATE);
         String defaultName = "N/A";
         dePreluat = sharedPreferences.getString("login_name", defaultName);
+        return dePreluat;
+    }
+
+    public static String preluareJudet(Context context) {
+        String dePreluat;
+        SharedPreferences sharedPreferences = context.getSharedPreferences(fisier, Context.MODE_PRIVATE);
+        String defaultName = "N/A";
+        dePreluat = sharedPreferences.getString("judetUser", defaultName);
         return dePreluat;
     }
 

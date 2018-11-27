@@ -6,14 +6,6 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@android:color/darker_gray"
-        android:minHeight="24dp"
-        android:text="Centre apropiate"
-        android:textAlignment="center"
-        android:textSize="18sp" />
 
     <ListView
         android:id="@+id/lvCentreApropiate"
