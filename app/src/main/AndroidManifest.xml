@@ -3,14 +3,20 @@
     package="com.example.alexsalupa97.bloodbank">
 
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
 
     <application
         android:allowBackup="false"
         android:icon="@mipmap/ic_bloodbank_launcher"
         android:label="@string/app_name"
+        android:networkSecurityConfig="@xml/network_security_config"
         android:roundIcon="@mipmap/ic_bloodbank_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+        <meta-data
+            android:name="com.google.android.geo.API_KEY"
+            android:value="AIzaSyBE1jrSJ9YLCfgW2ATJxrPJTM6uGq50yAs" />
         <activity android:name=".Activitati.SplashScreenActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

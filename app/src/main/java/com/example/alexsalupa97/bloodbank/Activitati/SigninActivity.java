@@ -88,7 +88,6 @@ public class SigninActivity extends AppCompatActivity {
                                         JSONObject jsonGrupaSanguina = jsonDonator.getJSONObject("idgrupasanguina");
                                         JSONObject jsonOras=jsonDonator.getJSONObject("idoras");
                                         DBUsername = jsonDonator.getString("emaildonator");
-                                        DBParola = jsonDonator.getString("paroladonator");
                                         DBNume = jsonDonator.getString("numedonator");
                                         DBGrupaSanguina = jsonGrupaSanguina.getString("idgrupasanguina");
                                         DBStareAnalize = response.getString("stareanalize");
@@ -96,7 +95,7 @@ public class SigninActivity extends AppCompatActivity {
                                         DBOras=jsonOras.getString("numeoras");
 
 
-                                        if (DBUsername.equals(etUsername.getText().toString()) && DBParola.equals(etPassword.getText().toString())) {
+                                        if (DBUsername.equals(etUsername.getText().toString())) {
 
 
                                             SharedPreferences sharedPreferences = getSharedPreferences(fisier, Context.MODE_PRIVATE);
