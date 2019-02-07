@@ -1,6 +1,7 @@
 package com.example.alexsalupa97.bloodbank.Fragmente;
 
 import android.Manifest;
+import android.app.Activity;
 import android.content.Context;
 import android.content.pm.PackageManager;
 import android.location.Criteria;
@@ -41,10 +42,12 @@ public class MapsCTSFragment extends Fragment {
 
     MapView mMapView;
     private GoogleMap googleMap;
-    Location locatieCurenta;
+    public static Location locatieCurenta;
 
     LayoutInflater layoutInflater;
     ViewGroup viewGroup;
+
+    public static Activity activity;
 
     ArrayList<Marker> listaMarkere;
 
@@ -52,14 +55,16 @@ public class MapsCTSFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_cts_map, container, false);
 
+        activity=getActivity();
+
         mMapView = (MapView) rootView.findViewById(R.id.mapView);
         mMapView.onCreate(savedInstanceState);
 
-        listaMarkere=new ArrayList<>();
+        listaMarkere = new ArrayList<>();
 
 
-        layoutInflater=inflater;
-        viewGroup=container;
+        layoutInflater = inflater;
+        viewGroup = container;
 
         mMapView.onResume(); // needed to get the map to display immediately
 
@@ -93,7 +98,7 @@ public class MapsCTSFragment extends Fragment {
                 });
 
                 for (CTS cts : Utile.CTS) {
-                    Marker marker=googleMap.addMarker(new MarkerOptions().position(new LatLng(cts.getCoordonataXCTS(), cts.getCoordonataYCTS())).title(cts.getNumeCTS()).snippet(cts.getAdresaCTS()));
+                    Marker marker = googleMap.addMarker(new MarkerOptions().position(new LatLng(cts.getCoordonataXCTS(), cts.getCoordonataYCTS())).title(cts.getNumeCTS()).snippet(cts.getAdresaCTS()));
                 }
 
 
@@ -111,7 +116,7 @@ public class MapsCTSFragment extends Fragment {
                 googleMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
                     @Override
                     public boolean onMarkerClick(Marker marker) {
-                        googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(marker.getPosition(),15));
+                        googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(marker.getPosition(), 15));
                         // Zoom in, animating the camera.
                         googleMap.animateCamera(CameraUpdateFactory.zoomIn());
                         // Zoom out to zoom level 10, animating with a duration of 2 seconds.
@@ -150,10 +155,10 @@ public class MapsCTSFragment extends Fragment {
         mMapView.onLowMemory();
     }
 
-    private Location getMyLocation() {
-        LocationManager lm = (LocationManager)getActivity().getSystemService(Context.LOCATION_SERVICE);
+    public static Location getMyLocation() {
+        LocationManager lm = (LocationManager) activity.getSystemService(Context.LOCATION_SERVICE);
         Location myLocation = null;
-        if (ContextCompat.checkSelfPermission(getActivity(), android.Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED || ContextCompat.checkSelfPermission(getActivity(), android.Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+        if (ContextCompat.checkSelfPermission(activity, android.Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED || ContextCompat.checkSelfPermission(activity, android.Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
             lm.getLastKnownLocation(LocationManager.GPS_PROVIDER);
         }
         if (myLocation == null) {
