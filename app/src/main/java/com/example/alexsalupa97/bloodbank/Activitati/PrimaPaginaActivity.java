@@ -2,9 +2,11 @@ package com.example.alexsalupa97.bloodbank.Activitati;
 
 import android.Manifest;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
+import android.location.LocationManager;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
@@ -14,6 +16,7 @@ import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v4.widget.ViewDragHelper;
 import android.support.v7.app.ActionBarDrawerToggle;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.Menu;
@@ -30,6 +33,7 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
+import com.example.alexsalupa97.bloodbank.Clase.CTS;
 import com.example.alexsalupa97.bloodbank.Clase.Compatibilitati;
 import com.example.alexsalupa97.bloodbank.Clase.Intrebari;
 import com.example.alexsalupa97.bloodbank.Utile.Utile;
@@ -44,6 +48,7 @@ import org.json.JSONObject;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashSet;
 import java.util.List;
 
 public class PrimaPaginaActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
@@ -58,11 +63,15 @@ public class PrimaPaginaActivity extends AppCompatActivity implements Navigation
 
     Button btnVreauSaDonez;
     Button btnVeziCompatibilitati;
+    Button btnListaCTS;
 
     Gson gsonIntrebari;
     Gson gsonCompatibilitati;
     List<Intrebari> intrebariList;
     List<Compatibilitati> compatibilitatiList;
+
+    Gson gsonCTS;
+    List<CTS> CTSlist;
 
 
     @Override
@@ -85,6 +94,8 @@ public class PrimaPaginaActivity extends AppCompatActivity implements Navigation
             ActivityCompat.requestPermissions( this, new String[] {  Manifest.permission.ACCESS_COARSE_LOCATION  },
                     x );
         }
+
+        statusCheck();
 
 
         sharedPreferences = getSharedPreferences(fisier, Context.MODE_PRIVATE);
@@ -361,6 +372,60 @@ public class PrimaPaginaActivity extends AppCompatActivity implements Navigation
 
         });
 
+        btnListaCTS=(Button)findViewById(R.id.btnListaCTS);
+        btnListaCTS.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String url = Utile.URL + "domain.cts";
+
+                final RequestQueue requestQueue = Volley.newRequestQueue(PrimaPaginaActivity.this);
+
+
+                if (Utile.preluareStareAnalize(getApplicationContext()).equals("ok")) {
+                    JsonArrayRequest objectRequest = new JsonArrayRequest(
+                            Request.Method.GET,
+                            url,
+                            null,
+                            new Response.Listener<JSONArray>() {
+
+                                @Override
+                                public void onResponse(JSONArray response) {
+                                    GsonBuilder gsonBuilder = new GsonBuilder();
+                                    gsonBuilder.setDateFormat("M/d/yy hh:mm a");
+                                    gsonCTS = gsonBuilder.create();
+
+
+                                    CTSlist = Arrays.asList(gsonCTS.fromJson(response.toString(), CTS[].class));
+                                    Utile.CTS = new ArrayList<>();
+                                    Utile.orase = new HashSet<>();
+                                    for (CTS c : CTSlist) {
+                                        Utile.CTS.add(c);
+                                        Utile.orase.add(c.getOras());
+                                    }
+
+
+                                    Intent intent = new Intent(getApplicationContext(), ListaCentreActivity.class);
+                                    startActivity(intent);
+                                }
+
+
+                            },
+                            new Response.ErrorListener() {
+                                @Override
+                                public void onErrorResponse(VolleyError error) {
+                                    Log.d("RestResponse", error.toString());
+                                }
+                            }
+
+                    );
+
+                    requestQueue.add(objectRequest);
+
+
+                }
+            }
+        });
+
     }
 
     @Override
@@ -406,5 +471,32 @@ public class PrimaPaginaActivity extends AppCompatActivity implements Navigation
         super.onResume();
         btnVreauSaDonez.setEnabled(true);
         btnVeziCompatibilitati.setEnabled(true);
+    }
+
+    public void statusCheck() {
+        final LocationManager manager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+
+        if (!manager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
+            buildAlertMessageNoGps();
+
+        }
+    }
+
+    private void buildAlertMessageNoGps() {
+        final AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setMessage("GPS inactiv, activati serviciile de localizare?")
+                .setCancelable(false)
+                .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                    public void onClick(final DialogInterface dialog, final int id) {
+                        startActivity(new Intent(android.provider.Settings.ACTION_LOCATION_SOURCE_SETTINGS));
+                    }
+                })
+                .setNegativeButton("No", new DialogInterface.OnClickListener() {
+                    public void onClick(final DialogInterface dialog, final int id) {
+                        dialog.cancel();
+                    }
+                });
+        final AlertDialog alert = builder.create();
+        alert.show();
     }
 }

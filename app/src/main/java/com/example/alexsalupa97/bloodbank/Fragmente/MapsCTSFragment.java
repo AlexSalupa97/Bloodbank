@@ -15,7 +15,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
+import com.example.alexsalupa97.bloodbank.Clase.CTS;
 import com.example.alexsalupa97.bloodbank.R;
+import com.example.alexsalupa97.bloodbank.Utile.Utile;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapView;
@@ -23,7 +25,10 @@ import com.google.android.gms.maps.MapsInitializer;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+
+import java.util.ArrayList;
 
 public class MapsCTSFragment extends Fragment {
 
@@ -41,12 +46,16 @@ public class MapsCTSFragment extends Fragment {
     LayoutInflater layoutInflater;
     ViewGroup viewGroup;
 
+    ArrayList<Marker> listaMarkere;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_cts_map, container, false);
 
         mMapView = (MapView) rootView.findViewById(R.id.mapView);
         mMapView.onCreate(savedInstanceState);
+
+        listaMarkere=new ArrayList<>();
 
 
         layoutInflater=inflater;
@@ -66,14 +75,12 @@ public class MapsCTSFragment extends Fragment {
                 googleMap = mMap;
 
 
-
-
                 if (ContextCompat.checkSelfPermission(getActivity(), android.Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED || ContextCompat.checkSelfPermission(getActivity(), android.Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
                     // For showing a move to my location button
                     googleMap.setMyLocationEnabled(true);
                 }
 
-                locatieCurenta=getMyLocation();
+                locatieCurenta = getMyLocation();
 //                googleMap.setMyLocationEnabled(true);
                 googleMap.getUiSettings().setMyLocationButtonEnabled(true);
                 googleMap.getUiSettings().setZoomControlsEnabled(true);
@@ -85,17 +92,34 @@ public class MapsCTSFragment extends Fragment {
                     }
                 });
 
+                for (CTS cts : Utile.CTS) {
+                    Marker marker=googleMap.addMarker(new MarkerOptions().position(new LatLng(cts.getCoordonataXCTS(), cts.getCoordonataYCTS())).title(cts.getNumeCTS()).snippet(cts.getAdresaCTS()));
+                }
 
 
                 // For dropping a marker at a point on the Map
-                LatLng sydney = new LatLng(-34, 151);
-                googleMap.addMarker(new MarkerOptions().position(sydney).title("Marker Title").snippet("Marker Description"));
+//                LatLng sydney = new LatLng(-34, 151);
+//                googleMap.addMarker(new MarkerOptions().position(sydney).title("Marker Title").snippet("Marker Description"));
 
-                googleMap.addMarker(new MarkerOptions().position(new LatLng(locatieCurenta.getLatitude(),locatieCurenta.getLongitude())).title("Acasa").snippet("Acasa la mine"));
+                if (locatieCurenta != null) {
 
-                // For zooming automatically to the location of the marker
-                CameraPosition cameraPosition = new CameraPosition.Builder().target(sydney).zoom(15).build();
-                googleMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
+                    // For zooming automatically to the location of the marker
+                    CameraPosition cameraPosition = new CameraPosition.Builder().target(new LatLng(locatieCurenta.getLatitude(), locatieCurenta.getLongitude())).zoom(15).build();
+                    googleMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
+                }
+
+                googleMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
+                    @Override
+                    public boolean onMarkerClick(Marker marker) {
+                        googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(marker.getPosition(),15));
+                        // Zoom in, animating the camera.
+                        googleMap.animateCamera(CameraUpdateFactory.zoomIn());
+                        // Zoom out to zoom level 10, animating with a duration of 2 seconds.
+                        googleMap.animateCamera(CameraUpdateFactory.zoomTo(15), 2000, null);
+                        return false;
+                    }
+                });
+
             }
         });
 
