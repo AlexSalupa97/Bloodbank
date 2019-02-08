@@ -14,9 +14,12 @@
         android:roundIcon="@mipmap/ic_bloodbank_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+        <activity android:name=".Activitati.ProfilActivity"></activity>
+
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="AIzaSyBE1jrSJ9YLCfgW2ATJxrPJTM6uGq50yAs" />
+
         <activity android:name=".Activitati.SplashScreenActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -43,11 +46,10 @@
         <activity
             android:name=".Activitati.CompatibilitatiActivity"
             android:label="Compatibilitati" />
-
         <activity android:name=".Activitati.AnalizeNeefectuateActivity" />
         <activity android:name=".Activitati.AnalizeNotOkActivity" />
         <activity android:name=".Activitati.FinalizareSuccesIntrebariActivity" />
-        <activity android:name=".Activitati.DetaliiCTSActivity"></activity>
+        <activity android:name=".Activitati.DetaliiCTSActivity" />
     </application>
 
 </manifest>

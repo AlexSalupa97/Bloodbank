@@ -449,8 +449,11 @@ public class PrimaPaginaActivity extends AppCompatActivity implements Navigation
         int id = menuItem.getItemId();
         if (id == R.id.setari)
             Toast.makeText(getApplicationContext(), "Setari", Toast.LENGTH_SHORT).show();
-        else if (id == R.id.profil)
-            Toast.makeText(getApplicationContext(), "User", Toast.LENGTH_SHORT).show();
+        else if (id == R.id.profil) {
+            Intent intent=new Intent(getApplicationContext(),ProfilActivity.class);
+            startActivity(intent);
+
+        }
         else {
             SharedPreferences.Editor editor = sharedPreferences.edit();
             editor.putString("login_name", "");
