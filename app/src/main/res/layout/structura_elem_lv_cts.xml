@@ -30,7 +30,10 @@
             android:layout_marginTop="16dp"
             android:text="Nume CTS"
             android:textSize="18sp"
-            android:textStyle="bold|italic" />
+            android:textStyle="bold|italic"
+            android:focusableInTouchMode="false"
+            android:clickable="false"
+            android:focusable="false"/>
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -51,7 +54,10 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center|bottom"
-                android:text="Adresa CTS" />
+                android:text="Adresa CTS"
+                android:focusableInTouchMode="false"
+                android:clickable="false"
+                android:focusable="false"/>
         </LinearLayout>
     </LinearLayout>
 
@@ -78,7 +84,10 @@
                 android:id="@+id/lvTelefonCTS"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="0700000000" />
+                android:text="0700000000"
+                android:focusableInTouchMode="false"
+                android:clickable="false"
+                android:focusable="false"/>
 
         </LinearLayout>
 

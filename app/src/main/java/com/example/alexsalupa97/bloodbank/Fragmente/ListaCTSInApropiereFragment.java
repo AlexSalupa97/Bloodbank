@@ -1,12 +1,15 @@
 package com.example.alexsalupa97.bloodbank.Fragmente;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ListView;
 
+import com.example.alexsalupa97.bloodbank.Activitati.DetaliiCTSActivity;
 import com.example.alexsalupa97.bloodbank.Adaptoare.AdaptorLVCTS;
 import com.example.alexsalupa97.bloodbank.Clase.CTS;
 import com.example.alexsalupa97.bloodbank.R;
@@ -43,6 +46,8 @@ public class ListaCTSInApropiereFragment extends Fragment {
         adaptor = new AdaptorLVCTS(getActivity(), listaCTSInApropiere);
         listView = (ListView) rootView.findViewById(R.id.lvCentreApropiate);
         listView.setAdapter(adaptor);
+
+
         return rootView;
     }
 }

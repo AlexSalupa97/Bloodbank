@@ -112,7 +112,7 @@ public class MapsCTSFragment extends Fragment {
                 if (locatieCurenta != null) {
 
                     // For zooming automatically to the location of the marker
-                    CameraPosition cameraPosition = new CameraPosition.Builder().target(new LatLng(locatieCurenta.getLatitude(), locatieCurenta.getLongitude())).zoom(15).build();
+                    CameraPosition cameraPosition = new CameraPosition.Builder().target(new LatLng(locatieCurenta.getLatitude(), locatieCurenta.getLongitude())).zoom(12).build();
                     googleMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
                 }
 

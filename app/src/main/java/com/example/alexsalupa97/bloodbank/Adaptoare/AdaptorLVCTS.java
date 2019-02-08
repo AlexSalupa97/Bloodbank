@@ -2,6 +2,7 @@ package com.example.alexsalupa97.bloodbank.Adaptoare;
 
 import android.content.Context;
 import android.content.Intent;
+import android.net.Uri;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -38,7 +39,7 @@ public class AdaptorLVCTS extends ArrayAdapter<CTS> {
     @Override
     public View getView(int position, final View convertView, ViewGroup parent) {
         View viewRefolosibil = convertView;
-        CTS curent = getItem(position);
+        final CTS curent = getItem(position);
 
         if (viewRefolosibil == null) {
             viewRefolosibil = LayoutInflater.from(getContext()).inflate(R.layout.structura_elem_lv_cts, parent, false);
@@ -75,13 +76,24 @@ public class AdaptorLVCTS extends ArrayAdapter<CTS> {
 //        holder.location.setImageResource(R.drawable.ic_location);
 //        holder.phone.setImageResource(R.drawable.ic_phone);
 
+
         holder.btnApelare.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent=new Intent(context,DetaliiCTSActivity.class);
+                Intent intent = new Intent(Intent.ACTION_DIAL);
+                intent.setData(Uri.parse("tel:"+curent.getTelefonCTS()));
                 context.startActivity(intent);
             }
         });
+
+        viewRefolosibil.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent=new Intent(context, DetaliiCTSActivity.class);
+                context.startActivity(intent);
+            }
+        });
+
 
         return viewRefolosibil;
 
