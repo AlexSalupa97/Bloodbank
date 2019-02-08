@@ -55,13 +55,13 @@ public class MapsCTSFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_cts_map, container, false);
 
-        activity=getActivity();
 
         mMapView = (MapView) rootView.findViewById(R.id.mapView);
         mMapView.onCreate(savedInstanceState);
 
         listaMarkere = new ArrayList<>();
 
+        locatieCurenta=getMyLocation();
 
         layoutInflater = inflater;
         viewGroup = container;
@@ -83,22 +83,25 @@ public class MapsCTSFragment extends Fragment {
                 if (ContextCompat.checkSelfPermission(getActivity(), android.Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED || ContextCompat.checkSelfPermission(getActivity(), android.Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
                     // For showing a move to my location button
                     googleMap.setMyLocationEnabled(true);
+
                 }
 
-                locatieCurenta = getMyLocation();
+
 //                googleMap.setMyLocationEnabled(true);
                 googleMap.getUiSettings().setMyLocationButtonEnabled(true);
                 googleMap.getUiSettings().setZoomControlsEnabled(true);
 
+
                 googleMap.setOnMyLocationButtonClickListener(new GoogleMap.OnMyLocationButtonClickListener() {
                     @Override
                     public boolean onMyLocationButtonClick() {
+                        locatieCurenta=googleMap.getMyLocation();
                         return false;
                     }
                 });
 
                 for (CTS cts : Utile.CTS) {
-                    Marker marker = googleMap.addMarker(new MarkerOptions().position(new LatLng(cts.getCoordonataXCTS(), cts.getCoordonataYCTS())).title(cts.getNumeCTS()).snippet(cts.getAdresaCTS()));
+                    googleMap.addMarker(new MarkerOptions().position(new LatLng(cts.getCoordonataXCTS(), cts.getCoordonataYCTS())).title(cts.getNumeCTS()).snippet(cts.getAdresaCTS()));
                 }
 
 
@@ -124,6 +127,8 @@ public class MapsCTSFragment extends Fragment {
                         return false;
                     }
                 });
+
+
 
             }
         });
@@ -155,10 +160,10 @@ public class MapsCTSFragment extends Fragment {
         mMapView.onLowMemory();
     }
 
-    public static Location getMyLocation() {
-        LocationManager lm = (LocationManager) activity.getSystemService(Context.LOCATION_SERVICE);
+    private Location getMyLocation() {
+        LocationManager lm = (LocationManager)getActivity().getSystemService(Context.LOCATION_SERVICE);
         Location myLocation = null;
-        if (ContextCompat.checkSelfPermission(activity, android.Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED || ContextCompat.checkSelfPermission(activity, android.Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+        if (ContextCompat.checkSelfPermission(getActivity(), android.Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED || ContextCompat.checkSelfPermission(getActivity(), android.Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
             lm.getLastKnownLocation(LocationManager.GPS_PROVIDER);
         }
         if (myLocation == null) {

@@ -36,7 +36,6 @@ import com.android.volley.toolbox.Volley;
 import com.example.alexsalupa97.bloodbank.Clase.CTS;
 import com.example.alexsalupa97.bloodbank.Clase.Compatibilitati;
 import com.example.alexsalupa97.bloodbank.Clase.Intrebari;
-import com.example.alexsalupa97.bloodbank.Fragmente.MapsCTSFragment;
 import com.example.alexsalupa97.bloodbank.Utile.Utile;
 import com.example.alexsalupa97.bloodbank.R;
 import com.google.gson.Gson;
@@ -489,7 +488,6 @@ public class PrimaPaginaActivity extends AppCompatActivity implements Navigation
                 .setCancelable(false)
                 .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                     public void onClick(final DialogInterface dialog, final int id) {
-                        MapsCTSFragment.locatieCurenta=MapsCTSFragment.getMyLocation();
                         startActivity(new Intent(android.provider.Settings.ACTION_LOCATION_SOURCE_SETTINGS));
                     }
                 })
