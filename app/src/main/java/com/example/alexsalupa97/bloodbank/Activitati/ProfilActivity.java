@@ -56,5 +56,16 @@ public class ProfilActivity extends AppCompatActivity {
         AdaptorIstoricQuizuriRV adapter = new AdaptorIstoricQuizuriRV(this, sectiuni);
         rvIstoric.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
         rvIstoric.setAdapter(adapter);
+
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
+
+
+    }
+
+    @Override
+    public boolean onSupportNavigateUp() {
+        finish();
+        return true;
     }
 }
