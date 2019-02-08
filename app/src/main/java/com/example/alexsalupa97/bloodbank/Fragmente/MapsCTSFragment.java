@@ -61,7 +61,13 @@ public class MapsCTSFragment extends Fragment {
 
         listaMarkere = new ArrayList<>();
 
-        locatieCurenta=getMyLocation();
+//        locatieCurenta=getMyLocation();
+
+        LocationManager service = (LocationManager) getActivity().getSystemService(Context.LOCATION_SERVICE);
+        Criteria criteria = new Criteria();
+        String provider = service.getBestProvider(criteria, false);
+        if (ContextCompat.checkSelfPermission(getActivity(), android.Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED || ContextCompat.checkSelfPermission(getActivity(), android.Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED)
+            locatieCurenta = service.getLastKnownLocation(provider);
 
         layoutInflater = inflater;
         viewGroup = container;
