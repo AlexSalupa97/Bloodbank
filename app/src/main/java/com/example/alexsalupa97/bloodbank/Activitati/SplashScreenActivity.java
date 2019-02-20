@@ -9,6 +9,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 
 import com.example.alexsalupa97.bloodbank.R;
+import com.example.alexsalupa97.bloodbank.Utile.Utile;
 
 public class SplashScreenActivity extends AppCompatActivity {
 
@@ -20,11 +21,15 @@ public class SplashScreenActivity extends AppCompatActivity {
         ActionBar actionBar = getSupportActionBar();
         actionBar.hide();
         setContentView(R.layout.activity_splash_screen);
+        Utile.REST_GET_istoricIntrariCTS(this);
+        Utile.REST_GET_istoricIesiriCTS(this);
+        Utile.REST_GET_limiteCTS(this);
 
         Thread t = new Thread() {
             @Override
             public void run() {
                 try {
+
                     sleep(1500);
                 } catch (InterruptedException e) {
                     Log.e("SplashScreenActivity", e.getMessage());

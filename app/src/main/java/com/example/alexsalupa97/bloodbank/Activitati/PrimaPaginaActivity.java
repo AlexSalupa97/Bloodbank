@@ -63,7 +63,6 @@ public class PrimaPaginaActivity extends AppCompatActivity implements Navigation
     TextView tvNavDrawer;
 
     Button btnVreauSaDonez;
-    Button btnVeziCompatibilitati;
     Button btnListaCTS;
 
     Gson gsonIntrebari;
@@ -159,213 +158,18 @@ public class PrimaPaginaActivity extends AppCompatActivity implements Navigation
         tvNavDrawer.setText(nume);
 
         String stare = Utile.preluareStareAnalize(getApplicationContext());
-        int x = 1;
 
 
         btnVreauSaDonez = (Button) findViewById(R.id.btnVreauSaDonez);
         btnVreauSaDonez.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                btnVreauSaDonez.setEnabled(false);
-                String url = Utile.URL + "domain.intrebari";
-
-                final RequestQueue requestQueue = Volley.newRequestQueue(PrimaPaginaActivity.this);
-
-
-                if (Utile.preluareStareAnalize(getApplicationContext()).equals("ok")) {
-                    JsonArrayRequest objectRequest = new JsonArrayRequest(
-                            Request.Method.GET,
-                            url,
-                            null,
-                            new Response.Listener<JSONArray>() {
-
-                                @Override
-                                public void onResponse(JSONArray response) {
-                                    GsonBuilder gsonBuilder = new GsonBuilder();
-                                    gsonBuilder.setDateFormat("M/d/yy hh:mm a");
-                                    gsonIntrebari = gsonBuilder.create();
-
-
-                                    {
-                                        intrebariList = Arrays.asList(gsonIntrebari.fromJson(response.toString(), Intrebari[].class));
-                                        Utile.intrebari = new ArrayList<>(intrebariList);
-
-                                        Intent intent = new Intent(getApplicationContext(), IntrebariActivity.class);
-                                        //intent.putParcelableArrayListExtra("listaIntrebari", Utile.intrebari);
-
-                                        startActivity(intent);
-                                    }
-
-
-                                }
-                            },
-                            new Response.ErrorListener() {
-                                @Override
-                                public void onErrorResponse(VolleyError error) {
-                                    Log.d("RestResponse", error.toString());
-                                }
-                            }
-
-                    );
-
-                    requestQueue.add(objectRequest);
-
-
-//                JsonObjectRequest objectRequest = new JsonObjectRequest(
-//                        Request.Method.GET,
-//                        url,
-//                        null,
-//                        new Response.Listener<JSONObject>() {
-//
-//                            @Override
-//                            public void onResponse(JSONObject response) {
-//                                GsonBuilder gsonBuilder = new GsonBuilder();
-//                                gsonBuilder.setDateFormat("M/d/yy hh:mm a");
-//                                gsonIntrebari = gsonBuilder.create();
-//
-//                                try {
-//                                    JSONArray array = response.getJSONArray("intrebari");
-//
-//
-//                                    intrebariList = Arrays.asList(gsonIntrebari.fromJson(array.toString(), Intrebari[].class));
-//                                    Utile.intrebari = new ArrayList<>(intrebariList);
-//
-//                                    Intent intent = new Intent(getApplicationContext(), IntrebariActivity.class);
-//                                    //intent.putParcelableArrayListExtra("listaIntrebari", Utile.intrebari);
-//
-//                                    startActivity(intent);
-//
-//                                } catch (JSONException e) {
-//                                    e.printStackTrace();
-//                                }
-//
-//
-//                            }
-//                        },
-//                        new Response.ErrorListener() {
-//                            @Override
-//                            public void onErrorResponse(VolleyError error) {
-//                                Log.d("RestResponse", error.toString());
-//                            }
-//                        }
-//
-//                );
-//
-//                requestQueue.add(objectRequest);
-
-
-                }
-
-                if (Utile.preluareStareAnalize(getApplicationContext()).equals("!ok")) {
-                    Intent intent = new Intent(getApplicationContext(), AnalizeNotOkActivity.class);
-                    startActivity(intent);
-                }
-                if (Utile.preluareStareAnalize(getApplicationContext()).equals("neefectuate")) {
-                    Intent intent = new Intent(getApplicationContext(), AnalizeNeefectuateActivity.class);
-                    startActivity(intent);
-                }
+                buildAlertMessageVreauSaDonez();
 
             }
         });
 
 
-        btnVeziCompatibilitati = (Button) findViewById(R.id.btnVeziCompatibilitati);
-        btnVeziCompatibilitati.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-                btnVeziCompatibilitati.setEnabled(false);
-
-                String url = Utile.URL + "domain.compatibilitati/" + Utile.preluareGrupaSanguina(getApplicationContext());
-
-                final RequestQueue requestQueue = Volley.newRequestQueue(PrimaPaginaActivity.this);
-
-
-                JsonArrayRequest objectRequest = new JsonArrayRequest(
-                        Request.Method.GET,
-                        url,
-                        null,
-                        new Response.Listener<JSONArray>() {
-
-                            @Override
-                            public void onResponse(JSONArray response) {
-                                GsonBuilder gsonBuilder = new GsonBuilder();
-                                gsonBuilder.setDateFormat("M/d/yy hh:mm a");
-                                gsonCompatibilitati = gsonBuilder.create();
-
-
-                                {
-                                    compatibilitatiList = Arrays.asList(gsonCompatibilitati.fromJson(response.toString(), Compatibilitati[].class));
-                                    Utile.compatibilitati = new ArrayList<>(compatibilitatiList);
-
-
-                                    Intent intent = new Intent(getApplicationContext(), CompatibilitatiActivity.class);
-
-                                    startActivity(intent);
-                                }
-
-
-                            }
-                        },
-                        new Response.ErrorListener() {
-                            @Override
-                            public void onErrorResponse(VolleyError error) {
-                                Log.d("RestResponse", error.toString());
-                            }
-                        }
-
-                );
-
-                requestQueue.add(objectRequest);
-
-
-//                JsonObjectRequest objectRequest = new JsonObjectRequest(
-//                        Request.Method.GET,
-//                        url,
-//                        null,
-//                        new Response.Listener<JSONObject>() {
-//
-//                            @Override
-//                            public void onResponse(JSONObject response) {
-//                                GsonBuilder gsonBuilder = new GsonBuilder();
-//                                gsonBuilder.setDateFormat("M/d/yy hh:mm a");
-//                                gsonCompatibilitati = gsonBuilder.create();
-//
-//                                try {
-//                                    JSONArray array = response.getJSONArray("compatibilitati");
-//                                    compatibilitatiList = Arrays.asList(gsonCompatibilitati.fromJson(array.toString(), Compatibilitati[].class));
-//                                    Utile.compatibilitati = new ArrayList<>(compatibilitatiList);
-//                                    int x = 1;
-//
-//
-//                                    Intent intent = new Intent(getApplicationContext(), CompatibilitatiActivity.class);
-//
-//                                    startActivity(intent);
-//
-//
-//                                } catch (JSONException e) {
-//                                    e.printStackTrace();
-//                                }
-//
-//
-//                            }
-//                        },
-//                        new Response.ErrorListener() {
-//                            @Override
-//                            public void onErrorResponse(VolleyError error) {
-//                                Log.d("RestResponse", error.toString());
-//                            }
-//                        }
-//
-//                );
-//
-//                requestQueue.add(objectRequest);
-
-
-            }
-
-
-        });
 
         btnListaCTS = (Button) findViewById(R.id.btnListaCTS);
         btnListaCTS.setOnClickListener(new View.OnClickListener() {
@@ -444,6 +248,51 @@ public class PrimaPaginaActivity extends AppCompatActivity implements Navigation
         int id = menuItem.getItemId();
         if (id == R.id.setari)
             Toast.makeText(getApplicationContext(), "Setari", Toast.LENGTH_SHORT).show();
+        else if(id==R.id.compatibilitati)
+        {
+            String url = Utile.URL + "domain.compatibilitati/" + Utile.preluareGrupaSanguina(getApplicationContext());
+
+            final RequestQueue requestQueue = Volley.newRequestQueue(PrimaPaginaActivity.this);
+
+
+            JsonArrayRequest objectRequest = new JsonArrayRequest(
+                    Request.Method.GET,
+                    url,
+                    null,
+                    new Response.Listener<JSONArray>() {
+
+                        @Override
+                        public void onResponse(JSONArray response) {
+                            GsonBuilder gsonBuilder = new GsonBuilder();
+                            gsonBuilder.setDateFormat("M/d/yy hh:mm a");
+                            gsonCompatibilitati = gsonBuilder.create();
+
+
+                            {
+                                compatibilitatiList = Arrays.asList(gsonCompatibilitati.fromJson(response.toString(), Compatibilitati[].class));
+                                Utile.compatibilitati = new ArrayList<>(compatibilitatiList);
+
+
+                                Intent intent = new Intent(getApplicationContext(), CompatibilitatiActivity.class);
+
+                                startActivity(intent);
+                            }
+
+
+                        }
+                    },
+                    new Response.ErrorListener() {
+                        @Override
+                        public void onErrorResponse(VolleyError error) {
+                            Log.d("RestResponse", error.toString());
+                        }
+                    }
+
+            );
+
+            requestQueue.add(objectRequest);
+
+        }
         else if (id == R.id.profil) {
             String url = Utile.URL + "domain.istoricdonatii/donator/" + Utile.preluareEmail(getApplicationContext());
 
@@ -465,7 +314,6 @@ public class PrimaPaginaActivity extends AppCompatActivity implements Navigation
 
                             istoricDonatiiList = Arrays.asList(gsonIstoricDonatii.fromJson(response.toString(), IstoricDonatii[].class));
                             Utile.listaIstoricDonatii = new ArrayList<>(istoricDonatiiList);
-
 
 
                             Intent intent = new Intent(getApplicationContext(), ProfilActivity.class);
@@ -500,12 +348,6 @@ public class PrimaPaginaActivity extends AppCompatActivity implements Navigation
         return true;
     }
 
-    @Override
-    protected void onResume() {
-        super.onResume();
-        btnVreauSaDonez.setEnabled(true);
-        btnVeziCompatibilitati.setEnabled(true);
-    }
 
     public void statusCheck() {
         final LocationManager manager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
@@ -520,14 +362,135 @@ public class PrimaPaginaActivity extends AppCompatActivity implements Navigation
         final AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setMessage("GPS inactiv, activati serviciile de localizare?")
                 .setCancelable(false)
-                .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                .setPositiveButton("Da", new DialogInterface.OnClickListener() {
                     public void onClick(final DialogInterface dialog, final int id) {
                         startActivity(new Intent(android.provider.Settings.ACTION_LOCATION_SOURCE_SETTINGS));
                     }
                 })
-                .setNegativeButton("No", new DialogInterface.OnClickListener() {
+                .setNegativeButton("Nu", new DialogInterface.OnClickListener() {
                     public void onClick(final DialogInterface dialog, final int id) {
                         dialog.cancel();
+                    }
+                });
+        final AlertDialog alert = builder.create();
+        alert.show();
+    }
+
+    private void buildAlertMessageVreauSaDonez() {
+        final AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setMessage("Urmeaza un set de 10 intrebari pentru a va informa de conditiile necesare pentru a putea dona, doriti sa le abordati? (1 minut)")
+                .setCancelable(false)
+                .setNeutralButton("Cancel", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.cancel();
+                    }
+                })
+                .setPositiveButton("Da", new DialogInterface.OnClickListener() {
+                    public void onClick(final DialogInterface dialog, final int id) {
+                        String url = Utile.URL + "domain.intrebari";
+
+                        final RequestQueue requestQueue = Volley.newRequestQueue(PrimaPaginaActivity.this);
+
+
+                        if (Utile.preluareStareAnalize(getApplicationContext()).equals("ok")) {
+                            JsonArrayRequest objectRequest = new JsonArrayRequest(
+                                    Request.Method.GET,
+                                    url,
+                                    null,
+                                    new Response.Listener<JSONArray>() {
+
+                                        @Override
+                                        public void onResponse(JSONArray response) {
+                                            GsonBuilder gsonBuilder = new GsonBuilder();
+                                            gsonBuilder.setDateFormat("M/d/yy hh:mm a");
+                                            gsonIntrebari = gsonBuilder.create();
+
+                                            intrebariList = Arrays.asList(gsonIntrebari.fromJson(response.toString(), Intrebari[].class));
+                                            Utile.intrebari = new ArrayList<>(intrebariList);
+
+                                            Intent intent = new Intent(getApplicationContext(), IntrebariActivity.class);
+                                            //intent.putParcelableArrayListExtra("listaIntrebari", Utile.intrebari);
+
+                                            startActivity(intent);
+
+
+                                        }
+                                    },
+                                    new Response.ErrorListener() {
+                                        @Override
+                                        public void onErrorResponse(VolleyError error) {
+                                            Log.d("RestResponse", error.toString());
+                                        }
+                                    }
+
+                            );
+
+                            requestQueue.add(objectRequest);
+
+
+                        }
+
+                        if (Utile.preluareStareAnalize(getApplicationContext()).equals("!ok")) {
+                            Intent intent = new Intent(getApplicationContext(), AnalizeNotOkActivity.class);
+                            startActivity(intent);
+                        }
+                        if (Utile.preluareStareAnalize(getApplicationContext()).equals("neefectuate")) {
+                            Intent intent = new Intent(getApplicationContext(), AnalizeNeefectuateActivity.class);
+                            startActivity(intent);
+                        }
+
+                    }
+                })
+                .setNegativeButton("Nu", new DialogInterface.OnClickListener() {
+                    public void onClick(final DialogInterface dialog, final int id) {
+                        String url = Utile.URL + "domain.cts";
+
+                        final RequestQueue requestQueue = Volley.newRequestQueue(PrimaPaginaActivity.this);
+
+
+                        if (Utile.preluareStareAnalize(getApplicationContext()).equals("ok")) {
+                            JsonArrayRequest objectRequest = new JsonArrayRequest(
+                                    Request.Method.GET,
+                                    url,
+                                    null,
+                                    new Response.Listener<JSONArray>() {
+
+                                        @Override
+                                        public void onResponse(JSONArray response) {
+                                            GsonBuilder gsonBuilder = new GsonBuilder();
+                                            gsonBuilder.setDateFormat("M/d/yy hh:mm a");
+                                            gsonCTS = gsonBuilder.create();
+
+
+                                            CTSlist = Arrays.asList(gsonCTS.fromJson(response.toString(), CTS[].class));
+                                            Utile.CTS = new ArrayList<>();
+                                            Utile.orase = new HashSet<>();
+                                            for (CTS c : CTSlist) {
+                                                Utile.CTS.add(c);
+                                                Utile.orase.add(c.getOras());
+                                            }
+
+
+                                            Intent intent = new Intent(getApplicationContext(), ListaCentreActivity.class);
+                                            startActivity(intent);
+                                        }
+
+
+                                    },
+                                    new Response.ErrorListener() {
+                                        @Override
+                                        public void onErrorResponse(VolleyError error) {
+                                            Log.d("RestResponse", error.toString());
+                                        }
+                                    }
+
+                            );
+
+                            requestQueue.add(objectRequest);
+
+
+                        }
                     }
                 });
         final AlertDialog alert = builder.create();

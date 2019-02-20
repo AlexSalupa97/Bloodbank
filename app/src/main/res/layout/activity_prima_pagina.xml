@@ -21,14 +21,6 @@
             android:layout_marginRight="54dp"
             android:text="Vreau sa donez"/>
 
-        <Button
-            android:id="@+id/btnVeziCompatibilitati"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="54dp"
-            android:layout_marginLeft="54dp"
-            android:layout_marginRight="54dp"
-            android:text="Vezi compatibilitatile grupei tale de sange"/>
 
         <Button
             android:id="@+id/btnListaCTS"

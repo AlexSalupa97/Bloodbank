@@ -7,7 +7,16 @@
         <item
             android:id="@+id/profil"
             android:icon="@drawable/ic_person"
-            android:title="Profilul meu"></item>
+            android:title="Profilul meu"/>
+    </group>
+
+    <group
+        android:id="@+id/menu_center"
+        android:checkableBehavior="none">
+        <item
+            android:id="@+id/compatibilitati"
+            android:icon="@drawable/compatibilitati"
+            android:title="Compatibilitatile grupei"/>
     </group>
 
     <group
@@ -16,11 +25,11 @@
         <item
             android:id="@+id/setari"
             android:icon="@drawable/ic_settings"
-            android:title="Setari"></item>
+            android:title="Setari"/>
         <item
             android:id="@+id/logout"
             android:icon="@drawable/ic_power_settings"
-            android:title="Deconectare"></item>
+            android:title="Deconectare"/>
 
     </group>
 
