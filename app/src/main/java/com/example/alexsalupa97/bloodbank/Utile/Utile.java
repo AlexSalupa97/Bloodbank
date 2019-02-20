@@ -18,7 +18,7 @@ import java.util.Set;
 public class Utile {
 
     public static String fisier = "SharedPreferences";
-    public static String URL="http://2b2f1c58.ngrok.io/ProiectLicentaBloodbank/webresources/";
+    public static String URL="http://b86d1477.ngrok.io/ProiectLicentaBloodbank/webresources/";
 
     public static ArrayList<Intrebari> intrebari;
     public static ArrayList<Compatibilitati> compatibilitati;
@@ -55,6 +55,30 @@ public class Utile {
         SharedPreferences sharedPreferences = context.getSharedPreferences(fisier, Context.MODE_PRIVATE);
         String defaultName = "N/A";
         dePreluat = sharedPreferences.getString("stareAnalize", defaultName);
+        return dePreluat;
+    }
+
+    public static String preluareTelefon(Context context) {
+        String dePreluat;
+        SharedPreferences sharedPreferences = context.getSharedPreferences(fisier, Context.MODE_PRIVATE);
+        String defaultName = "N/A";
+        dePreluat = sharedPreferences.getString("telefon", defaultName);
+        return dePreluat;
+    }
+
+    public static String preluareEmail(Context context) {
+        String dePreluat;
+        SharedPreferences sharedPreferences = context.getSharedPreferences(fisier, Context.MODE_PRIVATE);
+        String defaultName = "N/A";
+        dePreluat = sharedPreferences.getString("email", defaultName);
+        return dePreluat;
+    }
+
+    public static String preluareOras(Context context) {
+        String dePreluat;
+        SharedPreferences sharedPreferences = context.getSharedPreferences(fisier, Context.MODE_PRIVATE);
+        String defaultName = "N/A";
+        dePreluat = sharedPreferences.getString("orasUser", defaultName);
         return dePreluat;
     }
 

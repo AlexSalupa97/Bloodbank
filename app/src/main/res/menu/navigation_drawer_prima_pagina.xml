@@ -1,16 +1,27 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
-    <item
-        android:id="@+id/profil"
-        android:icon="@drawable/ic_person"
-        android:title="Profilul meu"></item>
-    <item
-        android:id="@+id/setari"
-        android:icon="@drawable/ic_settings"
-        android:title="Setari"></item>
-    <item
-        android:id="@+id/logout"
-        android:icon="@drawable/ic_power_settings"
-        android:title="Deconectare"></item>
+
+    <group
+        android:id="@+id/menu_top"
+        android:checkableBehavior="none">
+        <item
+            android:id="@+id/profil"
+            android:icon="@drawable/ic_person"
+            android:title="Profilul meu"></item>
+    </group>
+
+    <group
+        android:id="@+id/menu_bot"
+        android:checkableBehavior="none">
+        <item
+            android:id="@+id/setari"
+            android:icon="@drawable/ic_settings"
+            android:title="Setari"></item>
+        <item
+            android:id="@+id/logout"
+            android:icon="@drawable/ic_power_settings"
+            android:title="Deconectare"></item>
+
+    </group>
 
 </menu>
