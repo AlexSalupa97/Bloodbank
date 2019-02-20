@@ -38,8 +38,8 @@ public class AdaptorListaItemeSectiuneRV extends RecyclerView.Adapter<AdaptorLis
 
         ItemModel singleItem = listaIteme.get(position);
 
-        holder.tvTitle.setText(singleItem.getText());
-        holder.rbPunctajIstoric.setRating(holder.rbPunctajIstoric.getNumStars() * 0.8f);
+        holder.tvDataDonare.setText(singleItem.getDataDonare());
+        holder.tvCantitateDonata.setText(singleItem.getCantitateDonata());
     }
 
     @Override
@@ -49,23 +49,21 @@ public class AdaptorListaItemeSectiuneRV extends RecyclerView.Adapter<AdaptorLis
 
     public class SingleItemRowHolder extends RecyclerView.ViewHolder {
 
-        protected TextView tvTitle;
-        protected RatingBar rbPunctajIstoric;
-        protected ImageView ivPozaIstoric;
+        protected TextView tvDataDonare;
+        protected TextView tvCantitateDonata;
 
 
         public SingleItemRowHolder(View view) {
             super(view);
 
-            this.tvTitle = (TextView) view.findViewById(R.id.tvTitle);
-            this.rbPunctajIstoric = (RatingBar) view.findViewById(R.id.rbPunctajIstoric);
-            this.ivPozaIstoric = (ImageView) view.findViewById(R.id.ivPozaIstoric);
+            this.tvDataDonare = (TextView) view.findViewById(R.id.tvDataDonare);
+            this.tvCantitateDonata = (TextView) view.findViewById(R.id.tvCantitateDonata);
 
 
             view.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Toast.makeText(v.getContext(), tvTitle.getText(), Toast.LENGTH_SHORT).show();
+                    Toast.makeText(v.getContext(), tvCantitateDonata.getText(), Toast.LENGTH_SHORT).show();
 
 
                 }

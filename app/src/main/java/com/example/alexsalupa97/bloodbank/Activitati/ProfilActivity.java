@@ -8,6 +8,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.alexsalupa97.bloodbank.Adaptoare.AdaptorIstoricQuizuriRV;
+import com.example.alexsalupa97.bloodbank.Clase.IstoricDonatii;
 import com.example.alexsalupa97.bloodbank.R;
 import com.example.alexsalupa97.bloodbank.RecyclerViewOrizontal.ItemModel;
 import com.example.alexsalupa97.bloodbank.RecyclerViewOrizontal.SectionModel;
@@ -60,11 +61,13 @@ public class ProfilActivity extends AppCompatActivity {
 
         SectionModel dm = new SectionModel();
 
-        dm.setTitlu("Donari de sange");
+        dm.setTitlu("Istoric donatii");
 
         ArrayList<ItemModel> itemeInSectiune = new ArrayList<ItemModel>();
-        for (int i = 0; i < 10; i++) {
-            itemeInSectiune.add(new ItemModel("Data donare " + i));
+        for (IstoricDonatii id:Utile.listaIstoricDonatii) {
+            int index=id.getDataDonatie().indexOf("T");
+            String substring=id.getDataDonatie().substring(0,index);
+            itemeInSectiune.add(new ItemModel(substring,id.getCantitateDonataML()+"ml"));
         }
 
         dm.setItemeInSectiune(itemeInSectiune);

@@ -36,6 +36,7 @@ import com.android.volley.toolbox.Volley;
 import com.example.alexsalupa97.bloodbank.Clase.CTS;
 import com.example.alexsalupa97.bloodbank.Clase.Compatibilitati;
 import com.example.alexsalupa97.bloodbank.Clase.Intrebari;
+import com.example.alexsalupa97.bloodbank.Clase.IstoricDonatii;
 import com.example.alexsalupa97.bloodbank.Utile.Utile;
 import com.example.alexsalupa97.bloodbank.R;
 import com.google.gson.Gson;
@@ -67,8 +68,10 @@ public class PrimaPaginaActivity extends AppCompatActivity implements Navigation
 
     Gson gsonIntrebari;
     Gson gsonCompatibilitati;
+    Gson gsonIstoricDonatii;
     List<Intrebari> intrebariList;
     List<Compatibilitati> compatibilitatiList;
+    List<IstoricDonatii> istoricDonatiiList;
 
     Gson gsonCTS;
     List<CTS> CTSlist;
@@ -79,20 +82,18 @@ public class PrimaPaginaActivity extends AppCompatActivity implements Navigation
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_prima_pagina);
 
-        if(ContextCompat.checkSelfPermission(getApplicationContext(), Manifest.permission.ACCESS_FINE_LOCATION)!= PackageManager.PERMISSION_GRANTED)
-        {
+        if (ContextCompat.checkSelfPermission(getApplicationContext(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
 
-            int x=1;
-            ActivityCompat.requestPermissions( this, new String[] {  Manifest.permission.ACCESS_FINE_LOCATION  },
-                    x );
+            int x = 1;
+            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
+                    x);
         }
 
-        if(ContextCompat.checkSelfPermission(getApplicationContext(), Manifest.permission.ACCESS_COARSE_LOCATION)!=PackageManager.PERMISSION_GRANTED)
-        {
+        if (ContextCompat.checkSelfPermission(getApplicationContext(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
 
-            int x=1;
-            ActivityCompat.requestPermissions( this, new String[] {  Manifest.permission.ACCESS_COARSE_LOCATION  },
-                    x );
+            int x = 1;
+            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_COARSE_LOCATION},
+                    x);
         }
 
         statusCheck();
@@ -157,8 +158,8 @@ public class PrimaPaginaActivity extends AppCompatActivity implements Navigation
 
         tvNavDrawer.setText(nume);
 
-        String stare=Utile.preluareStareAnalize(getApplicationContext());
-        int x=1;
+        String stare = Utile.preluareStareAnalize(getApplicationContext());
+        int x = 1;
 
 
         btnVreauSaDonez = (Button) findViewById(R.id.btnVreauSaDonez);
@@ -255,20 +256,17 @@ public class PrimaPaginaActivity extends AppCompatActivity implements Navigation
 
                 }
 
-                if(Utile.preluareStareAnalize(getApplicationContext()).equals("!ok"))
-                {
-                    Intent intent=new Intent(getApplicationContext(),AnalizeNotOkActivity.class);
+                if (Utile.preluareStareAnalize(getApplicationContext()).equals("!ok")) {
+                    Intent intent = new Intent(getApplicationContext(), AnalizeNotOkActivity.class);
                     startActivity(intent);
                 }
-                if(Utile.preluareStareAnalize(getApplicationContext()).equals("neefectuate"))
-                {
-                    Intent intent=new Intent(getApplicationContext(),AnalizeNeefectuateActivity.class);
+                if (Utile.preluareStareAnalize(getApplicationContext()).equals("neefectuate")) {
+                    Intent intent = new Intent(getApplicationContext(), AnalizeNeefectuateActivity.class);
                     startActivity(intent);
                 }
 
             }
         });
-
 
 
         btnVeziCompatibilitati = (Button) findViewById(R.id.btnVeziCompatibilitati);
@@ -305,9 +303,6 @@ public class PrimaPaginaActivity extends AppCompatActivity implements Navigation
 
                                     startActivity(intent);
                                 }
-
-
-
 
 
                             }
@@ -372,7 +367,7 @@ public class PrimaPaginaActivity extends AppCompatActivity implements Navigation
 
         });
 
-        btnListaCTS=(Button)findViewById(R.id.btnListaCTS);
+        btnListaCTS = (Button) findViewById(R.id.btnListaCTS);
         btnListaCTS.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -450,11 +445,47 @@ public class PrimaPaginaActivity extends AppCompatActivity implements Navigation
         if (id == R.id.setari)
             Toast.makeText(getApplicationContext(), "Setari", Toast.LENGTH_SHORT).show();
         else if (id == R.id.profil) {
-            Intent intent=new Intent(getApplicationContext(),ProfilActivity.class);
-            startActivity(intent);
+            String url = Utile.URL + "domain.istoricdonatii/donator/" + Utile.preluareEmail(getApplicationContext());
 
-        }
-        else {
+            final RequestQueue requestQueue = Volley.newRequestQueue(PrimaPaginaActivity.this);
+
+
+            JsonArrayRequest objectRequest = new JsonArrayRequest(
+                    Request.Method.GET,
+                    url,
+                    null,
+                    new Response.Listener<JSONArray>() {
+
+                        @Override
+                        public void onResponse(JSONArray response) {
+                            GsonBuilder gsonBuilder = new GsonBuilder();
+                            gsonBuilder.setDateFormat("M/d/yy hh:mm a");
+                            gsonIstoricDonatii = gsonBuilder.create();
+
+
+                            istoricDonatiiList = Arrays.asList(gsonIstoricDonatii.fromJson(response.toString(), IstoricDonatii[].class));
+                            Utile.listaIstoricDonatii = new ArrayList<>(istoricDonatiiList);
+
+
+
+                            Intent intent = new Intent(getApplicationContext(), ProfilActivity.class);
+
+                            startActivity(intent);
+
+
+                        }
+                    },
+                    new Response.ErrorListener() {
+                        @Override
+                        public void onErrorResponse(VolleyError error) {
+                            Log.d("RestResponse", error.toString());
+                        }
+                    }
+
+            );
+
+            requestQueue.add(objectRequest);
+        } else {
             SharedPreferences.Editor editor = sharedPreferences.edit();
             editor.putString("login_name", "");
             editor.putString("tip_user", "");

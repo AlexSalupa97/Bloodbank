@@ -9,6 +9,7 @@ import android.view.MenuItem;
 import com.example.alexsalupa97.bloodbank.Clase.CTS;
 import com.example.alexsalupa97.bloodbank.Clase.Compatibilitati;
 import com.example.alexsalupa97.bloodbank.Clase.Intrebari;
+import com.example.alexsalupa97.bloodbank.Clase.IstoricDonatii;
 import com.example.alexsalupa97.bloodbank.Clase.Orase;
 import com.example.alexsalupa97.bloodbank.R;
 
@@ -24,6 +25,7 @@ public class Utile {
     public static ArrayList<Compatibilitati> compatibilitati;
     public static ArrayList<CTS> CTS;
     public static Set<Orase> orase;
+    public static ArrayList<IstoricDonatii> listaIstoricDonatii;
 
 
     public static String preluareUsername(Context context) {
