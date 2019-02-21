@@ -64,6 +64,7 @@ public class PrimaPaginaActivity extends AppCompatActivity implements Navigation
 
     Button btnVreauSaDonez;
     Button btnListaCTS;
+    Button btnAlerte;
 
     Gson gsonIntrebari;
     Gson gsonCompatibilitati;
@@ -222,6 +223,15 @@ public class PrimaPaginaActivity extends AppCompatActivity implements Navigation
 
 
                 }
+            }
+        });
+
+        btnAlerte=(Button)findViewById(R.id.btnAlerte);
+        btnAlerte.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent=new Intent(getApplicationContext(),AlerteActivity.class);
+                startActivity(intent);
             }
         });
 

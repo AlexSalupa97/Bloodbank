@@ -14,9 +14,11 @@
         android:roundIcon="@mipmap/ic_bloodbank_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".Activitati.ProfilActivity"
+        <activity android:name=".Activitati.AlerteActivity"></activity>
+        <activity
+            android:name=".Activitati.ProfilActivity"
             android:label="Profil"
-            android:screenOrientation="portrait"></activity>
+            android:screenOrientation="portrait" />
 
         <meta-data
             android:name="com.google.android.geo.API_KEY"

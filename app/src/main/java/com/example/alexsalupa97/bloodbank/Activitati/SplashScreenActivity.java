@@ -24,6 +24,8 @@ public class SplashScreenActivity extends AppCompatActivity {
         Utile.REST_GET_istoricIntrariCTS(this);
         Utile.REST_GET_istoricIesiriCTS(this);
         Utile.REST_GET_limiteCTS(this);
+        Utile.REST_GET_grupeSanguine(this);
+        Utile.REST_GET_listaCTS(this);
 
         Thread t = new Thread() {
             @Override

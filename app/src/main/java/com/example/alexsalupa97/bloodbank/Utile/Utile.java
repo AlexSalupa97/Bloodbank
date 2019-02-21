@@ -15,9 +15,11 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.Volley;
 import com.example.alexsalupa97.bloodbank.Activitati.CompatibilitatiActivity;
+import com.example.alexsalupa97.bloodbank.Activitati.ListaCentreActivity;
 import com.example.alexsalupa97.bloodbank.Activitati.PrimaPaginaActivity;
 import com.example.alexsalupa97.bloodbank.Clase.CTS;
 import com.example.alexsalupa97.bloodbank.Clase.Compatibilitati;
+import com.example.alexsalupa97.bloodbank.Clase.GrupeSanguine;
 import com.example.alexsalupa97.bloodbank.Clase.IesiriCTS;
 import com.example.alexsalupa97.bloodbank.Clase.IntrariCTS;
 import com.example.alexsalupa97.bloodbank.Clase.Intrebari;
@@ -30,14 +32,19 @@ import com.google.gson.GsonBuilder;
 
 import org.json.JSONArray;
 
+import java.io.IOException;
+import java.net.ProtocolException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Map;
 import java.util.Set;
 
 public class Utile {
 
     public static String fisier = "SharedPreferences";
-    public static String URL = "http://b86d1477.ngrok.io/ProiectLicentaBloodbank/webresources/";
+    public static String URL = "http://044cc49a.ngrok.io/ProiectLicentaBloodbank/webresources/";
 
     public static ArrayList<Intrebari> intrebari;
     public static ArrayList<Compatibilitati> compatibilitati;
@@ -47,6 +54,7 @@ public class Utile {
     public static ArrayList<IntrariCTS> listaIntrariCTS;
     public static ArrayList<IesiriCTS> listaIesiriCTS;
     public static ArrayList<LimiteCTS> listaLimiteCTS;
+    public static ArrayList<GrupeSanguine> listaGrupeSanguine;
 
     static Gson gson;
 
@@ -115,6 +123,42 @@ public class Utile {
         Log.i("Verificare setare item", name);
     }
 
+
+    public static void REST_GET_grupeSanguine(final Activity activity) {
+        String url = Utile.URL + "domain.grupesanguine";
+
+        final RequestQueue requestQueue = Volley.newRequestQueue(activity);
+
+
+        JsonArrayRequest objectRequest = new JsonArrayRequest(
+                Request.Method.GET,
+                url,
+                null,
+                new Response.Listener<JSONArray>() {
+
+                    @Override
+                    public void onResponse(JSONArray response) {
+                        GsonBuilder gsonBuilder = new GsonBuilder();
+                        gsonBuilder.setDateFormat("M/d/yy hh:mm a");
+                        gson = gsonBuilder.create();
+
+                        Utile.listaGrupeSanguine = new ArrayList<>(Arrays.asList(gson.fromJson(response.toString(), GrupeSanguine[].class)));
+
+
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Log.d("RestResponse", error.toString());
+                    }
+                }
+
+        );
+
+        requestQueue.add(objectRequest);
+    }
+
     public static void REST_GET_istoricIntrariCTS(final Activity activity) {
         String url = Utile.URL + "domain.istoricintraricts";
 
@@ -133,7 +177,7 @@ public class Utile {
                         gsonBuilder.setDateFormat("M/d/yy hh:mm a");
                         gson = gsonBuilder.create();
 
-                        Utile.listaIntrariCTS  = new ArrayList<>(Arrays.asList(gson.fromJson(response.toString(), IntrariCTS[].class)));
+                        Utile.listaIntrariCTS = new ArrayList<>(Arrays.asList(gson.fromJson(response.toString(), IntrariCTS[].class)));
 
 
                     }
@@ -168,9 +212,9 @@ public class Utile {
                         gsonBuilder.setDateFormat("M/d/yy hh:mm a");
                         gson = gsonBuilder.create();
 
-                        Utile.listaLimiteCTS  = new ArrayList<>(Arrays.asList(gson.fromJson(response.toString(), LimiteCTS[].class)));
+                        Utile.listaLimiteCTS = new ArrayList<>(Arrays.asList(gson.fromJson(response.toString(), LimiteCTS[].class)));
 
-                        int x=1;
+                        int x = 1;
 
 
                     }
@@ -205,8 +249,7 @@ public class Utile {
                         gsonBuilder.setDateFormat("M/d/yy hh:mm a");
                         gson = gsonBuilder.create();
 
-                        Utile.listaIesiriCTS  = new ArrayList<>(Arrays.asList(gson.fromJson(response.toString(), IesiriCTS[].class)));
-
+                        Utile.listaIesiriCTS = new ArrayList<>(Arrays.asList(gson.fromJson(response.toString(), IesiriCTS[].class)));
 
 
                     }
@@ -221,5 +264,76 @@ public class Utile {
         );
 
         requestQueue.add(objectRequest);
+    }
+
+    public static void REST_GET_listaCTS(final Activity activity) {
+        String url = Utile.URL + "domain.cts";
+
+        final RequestQueue requestQueue = Volley.newRequestQueue(activity);
+
+
+        JsonArrayRequest objectRequest = new JsonArrayRequest(
+                Request.Method.GET,
+                url,
+                null,
+                new Response.Listener<JSONArray>() {
+
+                    @Override
+                    public void onResponse(JSONArray response) {
+                        GsonBuilder gsonBuilder = new GsonBuilder();
+                        gsonBuilder.setDateFormat("M/d/yy hh:mm a");
+                        gson = gsonBuilder.create();
+
+
+                        Utile.CTS = new ArrayList<>(Arrays.asList(gson.fromJson(response.toString(), CTS[].class)));
+                        Utile.orase = new HashSet<>();
+
+
+                    }
+
+
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Log.d("RestResponse", error.toString());
+                    }
+                }
+
+        );
+
+        requestQueue.add(objectRequest);
+
+
+    }
+
+    public static Map<CTS, Map<GrupeSanguine, Integer>> incarcareMapDisponibil() {
+
+
+        Map<CTS, Map<GrupeSanguine, Integer>> listaDisponibil = new HashMap<>();
+
+        for (CTS c : CTS) {
+            Map<GrupeSanguine, Integer> listaIntermediara = new HashMap<>();
+            for (GrupeSanguine g : listaGrupeSanguine) {
+                int cantitateIntrata = 0;
+                for (IntrariCTS in : listaIntrariCTS) {
+                    if (in.getCts().getNumeCTS().equals(c.getNumeCTS()) && in.getGrupaSanguina().getGrupaSanguina().equals(g.getGrupaSanguina())) {
+                        cantitateIntrata += in.getCantitatePrimitaML();
+                    }
+                }
+                int cantitateIesita = 0;
+                for (IesiriCTS out : listaIesiriCTS) {
+                    if (out.getCts().getNumeCTS().equals(c.getNumeCTS()) && out.getGrupaSanguina().getGrupaSanguina().equals(g.getGrupaSanguina())) {
+                        cantitateIesita += out.getCantitateIesitaML();
+                    }
+                }
+
+                listaIntermediara.put(g, cantitateIntrata - cantitateIesita);
+
+            }
+            listaDisponibil.put(c, listaIntermediara);
+        }
+
+        return listaDisponibil;
     }
 }
