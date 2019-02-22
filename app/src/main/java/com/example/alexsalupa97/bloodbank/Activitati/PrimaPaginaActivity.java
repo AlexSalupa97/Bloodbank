@@ -13,7 +13,6 @@ import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.location.LocationManager;
-import android.os.Build;
 import android.os.Bundle;
 import android.os.SystemClock;
 import android.support.annotation.NonNull;
@@ -40,7 +39,6 @@ import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonArrayRequest;
-import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 import com.example.alexsalupa97.bloodbank.Clase.CTS;
 import com.example.alexsalupa97.bloodbank.Clase.Compatibilitati;
@@ -53,12 +51,11 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
 import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Calendar;
 import java.util.HashSet;
 import java.util.List;
 
@@ -249,8 +246,8 @@ public class PrimaPaginaActivity extends AppCompatActivity implements Navigation
         btnNotificari.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                scheduleNotification(triggerNotification(),3000);
-
+//                scheduleNotificationWithDelay(triggerNotification(),3000);
+                scheduleNotification(triggerNotification());
 //                triggerNotification();
 
             }
@@ -526,8 +523,7 @@ public class PrimaPaginaActivity extends AppCompatActivity implements Navigation
         alert.show();
     }
 
-    private Notification triggerNotification()
-    {
+    private Notification triggerNotification() {
         Intent resultIntent = new Intent(getApplicationContext(), AlerteActivity.class);
         resultIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 
@@ -537,7 +533,7 @@ public class PrimaPaginaActivity extends AppCompatActivity implements Navigation
 
 
         PendingIntent resultPendingIntent = PendingIntent.getActivities(getApplicationContext(),
-                0 /* Request code */, new Intent[] {backIntent,resultIntent},
+                0 /* Request code */, new Intent[]{backIntent, resultIntent},
                 PendingIntent.FLAG_ONE_SHOT);
 
 //        PendingIntent resultPendingIntent = PendingIntent.getBroadcast(getApplicationContext(),
@@ -590,7 +586,7 @@ public class PrimaPaginaActivity extends AppCompatActivity implements Navigation
 
     }
 
-    private void scheduleNotification(Notification notification, int delay) {
+    private void scheduleNotificationWithDelay(Notification notification, int delay) {
 
         Intent notificationIntent = new Intent(this, NotificariBroadcast.class);
         notificationIntent.putExtra(NotificariBroadcast.NOTIFICATION_ID, 1);
@@ -598,7 +594,26 @@ public class PrimaPaginaActivity extends AppCompatActivity implements Navigation
         PendingIntent pendingIntent = PendingIntent.getBroadcast(this, 0, notificationIntent, PendingIntent.FLAG_UPDATE_CURRENT);
 
         long futureInMillis = SystemClock.elapsedRealtime() + delay;
-        AlarmManager alarmManager = (AlarmManager)getSystemService(Context.ALARM_SERVICE);
+        AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
         alarmManager.set(AlarmManager.ELAPSED_REALTIME_WAKEUP, futureInMillis, pendingIntent);
+    }
+
+    private void scheduleNotification(Notification notification) {
+
+        Intent notificationIntent = new Intent(this, NotificariBroadcast.class);
+        notificationIntent.putExtra(NotificariBroadcast.NOTIFICATION_ID, 1);
+        notificationIntent.putExtra(NotificariBroadcast.NOTIFICATION, notification);
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(this, 0, notificationIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+
+        AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
+        Calendar calendar = Calendar.getInstance();
+
+        calendar.setTimeInMillis(System.currentTimeMillis());
+        calendar.set(Calendar.HOUR_OF_DAY, 10);
+        calendar.set(Calendar.MINUTE, 27);
+        calendar.set(Calendar.SECOND,0);
+        calendar.set(Calendar.MILLISECOND,0);
+
+        alarmManager.set(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), pendingIntent);
     }
 }
