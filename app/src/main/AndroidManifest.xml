@@ -16,7 +16,8 @@
         android:theme="@style/AppTheme">
         <activity android:name=".Activitati.AlerteActivity"
             android:screenOrientation="portrait"
-            android:label="Alerte"/>
+            android:label="Alerte"
+            android:parentActivityName=".Activitati.PrimaPaginaActivity"/>
         <activity
             android:name=".Activitati.ProfilActivity"
             android:label="Profil"
@@ -43,7 +44,10 @@
         <activity android:name=".Activitati.AlegereLoginActivity" />
         <activity
             android:name=".Activitati.PrimaPaginaActivity"
-            android:label="Pagina Principala" />
+            android:label="Pagina Principala"
+            android:launchMode="singleInstance">
+
+        </activity>
         <activity android:name=".Activitati.IntrebariActivity" />
         <activity
             android:name=".Activitati.ListaCentreActivity"

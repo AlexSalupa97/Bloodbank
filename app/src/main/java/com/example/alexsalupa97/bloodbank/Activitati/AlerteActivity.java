@@ -20,8 +20,13 @@ public class AlerteActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_alerte);
 
+        try {
+            mapCantitatiDisponibilePerCTSPerGrupa = new HashMap<>(Utile.incarcareMapDisponibil());
+        }
+        catch (Exception ex)
+        {
 
-        mapCantitatiDisponibilePerCTSPerGrupa = new HashMap<>(Utile.incarcareMapDisponibil());
+        }
 
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);

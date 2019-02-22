@@ -527,9 +527,12 @@ public class PrimaPaginaActivity extends AppCompatActivity implements Navigation
         Intent resultIntent = new Intent(getApplicationContext(), AlerteActivity.class);
         resultIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 
-        PendingIntent resultPendingIntent = PendingIntent.getActivity(getApplicationContext(),
-                0 /* Request code */, resultIntent,
-                PendingIntent.FLAG_UPDATE_CURRENT);
+        Intent backIntent = new Intent(this, PrimaPaginaActivity.class);
+
+
+        PendingIntent resultPendingIntent = PendingIntent.getActivities(getApplicationContext(),
+                0 /* Request code */, new Intent[] {backIntent,resultIntent},
+                PendingIntent.FLAG_ONE_SHOT);
 
         NotificationCompat.Builder mBuilder =
                 new NotificationCompat.Builder(getApplicationContext(), "test")
