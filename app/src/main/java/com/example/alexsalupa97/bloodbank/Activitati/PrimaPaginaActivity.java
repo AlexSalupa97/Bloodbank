@@ -251,6 +251,7 @@ public class PrimaPaginaActivity extends AppCompatActivity implements Navigation
             public void onClick(View v) {
                 scheduleNotification(triggerNotification(),3000);
 
+//                triggerNotification();
 
             }
         });
@@ -535,13 +536,13 @@ public class PrimaPaginaActivity extends AppCompatActivity implements Navigation
         AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
 
 
-//        PendingIntent resultPendingIntent = PendingIntent.getActivities(getApplicationContext(),
-//                0 /* Request code */, new Intent[] {backIntent,resultIntent},
-//                PendingIntent.FLAG_ONE_SHOT);
-
-        PendingIntent resultPendingIntent = PendingIntent.getBroadcast(getApplicationContext(),
-                0 /* Request code */, resultIntent,
+        PendingIntent resultPendingIntent = PendingIntent.getActivities(getApplicationContext(),
+                0 /* Request code */, new Intent[] {backIntent,resultIntent},
                 PendingIntent.FLAG_ONE_SHOT);
+
+//        PendingIntent resultPendingIntent = PendingIntent.getBroadcast(getApplicationContext(),
+//                0 /* Request code */, resultIntent,
+//                PendingIntent.FLAG_ONE_SHOT);
 
         NotificationCompat.Builder mBuilder =
                 new NotificationCompat.Builder(getApplicationContext(), "test")
