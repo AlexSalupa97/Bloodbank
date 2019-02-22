@@ -1,5 +1,6 @@
 package com.example.alexsalupa97.bloodbank.Activitati;
 
+import android.content.Intent;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
@@ -33,7 +34,18 @@ public class ListaCentreActivity extends AppCompatActivity {
     }
 
     @Override
+    public void onBackPressed() {
+        Intent intent=new Intent(getApplicationContext(),PrimaPaginaActivity.class);
+        startActivity(intent);
+        finish();
+
+        super.onBackPressed();
+    }
+
+    @Override
     public boolean onSupportNavigateUp() {
+        Intent intent=new Intent(getApplicationContext(),PrimaPaginaActivity.class);
+        startActivity(intent);
         finish();
         return true;
     }

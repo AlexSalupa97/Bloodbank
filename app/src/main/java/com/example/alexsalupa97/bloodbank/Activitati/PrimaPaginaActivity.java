@@ -13,6 +13,7 @@ import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.location.LocationManager;
+import android.opengl.Visibility;
 import android.os.Bundle;
 import android.os.SystemClock;
 import android.support.annotation.NonNull;
@@ -44,6 +45,7 @@ import com.example.alexsalupa97.bloodbank.Clase.CTS;
 import com.example.alexsalupa97.bloodbank.Clase.Compatibilitati;
 import com.example.alexsalupa97.bloodbank.Clase.Intrebari;
 import com.example.alexsalupa97.bloodbank.Clase.IstoricDonatii;
+import com.example.alexsalupa97.bloodbank.Notificari.ActionCentreBroadcast;
 import com.example.alexsalupa97.bloodbank.Notificari.NotificariBroadcast;
 import com.example.alexsalupa97.bloodbank.Utile.Utile;
 import com.example.alexsalupa97.bloodbank.R;
@@ -247,8 +249,8 @@ public class PrimaPaginaActivity extends AppCompatActivity implements Navigation
             @Override
             public void onClick(View v) {
 //                scheduleNotificationWithDelay(triggerNotification(),3000);
-                scheduleNotification(triggerNotification());
-//                triggerNotification();
+//                scheduleNotification(triggerNotification());
+                triggerBasicNotification();
 
             }
         });
@@ -586,6 +588,72 @@ public class PrimaPaginaActivity extends AppCompatActivity implements Navigation
 
     }
 
+    private void triggerBasicNotification() {
+        Intent resultIntent = new Intent(getApplicationContext(), AlerteActivity.class);
+        resultIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+
+        Intent backIntent = new Intent(this, PrimaPaginaActivity.class);
+
+        AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
+
+
+        PendingIntent resultPendingIntent = PendingIntent.getActivities(getApplicationContext(),
+                0 /* Request code */, new Intent[]{backIntent, resultIntent},
+                PendingIntent.FLAG_ONE_SHOT);
+
+
+        Intent listaCentreActionIntent = new Intent(getApplicationContext(), ActionCentreBroadcast.class);
+        PendingIntent listaCentreActionPendingIntent =
+                PendingIntent.getBroadcast(this, 0, listaCentreActionIntent, 0);
+
+
+        NotificationCompat.Builder mBuilder =
+                new NotificationCompat.Builder(getApplicationContext(), "test")
+                        .setSmallIcon(R.drawable.blood)
+                        .setColor(getResources().getColor(R.color.colorPrimary))
+                        .setContentTitle("Alerta de sange")
+                        .setContentText("Vezi situatia actuala")
+                        .setChannelId("test")
+                        .setAutoCancel(true)
+                        .addAction(R.drawable.phone,"Vezi centrele disponibile",listaCentreActionPendingIntent)
+                        .setVisibility(Notification.VISIBILITY_PUBLIC);
+
+        mBuilder.setContentIntent(resultPendingIntent);
+
+
+        // Gets an instance of the NotificationManager service//
+
+        NotificationManager mNotificationManager =
+
+                (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+
+
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
+            int importance = NotificationManager.IMPORTANCE_HIGH;
+            NotificationChannel notificationChannel = new NotificationChannel("test", "NOTIFICATION_CHANNEL_NAME", importance);
+            notificationChannel.enableLights(true);
+            notificationChannel.setLightColor(Color.RED);
+            notificationChannel.setLockscreenVisibility(Notification.VISIBILITY_PUBLIC);
+            assert mNotificationManager != null;
+            mBuilder.setChannelId("test");
+            mNotificationManager.createNotificationChannel(notificationChannel);
+        }
+        assert mNotificationManager != null;
+
+        // When you issue multiple notifications about the same type of event,
+        // it’s best practice for your app to try to update an existing notification
+        // with this new information, rather than immediately creating a new notification.
+        // If you want to update this notification at a later date, you need to assign it an ID.
+        // You can then use this ID whenever you issue a subsequent notification.
+        // If the previous notification is still visible, the system will update this existing notification,
+        // rather than create a new one. In this example, the notification’s ID is 001//
+
+        mBuilder.build().flags |= Notification.FLAG_AUTO_CANCEL;
+
+        mNotificationManager.notify(1, mBuilder.build());
+
+    }
+
     private void scheduleNotificationWithDelay(Notification notification, int delay) {
 
         Intent notificationIntent = new Intent(this, NotificariBroadcast.class);
@@ -611,8 +679,8 @@ public class PrimaPaginaActivity extends AppCompatActivity implements Navigation
         calendar.setTimeInMillis(System.currentTimeMillis());
         calendar.set(Calendar.HOUR_OF_DAY, 10);
         calendar.set(Calendar.MINUTE, 27);
-        calendar.set(Calendar.SECOND,0);
-        calendar.set(Calendar.MILLISECOND,0);
+        calendar.set(Calendar.SECOND, 0);
+        calendar.set(Calendar.MILLISECOND, 0);
 
         alarmManager.set(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), pendingIntent);
     }

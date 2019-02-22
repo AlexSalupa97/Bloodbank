@@ -16,6 +16,7 @@
         android:theme="@style/AppTheme">
 
         <receiver android:name=".Notificari.NotificariBroadcast" />
+        <receiver android:name=".Notificari.ActionCentreBroadcast"/>
         <activity android:name=".Activitati.AlerteActivity"
             android:screenOrientation="portrait"
             android:label="Alerte"
@@ -53,7 +54,8 @@
         <activity android:name=".Activitati.IntrebariActivity" />
         <activity
             android:name=".Activitati.ListaCentreActivity"
-            android:label="Lista centrelor" />
+            android:label="Lista centrelor"
+            android:parentActivityName=".Activitati.PrimaPaginaActivity"/>
         <activity android:name=".Activitati.FinalizareFailIntrebariActivity" />
         <activity
             android:name=".Activitati.CompatibilitatiActivity"
