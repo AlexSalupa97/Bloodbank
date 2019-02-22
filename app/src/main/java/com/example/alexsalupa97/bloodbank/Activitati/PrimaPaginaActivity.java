@@ -1,16 +1,23 @@
 package com.example.alexsalupa97.bloodbank.Activitati;
 
 import android.Manifest;
+import android.app.Notification;
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
+import android.graphics.Color;
 import android.location.LocationManager;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.ActivityCompat;
+import android.support.v4.app.NotificationCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -65,6 +72,7 @@ public class PrimaPaginaActivity extends AppCompatActivity implements Navigation
     Button btnVreauSaDonez;
     Button btnListaCTS;
     Button btnAlerte;
+    Button btnNotificari;
 
     Gson gsonIntrebari;
     Gson gsonCompatibilitati;
@@ -170,8 +178,6 @@ public class PrimaPaginaActivity extends AppCompatActivity implements Navigation
             }
         });
 
-
-
         btnListaCTS = (Button) findViewById(R.id.btnListaCTS);
         btnListaCTS.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -226,12 +232,23 @@ public class PrimaPaginaActivity extends AppCompatActivity implements Navigation
             }
         });
 
-        btnAlerte=(Button)findViewById(R.id.btnAlerte);
+        btnAlerte = (Button) findViewById(R.id.btnAlerte);
         btnAlerte.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent=new Intent(getApplicationContext(),AlerteActivity.class);
+                Intent intent = new Intent(getApplicationContext(), AlerteActivity.class);
                 startActivity(intent);
+            }
+        });
+
+
+        btnNotificari = (Button) findViewById(R.id.btnNotificari);
+        btnNotificari.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                triggerNotification();
+
+
             }
         });
 
@@ -258,8 +275,7 @@ public class PrimaPaginaActivity extends AppCompatActivity implements Navigation
         int id = menuItem.getItemId();
         if (id == R.id.setari)
             Toast.makeText(getApplicationContext(), "Setari", Toast.LENGTH_SHORT).show();
-        else if(id==R.id.compatibilitati)
-        {
+        else if (id == R.id.compatibilitati) {
             String url = Utile.URL + "domain.compatibilitati/" + Utile.preluareGrupaSanguina(getApplicationContext());
 
             final RequestQueue requestQueue = Volley.newRequestQueue(PrimaPaginaActivity.this);
@@ -302,8 +318,7 @@ public class PrimaPaginaActivity extends AppCompatActivity implements Navigation
 
             requestQueue.add(objectRequest);
 
-        }
-        else if (id == R.id.profil) {
+        } else if (id == R.id.profil) {
             String url = Utile.URL + "domain.istoricdonatii/donator/" + Utile.preluareEmail(getApplicationContext());
 
             final RequestQueue requestQueue = Volley.newRequestQueue(PrimaPaginaActivity.this);
@@ -505,5 +520,59 @@ public class PrimaPaginaActivity extends AppCompatActivity implements Navigation
                 });
         final AlertDialog alert = builder.create();
         alert.show();
+    }
+
+    private void triggerNotification()
+    {
+        Intent resultIntent = new Intent(getApplicationContext(), AlerteActivity.class);
+        resultIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+
+        PendingIntent resultPendingIntent = PendingIntent.getActivity(getApplicationContext(),
+                0 /* Request code */, resultIntent,
+                PendingIntent.FLAG_UPDATE_CURRENT);
+
+        NotificationCompat.Builder mBuilder =
+                new NotificationCompat.Builder(getApplicationContext(), "test")
+                        .setSmallIcon(R.drawable.blood)
+                        .setColor(getResources().getColor(R.color.colorPrimary))
+                        .setContentTitle("Alerta de sange")
+                        .setContentText("Vezi situatia actuala")
+                        .setChannelId("test")
+                        .setAutoCancel(true);
+
+        mBuilder.setContentIntent(resultPendingIntent);
+
+
+        // Gets an instance of the NotificationManager service//
+
+        NotificationManager mNotificationManager =
+
+                (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+
+
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
+            int importance = NotificationManager.IMPORTANCE_HIGH;
+            NotificationChannel notificationChannel = new NotificationChannel("test", "NOTIFICATION_CHANNEL_NAME", importance);
+            notificationChannel.enableLights(true);
+            notificationChannel.setLightColor(Color.RED);
+            assert mNotificationManager != null;
+            mBuilder.setChannelId("test");
+            mNotificationManager.createNotificationChannel(notificationChannel);
+        }
+        assert mNotificationManager != null;
+
+        // When you issue multiple notifications about the same type of event,
+        // it’s best practice for your app to try to update an existing notification
+        // with this new information, rather than immediately creating a new notification.
+        // If you want to update this notification at a later date, you need to assign it an ID.
+        // You can then use this ID whenever you issue a subsequent notification.
+        // If the previous notification is still visible, the system will update this existing notification,
+        // rather than create a new one. In this example, the notification’s ID is 001//
+
+        mBuilder.build().flags |= Notification.FLAG_AUTO_CANCEL;
+
+        mNotificationManager.notify(1, mBuilder.build());
+
+
     }
 }
