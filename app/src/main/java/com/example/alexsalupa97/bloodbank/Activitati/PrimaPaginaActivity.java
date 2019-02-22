@@ -1,6 +1,7 @@
 package com.example.alexsalupa97.bloodbank.Activitati;
 
 import android.Manifest;
+import android.app.AlarmManager;
 import android.app.Notification;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
@@ -14,6 +15,7 @@ import android.graphics.Color;
 import android.location.LocationManager;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.SystemClock;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.ActivityCompat;
@@ -44,6 +46,7 @@ import com.example.alexsalupa97.bloodbank.Clase.CTS;
 import com.example.alexsalupa97.bloodbank.Clase.Compatibilitati;
 import com.example.alexsalupa97.bloodbank.Clase.Intrebari;
 import com.example.alexsalupa97.bloodbank.Clase.IstoricDonatii;
+import com.example.alexsalupa97.bloodbank.Notificari.NotificariBroadcast;
 import com.example.alexsalupa97.bloodbank.Utile.Utile;
 import com.example.alexsalupa97.bloodbank.R;
 import com.google.gson.Gson;
@@ -246,7 +249,7 @@ public class PrimaPaginaActivity extends AppCompatActivity implements Navigation
         btnNotificari.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                triggerNotification();
+                scheduleNotification(triggerNotification(),3000);
 
 
             }
@@ -522,16 +525,22 @@ public class PrimaPaginaActivity extends AppCompatActivity implements Navigation
         alert.show();
     }
 
-    private void triggerNotification()
+    private Notification triggerNotification()
     {
         Intent resultIntent = new Intent(getApplicationContext(), AlerteActivity.class);
         resultIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 
         Intent backIntent = new Intent(this, PrimaPaginaActivity.class);
 
+        AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
 
-        PendingIntent resultPendingIntent = PendingIntent.getActivities(getApplicationContext(),
-                0 /* Request code */, new Intent[] {backIntent,resultIntent},
+
+//        PendingIntent resultPendingIntent = PendingIntent.getActivities(getApplicationContext(),
+//                0 /* Request code */, new Intent[] {backIntent,resultIntent},
+//                PendingIntent.FLAG_ONE_SHOT);
+
+        PendingIntent resultPendingIntent = PendingIntent.getBroadcast(getApplicationContext(),
+                0 /* Request code */, resultIntent,
                 PendingIntent.FLAG_ONE_SHOT);
 
         NotificationCompat.Builder mBuilder =
@@ -574,8 +583,21 @@ public class PrimaPaginaActivity extends AppCompatActivity implements Navigation
 
         mBuilder.build().flags |= Notification.FLAG_AUTO_CANCEL;
 
-        mNotificationManager.notify(1, mBuilder.build());
+//        mNotificationManager.notify(1, mBuilder.build());
 
+        return mBuilder.build();
 
+    }
+
+    private void scheduleNotification(Notification notification, int delay) {
+
+        Intent notificationIntent = new Intent(this, NotificariBroadcast.class);
+        notificationIntent.putExtra(NotificariBroadcast.NOTIFICATION_ID, 1);
+        notificationIntent.putExtra(NotificariBroadcast.NOTIFICATION, notification);
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(this, 0, notificationIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+
+        long futureInMillis = SystemClock.elapsedRealtime() + delay;
+        AlarmManager alarmManager = (AlarmManager)getSystemService(Context.ALARM_SERVICE);
+        alarmManager.set(AlarmManager.ELAPSED_REALTIME_WAKEUP, futureInMillis, pendingIntent);
     }
 }

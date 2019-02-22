@@ -14,6 +14,8 @@
         android:roundIcon="@mipmap/ic_bloodbank_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+
+        <receiver android:name=".Notificari.NotificariBroadcast" />
         <activity android:name=".Activitati.AlerteActivity"
             android:screenOrientation="portrait"
             android:label="Alerte"
