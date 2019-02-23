@@ -307,6 +307,44 @@ public class Utile {
 
     }
 
+    public static void REST_GET_listaCompatibilitati(final Activity activity) {
+        String url = Utile.URL + "domain.compatibilitati/" + Utile.preluareGrupaSanguina(activity);
+
+        final RequestQueue requestQueue = Volley.newRequestQueue(activity);
+
+
+        JsonArrayRequest objectRequest = new JsonArrayRequest(
+                Request.Method.GET,
+                url,
+                null,
+                new Response.Listener<JSONArray>() {
+
+                    @Override
+                    public void onResponse(JSONArray response) {
+                        GsonBuilder gsonBuilder = new GsonBuilder();
+                        gsonBuilder.setDateFormat("M/d/yy hh:mm a");
+                        gson = gsonBuilder.create();
+
+
+                            Utile.compatibilitati = new ArrayList<>(Arrays.asList(gson.fromJson(response.toString(), Compatibilitati[].class)));
+
+
+
+
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Log.d("RestResponse", error.toString());
+                    }
+                }
+
+        );
+
+        requestQueue.add(objectRequest);
+    }
+
     public static Map<CTS, Map<GrupeSanguine, Integer>> incarcareMapDisponibil() {
 
 
