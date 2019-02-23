@@ -60,14 +60,14 @@ public class AdaptorListaItemeSectiuneRV extends RecyclerView.Adapter<AdaptorLis
             this.tvCantitateDonata = (TextView) view.findViewById(R.id.tvCantitateDonata);
 
 
-            view.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    Toast.makeText(v.getContext(), tvCantitateDonata.getText(), Toast.LENGTH_SHORT).show();
-
-
-                }
-            });
+//            view.setOnClickListener(new View.OnClickListener() {
+//                @Override
+//                public void onClick(View v) {
+//                    Toast.makeText(v.getContext(), tvCantitateDonata.getText(), Toast.LENGTH_SHORT).show();
+//
+//
+//                }
+//            });
         }
     }
 }

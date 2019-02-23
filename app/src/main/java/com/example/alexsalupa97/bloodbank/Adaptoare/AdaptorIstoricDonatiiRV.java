@@ -1,6 +1,7 @@
 package com.example.alexsalupa97.bloodbank.Adaptoare;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -10,17 +11,18 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.alexsalupa97.bloodbank.Activitati.DetaliiSuplimentareIstoricActivity;
 import com.example.alexsalupa97.bloodbank.R;
 import com.example.alexsalupa97.bloodbank.RecyclerViewOrizontal.SectionModel;
 
 import java.util.ArrayList;
 
-public class AdaptorIstoricQuizuriRV extends RecyclerView.Adapter<AdaptorIstoricQuizuriRV.ItemRowHolder> {
+public class AdaptorIstoricDonatiiRV extends RecyclerView.Adapter<AdaptorIstoricDonatiiRV.ItemRowHolder> {
 
     private ArrayList<SectionModel> listaSectiuni;
     private Context context;
 
-    public AdaptorIstoricQuizuriRV(Context context, ArrayList<SectionModel> listaSectiuni) {
+    public AdaptorIstoricDonatiiRV(Context context, ArrayList<SectionModel> listaSectiuni) {
         this.listaSectiuni = listaSectiuni;
         this.context = context;
     }
@@ -53,7 +55,8 @@ public class AdaptorIstoricQuizuriRV extends RecyclerView.Adapter<AdaptorIstoric
             public void onClick(View v) {
 
 
-                Toast.makeText(v.getContext(), "Mai mult, " + numeSectiune, Toast.LENGTH_SHORT).show();
+                Intent intent=new Intent(context, DetaliiSuplimentareIstoricActivity.class);
+                context.startActivity(intent);
 
 
             }

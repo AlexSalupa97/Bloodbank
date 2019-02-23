@@ -14,13 +14,18 @@
         android:roundIcon="@mipmap/ic_bloodbank_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+        <activity android:name=".Activitati.DetaliiSuplimentareIstoricActivity"
+            android:screenOrientation="portrait"
+            android:label="Istoric donatii"></activity>
 
         <receiver android:name=".Notificari.NotificariBroadcast" />
-        <receiver android:name=".Notificari.ActionCentreBroadcast"/>
-        <activity android:name=".Activitati.AlerteActivity"
-            android:screenOrientation="portrait"
+        <receiver android:name=".Notificari.ActionCentreBroadcast" />
+
+        <activity
+            android:name=".Activitati.AlerteActivity"
             android:label="Alerte"
-            android:parentActivityName=".Activitati.PrimaPaginaActivity"/>
+            android:parentActivityName=".Activitati.PrimaPaginaActivity"
+            android:screenOrientation="portrait" />
         <activity
             android:name=".Activitati.ProfilActivity"
             android:label="Profil"
@@ -48,14 +53,12 @@
         <activity
             android:name=".Activitati.PrimaPaginaActivity"
             android:label="Pagina Principala"
-            android:launchMode="singleInstance">
-
-        </activity>
+            android:launchMode="singleInstance"></activity>
         <activity android:name=".Activitati.IntrebariActivity" />
         <activity
             android:name=".Activitati.ListaCentreActivity"
             android:label="Lista centrelor"
-            android:parentActivityName=".Activitati.PrimaPaginaActivity"/>
+            android:parentActivityName=".Activitati.PrimaPaginaActivity" />
         <activity android:name=".Activitati.FinalizareFailIntrebariActivity" />
         <activity
             android:name=".Activitati.CompatibilitatiActivity"

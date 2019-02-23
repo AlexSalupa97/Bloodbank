@@ -249,8 +249,8 @@ public class PrimaPaginaActivity extends AppCompatActivity implements Navigation
             @Override
             public void onClick(View v) {
 //                scheduleNotificationWithDelay(triggerNotification(),3000);
-                scheduleNotification(triggerNotification());
-//                triggerBasicNotification();
+//                scheduleNotification(triggerNotification());
+                triggerBasicNotification();
 
             }
         });
@@ -552,7 +552,7 @@ public class PrimaPaginaActivity extends AppCompatActivity implements Navigation
                         .setContentText("Vezi situatia actuala")
                         .setChannelId("test")
                         .setAutoCancel(true)
-                        .addAction(R.drawable.phone,"Vezi centrele disponibile",listaCentreActionPendingIntent)
+                        .addAction(R.drawable.ic_location,"Vezi centrele disponibile",listaCentreActionPendingIntent)
                         .setVisibility(Notification.VISIBILITY_PUBLIC);
 
         mBuilder.setContentIntent(resultPendingIntent);
@@ -620,7 +620,7 @@ public class PrimaPaginaActivity extends AppCompatActivity implements Navigation
                         .setContentText("Vezi situatia actuala")
                         .setChannelId("test")
                         .setAutoCancel(true)
-                        .addAction(R.drawable.phone,"Vezi centrele disponibile",listaCentreActionPendingIntent)
+                        .addAction(R.drawable.ic_location,"Vezi centrele disponibile",listaCentreActionPendingIntent)
                         .setVisibility(Notification.VISIBILITY_PUBLIC);
 
         mBuilder.setContentIntent(resultPendingIntent);

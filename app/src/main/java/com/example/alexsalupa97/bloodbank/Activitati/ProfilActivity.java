@@ -7,7 +7,7 @@ import android.support.v7.widget.RecyclerView;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.example.alexsalupa97.bloodbank.Adaptoare.AdaptorIstoricQuizuriRV;
+import com.example.alexsalupa97.bloodbank.Adaptoare.AdaptorIstoricDonatiiRV;
 import com.example.alexsalupa97.bloodbank.Clase.IstoricDonatii;
 import com.example.alexsalupa97.bloodbank.R;
 import com.example.alexsalupa97.bloodbank.RecyclerViewOrizontal.ItemModel;
@@ -90,7 +90,7 @@ public class ProfilActivity extends AppCompatActivity {
 
         rvIstoric.setHasFixedSize(true);
 
-        AdaptorIstoricQuizuriRV adapter = new AdaptorIstoricQuizuriRV(this, sectiuni);
+        AdaptorIstoricDonatiiRV adapter = new AdaptorIstoricDonatiiRV(this, sectiuni);
         rvIstoric.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
         rvIstoric.setAdapter(adapter);
 
