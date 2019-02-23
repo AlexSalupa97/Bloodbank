@@ -28,7 +28,7 @@ public class AlerteActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_alerte);
 
-        tvDetaliiLimite=(TextView)findViewById(R.id.tvDetaliiLimite);
+        tvDetaliiLimite = (TextView) findViewById(R.id.tvDetaliiLimite);
         tvDetaliiLimite.setText("");
 
         try {
@@ -54,15 +54,15 @@ public class AlerteActivity extends AppCompatActivity {
 
                     deAfisat += cts.getNumeCTS();
 
-                    for (GrupeSanguine grupaSanguina : mapLimite.keySet())
-                        if (mapCantitatiDisponibile.get(grupaSanguina) < mapLimite.get(grupaSanguina))
-                            deAfisat += "\n probleme cu " + grupaSanguina.getGrupaSanguina()+ " limita: " +mapLimite.get(grupaSanguina)+ " disponibil: "+mapCantitatiDisponibile.get(grupaSanguina);
+                    for (Compatibilitati grupaSanguinaDonator : Utile.compatibilitati) {
+                        if(Utile.preluareGrupaSanguina(getApplicationContext()).equals(grupaSanguinaDonator.getGrupaSanguinaDonatoare().getGrupaSanguina()))
+
+                            if (mapCantitatiDisponibile.get(grupaSanguinaDonator.getGrupaSanguinaReceiver()) < mapLimite.get(grupaSanguinaDonator.getGrupaSanguinaReceiver()))
+                                deAfisat += "\n probleme cu " + grupaSanguinaDonator.getGrupaSanguinaReceiver().getGrupaSanguina() + " limita: " + mapLimite.get(grupaSanguinaDonator.getGrupaSanguinaReceiver()) + " disponibil: " + mapCantitatiDisponibile.get(grupaSanguinaDonator.getGrupaSanguinaReceiver());
+                    }
                 }
 
-                tvDetaliiLimite.setText(tvDetaliiLimite.getText()+deAfisat);
-
-
-
+                tvDetaliiLimite.setText(tvDetaliiLimite.getText() + deAfisat);
 
 
             }
