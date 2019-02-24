@@ -14,9 +14,11 @@
         android:roundIcon="@mipmap/ic_bloodbank_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".Activitati.TransparentActivity"
-            android:theme="@style/TransparentCompat"
-            android:screenOrientation="portrait"></activity>
+        <activity android:name=".Activitati.SetariActivity"></activity>
+        <activity
+            android:name=".Activitati.TransparentActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/TransparentCompat" />
         <activity
             android:name=".Activitati.DetaliiSuplimentareIstoricActivity"
             android:label="Istoric donatii"

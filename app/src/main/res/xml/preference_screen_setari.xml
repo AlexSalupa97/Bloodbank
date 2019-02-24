@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <PreferenceCategory android:title="General">
+
+        <ListPreference
+            android:defaultValue="Bucuresti"
+            app:key="locatieCurenta"
+            app:title="Alegeti locatia curenta" />
+
+    </PreferenceCategory>
+
+    <PreferenceCategory android:title="Mai putin general">
+
+        <SwitchPreference
+            android:defaultValue="false"
+            android:summary="Test"
+            app:key="test"
+            app:title="test" />
+
+    </PreferenceCategory>
+</PreferenceScreen>

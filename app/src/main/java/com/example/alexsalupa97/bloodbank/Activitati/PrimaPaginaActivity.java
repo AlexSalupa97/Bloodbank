@@ -317,7 +317,10 @@ public class PrimaPaginaActivity extends AppCompatActivity implements Navigation
     public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
         int id = menuItem.getItemId();
         if (id == R.id.setari)
-            Toast.makeText(getApplicationContext(), "Setari", Toast.LENGTH_SHORT).show();
+        {
+            Intent intent=new Intent(getApplicationContext(),SetariActivity.class);
+            startActivity(intent);
+        }
         else if (id == R.id.compatibilitati) {
             String url = Utile.URL + "domain.compatibilitati/" + Utile.preluareGrupaSanguina(getApplicationContext());
 

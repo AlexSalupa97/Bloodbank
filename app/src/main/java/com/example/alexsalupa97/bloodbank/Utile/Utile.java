@@ -288,6 +288,9 @@ public class Utile {
                         Utile.CTS = new ArrayList<>(Arrays.asList(gson.fromJson(response.toString(), CTS[].class)));
                         Utile.orase = new HashSet<>();
 
+                        for(CTS cts:Utile.CTS)
+                            orase.add(cts.getOras());
+
 
                     }
 
