@@ -1,11 +1,15 @@
 package com.example.alexsalupa97.bloodbank.Activitati;
 
 import android.content.Intent;
+import android.support.design.widget.TabLayout;
+import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.TextView;
 
+import com.example.alexsalupa97.bloodbank.AdaptoareFragmente.AdaptorFragmenteAlerte;
+import com.example.alexsalupa97.bloodbank.AdaptoareFragmente.AdaptorFragmenteCTS;
 import com.example.alexsalupa97.bloodbank.Clase.CTS;
 import com.example.alexsalupa97.bloodbank.Clase.Compatibilitati;
 import com.example.alexsalupa97.bloodbank.Clase.GrupeSanguine;
@@ -19,67 +23,20 @@ import java.util.Map;
 
 public class AlerteActivity extends AppCompatActivity {
 
-    Map<CTS, Map<GrupeSanguine, Integer>> mapCantitatiDisponibilePerCTSPerGrupa;
-    Map<CTS, Map<GrupeSanguine, Integer>> mapLimitePerCTSPerGrupa;
-
-    TextView tvDetaliiLimite;
+    AdaptorFragmenteAlerte adaptor;
+    ViewPager viewPager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_alerte);
 
-        tvDetaliiLimite = (TextView) findViewById(R.id.tvDetaliiLimite);
-        tvDetaliiLimite.setText("");
+        adaptor = new AdaptorFragmenteAlerte(getSupportFragmentManager());
+        viewPager = (ViewPager) findViewById(R.id.vpAlerte);
+        viewPager.setAdapter(adaptor);
 
-
-
-        try {
-            mapCantitatiDisponibilePerCTSPerGrupa = new HashMap<>(Utile.incarcareMapDisponibil());
-            mapLimitePerCTSPerGrupa = new HashMap<>();
-
-
-            for (CTS cts : Utile.CTS) {
-                Map<GrupeSanguine, Integer> mapIntermediar = new HashMap<>();
-                for (LimiteCTS limite : Utile.listaLimiteCTS)
-                    if (limite.getCts().getNumeCTS().equals(cts.getNumeCTS()))
-                        mapIntermediar.put(limite.getGrupaSanguina(), limite.getLimitaML());
-                mapLimitePerCTSPerGrupa.put(cts, mapIntermediar);
-            }
-
-            for (CTS cts : mapCantitatiDisponibilePerCTSPerGrupa.keySet()) {
-                String deAfisat = "";
-
-                if (cts.getOras().getOras().equals(Utile.preluareOras(getApplicationContext()))) {
-                    Map<GrupeSanguine, Integer> mapCantitatiDisponibile = mapCantitatiDisponibilePerCTSPerGrupa.get(cts);
-                    Map<GrupeSanguine, Integer> mapLimite = mapLimitePerCTSPerGrupa.get(cts);
-
-
-                    deAfisat += cts.getNumeCTS();
-
-                    for (Compatibilitati grupaSanguinaDonator : Utile.compatibilitati) {
-                        if (Utile.preluareGrupaSanguina(getApplicationContext()).equals(grupaSanguinaDonator.getGrupaSanguinaDonatoare().getGrupaSanguina()))
-                            try {
-                                if (mapCantitatiDisponibile.get(grupaSanguinaDonator.getGrupaSanguinaReceiver()) < mapLimite.get(grupaSanguinaDonator.getGrupaSanguinaReceiver()))
-                                    deAfisat += "\n probleme cu " + grupaSanguinaDonator.getGrupaSanguinaReceiver().getGrupaSanguina() + " limita: " + mapLimite.get(grupaSanguinaDonator.getGrupaSanguinaReceiver()) + " disponibil: " + mapCantitatiDisponibile.get(grupaSanguinaDonator.getGrupaSanguinaReceiver());
-                                else
-                                    deAfisat+="\n nu sunt probleme cu " + grupaSanguinaDonator.getGrupaSanguinaReceiver().getGrupaSanguina() + " limita: " + mapLimite.get(grupaSanguinaDonator.getGrupaSanguinaReceiver()) + " disponibil: " + mapCantitatiDisponibile.get(grupaSanguinaDonator.getGrupaSanguinaReceiver());
-                            }
-                            catch (Exception ex)
-                            {
-
-                            }
-                    }
-                }
-
-                tvDetaliiLimite.setText(tvDetaliiLimite.getText() + deAfisat);
-
-
-            }
-
-        } catch (Exception ex) {
-
-        }
+        TabLayout tabLayout = (TabLayout) findViewById(R.id.tlAlerte);
+        tabLayout.setupWithViewPager(viewPager);
 
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
