@@ -5,15 +5,31 @@
     <PreferenceCategory android:title="General">
 
         <ListPreference
+            android:icon="@drawable/ic_location"
             android:defaultValue="Bucuresti"
             app:key="locatieCurenta"
             app:title="Alegeti locatia curenta" />
+
+        <SwitchPreference
+            android:icon="@drawable/blood_red"
+            android:defaultValue="false"
+            android:summary="Test"
+            app:key="test1"
+            app:title="test" />
+
+        <SwitchPreference
+            android:icon="@drawable/blood_red"
+            android:defaultValue="false"
+            android:summary="Test"
+            app:key="test2"
+            app:title="test" />
 
     </PreferenceCategory>
 
     <PreferenceCategory android:title="Mai putin general">
 
         <SwitchPreference
+            android:icon="@drawable/blood_red"
             android:defaultValue="false"
             android:summary="Test"
             app:key="test"

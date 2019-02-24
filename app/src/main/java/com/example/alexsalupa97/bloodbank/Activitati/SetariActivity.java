@@ -75,7 +75,6 @@ public class SetariActivity extends AppCompatActivity {
                     editor.putString("orasUser",o.toString());
                     editor.commit();
                     listPreferenceLocatie.setDefaultValue(Utile.preluareOras(getActivity()));
-                    Log.d("oras",Utile.preluareOras(getActivity()));
                     return true;
                 }
             });

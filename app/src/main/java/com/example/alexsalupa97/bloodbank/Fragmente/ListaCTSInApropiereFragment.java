@@ -40,7 +40,7 @@ public class ListaCTSInApropiereFragment extends Fragment {
         ArrayList<CTS> listaCTSInApropiere=new ArrayList<>();
 
         for(CTS c:Utile.CTS)
-            if(c.getOras().getJudet().equals(Utile.preluareJudet(getActivity())))
+            if(c.getOras().getOras().equals(Utile.preluareOras(getActivity())))
                 listaCTSInApropiere.add(c);
 
         adaptor = new AdaptorLVCTS(getActivity(), listaCTSInApropiere);
