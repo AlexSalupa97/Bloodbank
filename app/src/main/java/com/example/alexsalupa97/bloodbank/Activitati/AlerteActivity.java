@@ -33,6 +33,7 @@ public class AlerteActivity extends AppCompatActivity {
         tvDetaliiLimite.setText("");
 
 
+
         try {
             mapCantitatiDisponibilePerCTSPerGrupa = new HashMap<>(Utile.incarcareMapDisponibil());
             mapLimitePerCTSPerGrupa = new HashMap<>();

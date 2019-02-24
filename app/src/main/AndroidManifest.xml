@@ -14,12 +14,17 @@
         android:roundIcon="@mipmap/ic_bloodbank_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".Activitati.DetaliiSuplimentareIstoricActivity"
-            android:screenOrientation="portrait"
-            android:label="Istoric donatii"></activity>
+        <activity android:name=".Activitati.TransparentActivity"
+            android:theme="@style/TransparentCompat"
+            android:screenOrientation="portrait"></activity>
+        <activity
+            android:name=".Activitati.DetaliiSuplimentareIstoricActivity"
+            android:label="Istoric donatii"
+            android:screenOrientation="portrait" />
 
         <receiver android:name=".Notificari.NotificariBroadcast" />
         <receiver android:name=".Notificari.ActionCentreBroadcast" />
+        <receiver android:name=".Notificari.ActionAlerteBroadcast" />
 
         <activity
             android:name=".Activitati.AlerteActivity"
@@ -53,7 +58,7 @@
         <activity
             android:name=".Activitati.PrimaPaginaActivity"
             android:label="Pagina Principala"
-            android:launchMode="singleInstance"></activity>
+            android:launchMode="singleInstance" />
         <activity android:name=".Activitati.IntrebariActivity" />
         <activity
             android:name=".Activitati.ListaCentreActivity"

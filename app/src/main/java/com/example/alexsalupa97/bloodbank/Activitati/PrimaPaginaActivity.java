@@ -49,6 +49,7 @@ import com.example.alexsalupa97.bloodbank.Clase.CTS;
 import com.example.alexsalupa97.bloodbank.Clase.Compatibilitati;
 import com.example.alexsalupa97.bloodbank.Clase.Intrebari;
 import com.example.alexsalupa97.bloodbank.Clase.IstoricDonatii;
+import com.example.alexsalupa97.bloodbank.Notificari.ActionAlerteBroadcast;
 import com.example.alexsalupa97.bloodbank.Notificari.ActionCentreBroadcast;
 import com.example.alexsalupa97.bloodbank.Notificari.NotificariBroadcast;
 import com.example.alexsalupa97.bloodbank.Utile.Utile;
@@ -247,36 +248,36 @@ public class PrimaPaginaActivity extends AppCompatActivity implements Navigation
         btnAlerte.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-//                Intent intent = new Intent(getApplicationContext(), AlerteActivity.class);
-//                startActivity(intent);
+                Intent intent = new Intent(getApplicationContext(), TransparentActivity.class);
+                startActivity(intent);
 
 
-                pd = ProgressDialog.show(PrimaPaginaActivity.this, "Asteptati...", "Se verifica situatia actuala", true,
-                        false);
-
-                Thread thread = new Thread(new Runnable() {
-                    @Override
-                    public void run() {
-
-                        try {
-                            Utile.REST_GET_istoricIntrariCTS(PrimaPaginaActivity.this);
-                            Utile.REST_GET_istoricIesiriCTS(PrimaPaginaActivity.this);
-                            Utile.REST_GET_limiteCTS(PrimaPaginaActivity.this);
-                            Utile.REST_GET_grupeSanguine(PrimaPaginaActivity.this);
-                            Utile.REST_GET_listaCTS(PrimaPaginaActivity.this);
-                            Utile.REST_GET_listaCompatibilitati(PrimaPaginaActivity.this);
-                            sleep(1000);
-
-                        } catch (InterruptedException e) {
-                            e.printStackTrace();
-                        }
-
-
-                        handler.sendEmptyMessage(0);
-
-                    }
-                });
-                thread.start();
+//                pd = ProgressDialog.show(PrimaPaginaActivity.this, "Asteptati...", "Se verifica situatia actuala", true,
+//                        false);
+//
+//                Thread thread = new Thread(new Runnable() {
+//                    @Override
+//                    public void run() {
+//
+//                        try {
+//                            Utile.REST_GET_istoricIntrariCTS(PrimaPaginaActivity.this);
+//                            Utile.REST_GET_istoricIesiriCTS(PrimaPaginaActivity.this);
+//                            Utile.REST_GET_limiteCTS(PrimaPaginaActivity.this);
+//                            Utile.REST_GET_grupeSanguine(PrimaPaginaActivity.this);
+//                            Utile.REST_GET_listaCTS(PrimaPaginaActivity.this);
+//                            Utile.REST_GET_listaCompatibilitati(PrimaPaginaActivity.this);
+//                            sleep(1000);
+//
+//                        } catch (InterruptedException e) {
+//                            e.printStackTrace();
+//                        }
+//
+//
+//                        handler.sendEmptyMessage(0);
+//
+//                    }
+//                });
+//                thread.start();
 
 
             }
@@ -565,17 +566,21 @@ public class PrimaPaginaActivity extends AppCompatActivity implements Navigation
     }
 
     private void triggerBasicNotification() {
-        Intent resultIntent = new Intent(getApplicationContext(), AlerteActivity.class);
+        Intent resultIntent = new Intent(getApplicationContext(), ActionAlerteBroadcast.class);
         resultIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 
-        Intent backIntent = new Intent(this, PrimaPaginaActivity.class);
-
-        AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
+//        Intent backIntent = new Intent(this, PrimaPaginaActivity.class);
 
 
-        PendingIntent resultPendingIntent = PendingIntent.getActivities(getApplicationContext(),
-                0 /* Request code */, new Intent[]{backIntent, resultIntent},
-                PendingIntent.FLAG_ONE_SHOT);
+
+
+//        PendingIntent resultPendingIntent = PendingIntent.getActivities(getApplicationContext(),
+//                0 /* Request code */, new Intent[]{backIntent, resultIntent},
+//                PendingIntent.FLAG_ONE_SHOT);
+
+//        Intent listaAlerteActionIntent = new Intent(getApplicationContext(), ActionCentreBroadcast.class);
+        PendingIntent listaAlerteActionPendingIntent =
+                PendingIntent.getBroadcast(this, 0, resultIntent, 0);
 
 
         Intent listaCentreActionIntent = new Intent(getApplicationContext(), ActionCentreBroadcast.class);
@@ -594,7 +599,7 @@ public class PrimaPaginaActivity extends AppCompatActivity implements Navigation
                         .addAction(R.drawable.ic_location, "Vezi centrele disponibile", listaCentreActionPendingIntent)
                         .setVisibility(Notification.VISIBILITY_PUBLIC);
 
-        mBuilder.setContentIntent(resultPendingIntent);
+        mBuilder.setContentIntent(listaAlerteActionPendingIntent);
 
 
         // Gets an instance of the NotificationManager service//
@@ -631,7 +636,7 @@ public class PrimaPaginaActivity extends AppCompatActivity implements Navigation
     }
 
     private Notification triggerNotification() {
-        Intent resultIntent = new Intent(getApplicationContext(), AlerteActivity.class);
+        Intent resultIntent = new Intent(getApplicationContext(), ActionAlerteBroadcast.class);
         resultIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 
         Intent backIntent = new Intent(this, PrimaPaginaActivity.class);
@@ -643,13 +648,16 @@ public class PrimaPaginaActivity extends AppCompatActivity implements Navigation
                 PendingIntent.getBroadcast(this, 0, listaCentreActionIntent, 0);
 
 
-        PendingIntent resultPendingIntent = PendingIntent.getActivities(getApplicationContext(),
-                0 /* Request code */, new Intent[]{backIntent, resultIntent},
-                PendingIntent.FLAG_ONE_SHOT);
+//        PendingIntent resultPendingIntent = PendingIntent.getActivities(getApplicationContext(),
+//                0 /* Request code */, new Intent[]{backIntent, resultIntent},
+//                PendingIntent.FLAG_ONE_SHOT);
 
 //        PendingIntent resultPendingIntent = PendingIntent.getBroadcast(getApplicationContext(),
 //                0 /* Request code */, resultIntent,
 //                PendingIntent.FLAG_ONE_SHOT);
+
+        PendingIntent listaAlerteActionPendingIntent =
+                PendingIntent.getBroadcast(this, 0, resultIntent, 0);
 
         NotificationCompat.Builder mBuilder =
                 new NotificationCompat.Builder(getApplicationContext(), "test")
@@ -662,7 +670,7 @@ public class PrimaPaginaActivity extends AppCompatActivity implements Navigation
                         .addAction(R.drawable.ic_location, "Vezi centrele disponibile", listaCentreActionPendingIntent)
                         .setVisibility(Notification.VISIBILITY_PUBLIC);
 
-        mBuilder.setContentIntent(resultPendingIntent);
+        mBuilder.setContentIntent(listaAlerteActionPendingIntent);
 
 
         // Gets an instance of the NotificationManager service//
@@ -731,13 +739,13 @@ public class PrimaPaginaActivity extends AppCompatActivity implements Navigation
         alarmManager.set(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), pendingIntent);
     }
 
-    private Handler handler = new Handler() {
-        @Override
-        public void handleMessage(Message msg) {
-            pd.dismiss();
-            Intent intent = new Intent(getApplicationContext(), AlerteActivity.class);
-            startActivity(intent);
-
-        }
-    };
+//    private Handler handler = new Handler() {
+//        @Override
+//        public void handleMessage(Message msg) {
+//            pd.dismiss();
+//            Intent intent = new Intent(getApplicationContext(), AlerteActivity.class);
+//            startActivity(intent);
+//
+//        }
+//    };
 }
