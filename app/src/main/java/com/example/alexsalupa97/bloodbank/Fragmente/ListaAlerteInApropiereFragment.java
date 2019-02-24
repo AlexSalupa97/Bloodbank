@@ -1,9 +1,11 @@
-package com.example.alexsalupa97.bloodbank.Activitati;
+package com.example.alexsalupa97.bloodbank.Fragmente;
 
-import android.content.Intent;
-import android.support.v7.app.AppCompatActivity;
+
 import android.os.Bundle;
-import android.util.Log;
+import android.support.v4.app.Fragment;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.example.alexsalupa97.bloodbank.Clase.CTS;
@@ -13,23 +15,32 @@ import com.example.alexsalupa97.bloodbank.Clase.LimiteCTS;
 import com.example.alexsalupa97.bloodbank.R;
 import com.example.alexsalupa97.bloodbank.Utile.Utile;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
-public class AlerteActivity extends AppCompatActivity {
+/**
+ * A simple {@link Fragment} subclass.
+ */
+public class ListaAlerteInApropiereFragment extends Fragment {
+
+    View rootView;
 
     Map<CTS, Map<GrupeSanguine, Integer>> mapCantitatiDisponibilePerCTSPerGrupa;
     Map<CTS, Map<GrupeSanguine, Integer>> mapLimitePerCTSPerGrupa;
 
     TextView tvDetaliiLimite;
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_alerte);
+    public ListaAlerteInApropiereFragment() {
+        // Required empty public constructor
+    }
 
-        tvDetaliiLimite = (TextView) findViewById(R.id.tvDetaliiLimite);
+
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+
+        rootView= inflater.inflate(R.layout.fragment_lista_alerte_in_apropiere, container, false);
+        tvDetaliiLimite = (TextView)rootView.findViewById(R.id.tvDetaliiLimite);
         tvDetaliiLimite.setText("");
 
 
@@ -49,7 +60,7 @@ public class AlerteActivity extends AppCompatActivity {
             for (CTS cts : mapCantitatiDisponibilePerCTSPerGrupa.keySet()) {
                 String deAfisat = "";
 
-                if (cts.getOras().getOras().equals(Utile.preluareOras(getApplicationContext()))) {
+                if (cts.getOras().getOras().equals(Utile.preluareOras(getActivity()))) {
                     Map<GrupeSanguine, Integer> mapCantitatiDisponibile = mapCantitatiDisponibilePerCTSPerGrupa.get(cts);
                     Map<GrupeSanguine, Integer> mapLimite = mapLimitePerCTSPerGrupa.get(cts);
 
@@ -57,7 +68,7 @@ public class AlerteActivity extends AppCompatActivity {
                     deAfisat += cts.getNumeCTS();
 
                     for (Compatibilitati grupaSanguinaDonator : Utile.compatibilitati) {
-                        if (Utile.preluareGrupaSanguina(getApplicationContext()).equals(grupaSanguinaDonator.getGrupaSanguinaDonatoare().getGrupaSanguina()))
+                        if (Utile.preluareGrupaSanguina(getActivity()).equals(grupaSanguinaDonator.getGrupaSanguinaDonatoare().getGrupaSanguina()))
                             try {
                                 if (mapCantitatiDisponibile.get(grupaSanguinaDonator.getGrupaSanguinaReceiver()) < mapLimite.get(grupaSanguinaDonator.getGrupaSanguinaReceiver()))
                                     deAfisat += "\n probleme cu " + grupaSanguinaDonator.getGrupaSanguinaReceiver().getGrupaSanguina() + " limita: " + mapLimite.get(grupaSanguinaDonator.getGrupaSanguinaReceiver()) + " disponibil: " + mapCantitatiDisponibile.get(grupaSanguinaDonator.getGrupaSanguinaReceiver());
@@ -80,24 +91,9 @@ public class AlerteActivity extends AppCompatActivity {
 
         }
 
+        // Inflate the layout for this fragment
+        return  rootView;
 
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setDisplayShowHomeEnabled(true);
     }
 
-    @Override
-    public boolean onSupportNavigateUp() {
-        Intent intent=new Intent(getApplicationContext(),PrimaPaginaActivity.class);
-        startActivity(intent);
-        finish();
-        return true;
-    }
-
-    @Override
-    public void onBackPressed() {
-        Intent intent=new Intent(getApplicationContext(),PrimaPaginaActivity.class);
-        startActivity(intent);
-        finish();
-        super.onBackPressed();
-    }
 }

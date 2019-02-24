@@ -1,11 +1,13 @@
 package com.example.alexsalupa97.bloodbank.Activitati;
 
 import android.Manifest;
+import android.app.Activity;
 import android.app.AlarmManager;
 import android.app.Notification;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -15,6 +17,8 @@ import android.graphics.Color;
 import android.location.LocationManager;
 import android.opengl.Visibility;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.os.SystemClock;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
@@ -61,6 +65,8 @@ import java.util.Calendar;
 import java.util.HashSet;
 import java.util.List;
 
+import static java.lang.Thread.sleep;
+
 public class PrimaPaginaActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
     String fisier = "SharedPreferences";
@@ -86,11 +92,14 @@ public class PrimaPaginaActivity extends AppCompatActivity implements Navigation
     Gson gsonCTS;
     List<CTS> CTSlist;
 
+    ProgressDialog pd;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_prima_pagina);
+
 
         if (ContextCompat.checkSelfPermission(getApplicationContext(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
 
@@ -238,8 +247,38 @@ public class PrimaPaginaActivity extends AppCompatActivity implements Navigation
         btnAlerte.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(getApplicationContext(), AlerteActivity.class);
-                startActivity(intent);
+//                Intent intent = new Intent(getApplicationContext(), AlerteActivity.class);
+//                startActivity(intent);
+
+
+                pd = ProgressDialog.show(PrimaPaginaActivity.this, "Asteptati...", "Se verifica situatia actuala", true,
+                        false);
+
+                Thread thread = new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+
+                        try {
+                            Utile.REST_GET_istoricIntrariCTS(PrimaPaginaActivity.this);
+                            Utile.REST_GET_istoricIesiriCTS(PrimaPaginaActivity.this);
+                            Utile.REST_GET_limiteCTS(PrimaPaginaActivity.this);
+                            Utile.REST_GET_grupeSanguine(PrimaPaginaActivity.this);
+                            Utile.REST_GET_listaCTS(PrimaPaginaActivity.this);
+                            Utile.REST_GET_listaCompatibilitati(PrimaPaginaActivity.this);
+                            sleep(1000);
+
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
+                        }
+
+
+                        handler.sendEmptyMessage(0);
+
+                    }
+                });
+                thread.start();
+
+
             }
         });
 
@@ -552,7 +591,7 @@ public class PrimaPaginaActivity extends AppCompatActivity implements Navigation
                         .setContentText("Vezi situatia actuala")
                         .setChannelId("test")
                         .setAutoCancel(true)
-                        .addAction(R.drawable.ic_location,"Vezi centrele disponibile",listaCentreActionPendingIntent)
+                        .addAction(R.drawable.ic_location, "Vezi centrele disponibile", listaCentreActionPendingIntent)
                         .setVisibility(Notification.VISIBILITY_PUBLIC);
 
         mBuilder.setContentIntent(resultPendingIntent);
@@ -620,7 +659,7 @@ public class PrimaPaginaActivity extends AppCompatActivity implements Navigation
                         .setContentText("Vezi situatia actuala")
                         .setChannelId("test")
                         .setAutoCancel(true)
-                        .addAction(R.drawable.ic_location,"Vezi centrele disponibile",listaCentreActionPendingIntent)
+                        .addAction(R.drawable.ic_location, "Vezi centrele disponibile", listaCentreActionPendingIntent)
                         .setVisibility(Notification.VISIBILITY_PUBLIC);
 
         mBuilder.setContentIntent(resultPendingIntent);
@@ -691,4 +730,14 @@ public class PrimaPaginaActivity extends AppCompatActivity implements Navigation
 
         alarmManager.set(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), pendingIntent);
     }
+
+    private Handler handler = new Handler() {
+        @Override
+        public void handleMessage(Message msg) {
+            pd.dismiss();
+            Intent intent = new Intent(getApplicationContext(), AlerteActivity.class);
+            startActivity(intent);
+
+        }
+    };
 }

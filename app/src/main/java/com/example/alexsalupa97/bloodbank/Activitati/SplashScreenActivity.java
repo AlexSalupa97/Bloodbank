@@ -21,12 +21,7 @@ public class SplashScreenActivity extends AppCompatActivity {
         ActionBar actionBar = getSupportActionBar();
         actionBar.hide();
         setContentView(R.layout.activity_splash_screen);
-        Utile.REST_GET_istoricIntrariCTS(this);
-        Utile.REST_GET_istoricIesiriCTS(this);
-        Utile.REST_GET_limiteCTS(this);
-        Utile.REST_GET_grupeSanguine(this);
-        Utile.REST_GET_listaCTS(this);
-        Utile.REST_GET_listaCompatibilitati(this);
+
 
         Thread t = new Thread() {
             @Override
