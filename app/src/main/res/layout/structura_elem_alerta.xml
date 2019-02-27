@@ -3,11 +3,11 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical">
-
+    android:orientation="horizontal">
 
 
     <at.grabner.circleprogress.CircleProgressView
+
         android:id="@+id/cpvGrafic"
         android:layout_width="160dp"
         android:layout_height="160dp"
@@ -15,7 +15,46 @@
         app:cpv_barColor1="@android:color/holo_orange_dark"
         app:cpv_barColor2="@android:color/holo_green_dark"
         app:cpv_textMode="Text"
-        app:cpv_textSize="18dp"
-         />
+        app:cpv_textSize="18dp" />
+
+    <com.github.anastr.speedviewlib.SpeedView
+        android:id="@+id/svGrafic"
+        android:layout_width="160dp"
+        android:layout_height="160dp"
+        app:sv_highSpeedColor="@android:color/holo_green_dark"
+        app:sv_indicator="NeedleIndicator"
+        app:sv_speedTextSize="0sp"
+        app:sv_lowSpeedColor="@color/colorPrimaryDark"
+        app:sv_lowSpeedPercent="33"
+        app:sv_markColor="#00000000"
+        app:sv_mediumSpeedColor="@android:color/holo_orange_dark"
+        app:sv_mediumSpeedPercent="66"
+        app:sv_minSpeed="0"
+        app:sv_tickNumber="0"
+        app:sv_unitUnderSpeedText="true"
+        app:sv_textSize="0sp"
+        app:sv_withTremble="false" />
+
+
+    <!--<com.github.anastr.speedviewlib.SpeedView-->
+        <!--android:id="@+id/svGrafic"-->
+        <!--android:layout_width="160dp"-->
+        <!--android:layout_height="160dp"-->
+        <!--app:sv_highSpeedColor="@android:color/white"-->
+        <!--app:sv_indicator="NeedleIndicator"-->
+        <!--app:sv_speedTextSize="0sp"-->
+        <!--app:sv_lowSpeedColor="@color/colorPrimaryDark"-->
+        <!--app:sv_lowSpeedPercent="33"-->
+        <!--app:sv_markColor="#00000000"-->
+        <!--app:sv_mediumSpeedColor="@android:color/white"-->
+        <!--app:sv_backgroundCircleColor="@android:color/black"-->
+        <!--app:sv_mediumSpeedPercent="66"-->
+        <!--app:sv_unitTextColor="@android:color/white"-->
+        <!--app:sv_minSpeed="0"-->
+        <!--app:sv_tickNumber="0"-->
+        <!--app:sv_unitUnderSpeedText="true"-->
+        <!--app:sv_textSize="0sp"-->
+        <!--app:sv_withTremble="false" />-->
+
 
 </LinearLayout>

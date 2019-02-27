@@ -11,6 +11,7 @@ import android.widget.TextView;
 import com.example.alexsalupa97.bloodbank.Clase.CantitatiCTS;
 import com.example.alexsalupa97.bloodbank.Clase.IstoricDonatii;
 import com.example.alexsalupa97.bloodbank.R;
+import com.github.anastr.speedviewlib.SpeedView;
 
 import java.util.ArrayList;
 
@@ -27,6 +28,7 @@ public class AdaptorAlerteLV extends ArrayAdapter<CantitatiCTS> {
 
     static class ViewHolder {
         public CircleProgressView cpvGrafic;
+        public SpeedView svGrafic;
     }
 
     @Override
@@ -42,6 +44,7 @@ public class AdaptorAlerteLV extends ArrayAdapter<CantitatiCTS> {
             ViewHolder viewHolder = new ViewHolder();
 
             viewHolder.cpvGrafic = (CircleProgressView) viewRefolosibil.findViewById(R.id.cpvGrafic);
+            viewHolder.svGrafic=(SpeedView)viewRefolosibil.findViewById(R.id.svGrafic);
 
 
             viewRefolosibil.setTag(viewHolder);
@@ -56,6 +59,11 @@ public class AdaptorAlerteLV extends ArrayAdapter<CantitatiCTS> {
         holder.cpvGrafic.setText(curent.getGrupaSanguina().getGrupaSanguina());
         holder.cpvGrafic.setMaxValue(curent.getCantitateLimitaML()*3);
         holder.cpvGrafic.setValue(curent.getCantitateDisponibilaML());
+
+        holder.svGrafic.setUnit(curent.getGrupaSanguina().getGrupaSanguina());
+        holder.svGrafic.setMinMaxSpeed(0,curent.getCantitateLimitaML()*3);
+        holder.svGrafic.setSpeedAt(curent.getCantitateDisponibilaML());
+
 
 
 
