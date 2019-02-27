@@ -59,8 +59,14 @@ public class SetariActivity extends AppCompatActivity {
             listPreferenceLocatie.setDefaultValue(Utile.preluareOras(getActivity()));
 
             ArrayList<String> listaOrase=new ArrayList<>();
-            for(Orase oras: Utile.orase)
-                listaOrase.add(oras.getOras());
+            try {
+                for (Orase oras : Utile.orase)
+                    listaOrase.add(oras.getOras());
+            }
+            catch (Exception ex)
+            {
+
+            }
 
             CharSequence[] listaOraseCS=new CharSequence[listaOrase.size()];
             listaOraseCS=listaOrase.toArray(listaOraseCS);

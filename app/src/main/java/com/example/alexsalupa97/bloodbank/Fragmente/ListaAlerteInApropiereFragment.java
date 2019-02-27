@@ -6,15 +6,19 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ListView;
 import android.widget.TextView;
 
+import com.example.alexsalupa97.bloodbank.Adaptoare.AdaptorAlerteLV;
 import com.example.alexsalupa97.bloodbank.Clase.CTS;
+import com.example.alexsalupa97.bloodbank.Clase.CantitatiCTS;
 import com.example.alexsalupa97.bloodbank.Clase.Compatibilitati;
 import com.example.alexsalupa97.bloodbank.Clase.GrupeSanguine;
 import com.example.alexsalupa97.bloodbank.Clase.LimiteCTS;
 import com.example.alexsalupa97.bloodbank.R;
 import com.example.alexsalupa97.bloodbank.Utile.Utile;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -28,7 +32,11 @@ public class ListaAlerteInApropiereFragment extends Fragment {
     Map<CTS, Map<GrupeSanguine, Integer>> mapCantitatiDisponibilePerCTSPerGrupa;
     Map<CTS, Map<GrupeSanguine, Integer>> mapLimitePerCTSPerGrupa;
 
+    ArrayList<CantitatiCTS> listaCantitatiCTS;
+
     TextView tvDetaliiLimite;
+
+    ListView lvAlerte;
 
     public ListaAlerteInApropiereFragment() {
         // Required empty public constructor
@@ -42,6 +50,10 @@ public class ListaAlerteInApropiereFragment extends Fragment {
         rootView= inflater.inflate(R.layout.fragment_lista_alerte_in_apropiere, container, false);
         tvDetaliiLimite = (TextView)rootView.findViewById(R.id.tvDetaliiLimite);
         tvDetaliiLimite.setText("");
+
+        listaCantitatiCTS=new ArrayList<>();
+
+        lvAlerte=(ListView)rootView.findViewById(R.id.lvAlerte);
 
 
         try {
@@ -70,6 +82,13 @@ public class ListaAlerteInApropiereFragment extends Fragment {
                     for (Compatibilitati grupaSanguinaDonator : Utile.compatibilitati) {
                         if (Utile.preluareGrupaSanguina(getActivity()).equals(grupaSanguinaDonator.getGrupaSanguinaDonatoare().getGrupaSanguina()))
                             try {
+                                CantitatiCTS cantitateCTSCurent=new CantitatiCTS();
+                                cantitateCTSCurent.setCts(cts);
+                                cantitateCTSCurent.setGrupaSanguina(grupaSanguinaDonator.getGrupaSanguinaReceiver());
+                                cantitateCTSCurent.setCantitateDisponibilaML(mapCantitatiDisponibile.get(grupaSanguinaDonator.getGrupaSanguinaReceiver()));
+                                cantitateCTSCurent.setCantitateLimitaML(mapLimite.get(grupaSanguinaDonator.getGrupaSanguinaReceiver()));
+                                listaCantitatiCTS.add(cantitateCTSCurent);
+
                                 if (mapCantitatiDisponibile.get(grupaSanguinaDonator.getGrupaSanguinaReceiver()) < mapLimite.get(grupaSanguinaDonator.getGrupaSanguinaReceiver()))
                                     deAfisat += "\n\t\t probleme cu " + grupaSanguinaDonator.getGrupaSanguinaReceiver().getGrupaSanguina() + " limita: " + mapLimite.get(grupaSanguinaDonator.getGrupaSanguinaReceiver()) + " disponibil: " + mapCantitatiDisponibile.get(grupaSanguinaDonator.getGrupaSanguinaReceiver());
                                 else
@@ -90,6 +109,10 @@ public class ListaAlerteInApropiereFragment extends Fragment {
         } catch (Exception ex) {
 
         }
+
+        AdaptorAlerteLV adaptor=new AdaptorAlerteLV(getActivity(),listaCantitatiCTS);
+        lvAlerte.setAdapter(adaptor);
+
 
         // Inflate the layout for this fragment
         return  rootView;

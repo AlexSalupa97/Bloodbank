@@ -252,33 +252,6 @@ public class PrimaPaginaActivity extends AppCompatActivity implements Navigation
                 startActivity(intent);
 
 
-//                pd = ProgressDialog.show(PrimaPaginaActivity.this, "Asteptati...", "Se verifica situatia actuala", true,
-//                        false);
-//
-//                Thread thread = new Thread(new Runnable() {
-//                    @Override
-//                    public void run() {
-//
-//                        try {
-//                            Utile.REST_GET_istoricIntrariCTS(PrimaPaginaActivity.this);
-//                            Utile.REST_GET_istoricIesiriCTS(PrimaPaginaActivity.this);
-//                            Utile.REST_GET_limiteCTS(PrimaPaginaActivity.this);
-//                            Utile.REST_GET_grupeSanguine(PrimaPaginaActivity.this);
-//                            Utile.REST_GET_listaCTS(PrimaPaginaActivity.this);
-//                            Utile.REST_GET_listaCompatibilitati(PrimaPaginaActivity.this);
-//                            sleep(1000);
-//
-//                        } catch (InterruptedException e) {
-//                            e.printStackTrace();
-//                        }
-//
-//
-//                        handler.sendEmptyMessage(0);
-//
-//                    }
-//                });
-//                thread.start();
-
 
             }
         });

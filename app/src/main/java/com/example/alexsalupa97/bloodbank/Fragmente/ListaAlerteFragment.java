@@ -9,12 +9,14 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.example.alexsalupa97.bloodbank.Clase.CTS;
+import com.example.alexsalupa97.bloodbank.Clase.CantitatiCTS;
 import com.example.alexsalupa97.bloodbank.Clase.Compatibilitati;
 import com.example.alexsalupa97.bloodbank.Clase.GrupeSanguine;
 import com.example.alexsalupa97.bloodbank.Clase.LimiteCTS;
 import com.example.alexsalupa97.bloodbank.R;
 import com.example.alexsalupa97.bloodbank.Utile.Utile;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -27,6 +29,8 @@ public class ListaAlerteFragment extends Fragment {
 
     Map<CTS, Map<GrupeSanguine, Integer>> mapCantitatiDisponibilePerCTSPerGrupa;
     Map<CTS, Map<GrupeSanguine, Integer>> mapLimitePerCTSPerGrupa;
+
+    ArrayList<CantitatiCTS> listaCantitatiCTS;
 
     TextView tvDetaliiLimite;
 
@@ -44,6 +48,8 @@ public class ListaAlerteFragment extends Fragment {
 
         tvDetaliiLimite = (TextView) rootView.findViewById(R.id.tvDetaliiLimite);
         tvDetaliiLimite.setText("");
+
+        listaCantitatiCTS=new ArrayList<>();
 
 
         try {
@@ -63,6 +69,7 @@ public class ListaAlerteFragment extends Fragment {
                 String deAfisat = "\n\n";
 
 
+
                 Map<GrupeSanguine, Integer> mapCantitatiDisponibile = mapCantitatiDisponibilePerCTSPerGrupa.get(cts);
                 Map<GrupeSanguine, Integer> mapLimite = mapLimitePerCTSPerGrupa.get(cts);
 
@@ -72,6 +79,12 @@ public class ListaAlerteFragment extends Fragment {
                 for (Compatibilitati grupaSanguinaDonator : Utile.compatibilitati) {
                     if (Utile.preluareGrupaSanguina(getActivity()).equals(grupaSanguinaDonator.getGrupaSanguinaDonatoare().getGrupaSanguina()))
                         try {
+                            CantitatiCTS cantitateCTSCurent=new CantitatiCTS();
+                            cantitateCTSCurent.setCts(cts);
+                            cantitateCTSCurent.setGrupaSanguina(grupaSanguinaDonator.getGrupaSanguinaReceiver());
+                            cantitateCTSCurent.setCantitateDisponibilaML(mapCantitatiDisponibile.get(grupaSanguinaDonator.getGrupaSanguinaReceiver()));
+                            cantitateCTSCurent.setCantitateLimitaML(mapLimite.get(grupaSanguinaDonator.getGrupaSanguinaReceiver()));
+                            listaCantitatiCTS.add(cantitateCTSCurent);
                             if (mapCantitatiDisponibile.get(grupaSanguinaDonator.getGrupaSanguinaReceiver()) < mapLimite.get(grupaSanguinaDonator.getGrupaSanguinaReceiver()))
                                 deAfisat += "\n\t\t probleme cu " + grupaSanguinaDonator.getGrupaSanguinaReceiver().getGrupaSanguina() + " limita: " + mapLimite.get(grupaSanguinaDonator.getGrupaSanguinaReceiver()) + " disponibil: " + mapCantitatiDisponibile.get(grupaSanguinaDonator.getGrupaSanguinaReceiver());
                             else
