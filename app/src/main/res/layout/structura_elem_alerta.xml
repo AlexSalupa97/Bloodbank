@@ -6,21 +6,21 @@
     android:orientation="horizontal">
 
 
-    <at.grabner.circleprogress.CircleProgressView
+    <!--<at.grabner.circleprogress.CircleProgressView-->
 
-        android:id="@+id/cpvGrafic"
-        android:layout_width="160dp"
-        android:layout_height="160dp"
-        app:cpv_barColor="@color/colorPrimaryDark"
-        app:cpv_barColor1="@android:color/holo_orange_dark"
-        app:cpv_barColor2="@android:color/holo_green_dark"
-        app:cpv_textMode="Text"
-        app:cpv_textSize="18dp" />
+        <!--android:id="@+id/cpvGrafic"-->
+        <!--android:layout_width="160dp"-->
+        <!--android:layout_height="160dp"-->
+        <!--app:cpv_barColor="@color/colorPrimaryDark"-->
+        <!--app:cpv_barColor1="@android:color/holo_orange_dark"-->
+        <!--app:cpv_barColor2="@android:color/holo_green_dark"-->
+        <!--app:cpv_textMode="Text"-->
+        <!--app:cpv_textSize="18dp" />-->
 
     <com.github.anastr.speedviewlib.SpeedView
         android:id="@+id/svGrafic"
-        android:layout_width="160dp"
-        android:layout_height="160dp"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
         app:sv_highSpeedColor="@android:color/holo_green_dark"
         app:sv_indicator="NeedleIndicator"
         app:sv_speedTextSize="0sp"

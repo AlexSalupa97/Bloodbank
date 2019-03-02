@@ -10,15 +10,15 @@ import android.widget.TextView;
 import com.example.alexsalupa97.bloodbank.Adaptoare.AdaptorIstoricDonatiiRV;
 import com.example.alexsalupa97.bloodbank.Clase.IstoricDonatii;
 import com.example.alexsalupa97.bloodbank.R;
-import com.example.alexsalupa97.bloodbank.RecyclerViewOrizontal.ItemModel;
-import com.example.alexsalupa97.bloodbank.RecyclerViewOrizontal.SectionModel;
+import com.example.alexsalupa97.bloodbank.RecyclerViewOrizontal.ItemModelIstoric;
+import com.example.alexsalupa97.bloodbank.RecyclerViewOrizontal.SectionModelIstoric;
 import com.example.alexsalupa97.bloodbank.Utile.Utile;
 
 import java.util.ArrayList;
 
 public class ProfilActivity extends AppCompatActivity {
 
-    ArrayList<SectionModel> sectiuni;
+    ArrayList<SectionModelIstoric> sectiuni;
     RecyclerView rvIstoric;
 
     TextView tvNume;
@@ -59,26 +59,26 @@ public class ProfilActivity extends AppCompatActivity {
 
         sectiuni=new ArrayList<>();
 
-        SectionModel dm = new SectionModel();
+        SectionModelIstoric dm = new SectionModelIstoric();
 
         dm.setTitlu("Istoric donatii");
 
-        ArrayList<ItemModel> itemeInSectiune = new ArrayList<ItemModel>();
+        ArrayList<ItemModelIstoric> itemeInSectiune = new ArrayList<ItemModelIstoric>();
         for (IstoricDonatii id:Utile.listaIstoricDonatii) {
             int index=id.getDataDonatie().indexOf("T");
             String substring=id.getDataDonatie().substring(0,index);
-            itemeInSectiune.add(new ItemModel(substring,id.getCantitateDonataML()+"ml"));
+            itemeInSectiune.add(new ItemModelIstoric(substring,id.getCantitateDonataML()+"ml"));
         }
 
         dm.setItemeInSectiune(itemeInSectiune);
 
-//        SectionModel dm1 = new SectionModel();
+//        SectionModelIstoric dm1 = new SectionModelIstoric();
 //
 //        dm1.setTitlu("Analize efectuate");
 //
-//        ArrayList<ItemModel> itemeInSectiune1 = new ArrayList<ItemModel>();
+//        ArrayList<ItemModelIstoric> itemeInSectiune1 = new ArrayList<ItemModelIstoric>();
 //        for (int i = 0; i < 10; i++) {
-//            itemeInSectiune1.add(new ItemModel("Data analiza " + i));
+//            itemeInSectiune1.add(new ItemModelIstoric("Data analiza " + i));
 //        }
 //
 //        dm1.setItemeInSectiune(itemeInSectiune1);

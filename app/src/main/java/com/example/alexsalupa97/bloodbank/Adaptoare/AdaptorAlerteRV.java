@@ -12,16 +12,17 @@ import android.widget.TextView;
 
 import com.example.alexsalupa97.bloodbank.Activitati.DetaliiSuplimentareIstoricActivity;
 import com.example.alexsalupa97.bloodbank.R;
+import com.example.alexsalupa97.bloodbank.RecyclerViewOrizontal.SectionModelAlerte;
 import com.example.alexsalupa97.bloodbank.RecyclerViewOrizontal.SectionModelIstoric;
 
 import java.util.ArrayList;
 
-public class AdaptorIstoricDonatiiRV extends RecyclerView.Adapter<AdaptorIstoricDonatiiRV.ItemRowHolder> {
+public class AdaptorAlerteRV extends RecyclerView.Adapter<AdaptorAlerteRV.ItemRowHolder> {
 
-    private ArrayList<SectionModelIstoric> listaSectiuni;
+    private ArrayList<SectionModelAlerte> listaSectiuni;
     private Context context;
 
-    public AdaptorIstoricDonatiiRV(Context context, ArrayList<SectionModelIstoric> listaSectiuni) {
+    public AdaptorAlerteRV(Context context, ArrayList<SectionModelAlerte> listaSectiuni) {
         this.listaSectiuni = listaSectiuni;
         this.context = context;
     }
@@ -42,7 +43,7 @@ public class AdaptorIstoricDonatiiRV extends RecyclerView.Adapter<AdaptorIstoric
 
         itemRowHolder.itemTitle.setText(numeSectiune);
 
-        AdaptorListaItemeSectiuneRV itemListDataAdapter = new AdaptorListaItemeSectiuneRV(context, itemeSectiune);
+        AdaptorListaAlerteInSectiuneRV itemListDataAdapter = new AdaptorListaAlerteInSectiuneRV(context, itemeSectiune);
 
         itemRowHolder.recycler_view_list.setHasFixedSize(true);
         itemRowHolder.recycler_view_list.setLayoutManager(new LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false));
@@ -90,4 +91,3 @@ public class AdaptorIstoricDonatiiRV extends RecyclerView.Adapter<AdaptorIstoric
     }
 
 }
-

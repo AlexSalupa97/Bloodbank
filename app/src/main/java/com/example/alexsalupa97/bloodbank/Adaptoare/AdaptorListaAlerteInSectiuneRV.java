@@ -5,26 +5,26 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
 
 import com.example.alexsalupa97.bloodbank.R;
-import com.example.alexsalupa97.bloodbank.RecyclerViewOrizontal.ItemModelIstoric;
+import com.example.alexsalupa97.bloodbank.RecyclerViewOrizontal.ItemModelAlerte;
+import com.github.anastr.speedviewlib.SpeedView;
 
 import java.util.ArrayList;
 
-public class AdaptorListaItemeSectiuneRV extends RecyclerView.Adapter<AdaptorListaItemeSectiuneRV.SingleItemRowHolder> {
+public class AdaptorListaAlerteInSectiuneRV extends RecyclerView.Adapter<AdaptorListaAlerteInSectiuneRV.SingleItemRowHolder> {
 
-    private ArrayList<ItemModelIstoric> listaIteme;
+    private ArrayList<ItemModelAlerte> listaIteme;
     private Context context;
 
-    public AdaptorListaItemeSectiuneRV(Context context, ArrayList<ItemModelIstoric> listaIteme) {
+    public AdaptorListaAlerteInSectiuneRV(Context context, ArrayList<ItemModelAlerte> listaIteme) {
         this.listaIteme = listaIteme;
         this.context = context;
     }
 
     @Override
     public SingleItemRowHolder onCreateViewHolder(ViewGroup viewGroup, int position) {
-        View v = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.structura_item_istoric, null);
+        View v = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.structura_elem_alerta, null);
         SingleItemRowHolder mh = new SingleItemRowHolder(v);
         return mh;
     }
@@ -32,10 +32,11 @@ public class AdaptorListaItemeSectiuneRV extends RecyclerView.Adapter<AdaptorLis
     @Override
     public void onBindViewHolder(SingleItemRowHolder holder, int position) {
 
-        ItemModelIstoric singleItem = listaIteme.get(position);
+        ItemModelAlerte curent = listaIteme.get(position);
 
-        holder.tvDataDonare.setText(singleItem.getDataDonare());
-        holder.tvCantitateDonata.setText(singleItem.getCantitateDonata());
+        holder.svGrafic.setUnit(curent.getCantitatiCTS().getGrupaSanguina().getGrupaSanguina());
+        holder.svGrafic.setMinMaxSpeed(0,curent.getCantitatiCTS().getCantitateLimitaML()*3);
+        holder.svGrafic.setSpeedAt(curent.getCantitatiCTS().getCantitateDisponibilaML());
     }
 
     @Override
@@ -45,15 +46,13 @@ public class AdaptorListaItemeSectiuneRV extends RecyclerView.Adapter<AdaptorLis
 
     public class SingleItemRowHolder extends RecyclerView.ViewHolder {
 
-        protected TextView tvDataDonare;
-        protected TextView tvCantitateDonata;
+        protected SpeedView svGrafic;
 
 
         public SingleItemRowHolder(View view) {
             super(view);
 
-            this.tvDataDonare = (TextView) view.findViewById(R.id.tvDataDonare);
-            this.tvCantitateDonata = (TextView) view.findViewById(R.id.tvCantitateDonata);
+            this.svGrafic=(SpeedView)view.findViewById(R.id.svGrafic);
 
 
 //            view.setOnClickListener(new View.OnClickListener() {

@@ -1,16 +1,16 @@
 package com.example.alexsalupa97.bloodbank.RecyclerViewOrizontal;
 
-public class ItemModel {
+public class ItemModelIstoric {
 
     private String dataDonare;
     private String cantitateDonata;
 
-    public ItemModel(String dataDonare, String cantitateDonata) {
+    public ItemModelIstoric(String dataDonare, String cantitateDonata) {
         this.dataDonare = dataDonare;
         this.cantitateDonata = cantitateDonata;
     }
 
-    public ItemModel() {
+    public ItemModelIstoric() {
     }
 
     public String getDataDonare() {

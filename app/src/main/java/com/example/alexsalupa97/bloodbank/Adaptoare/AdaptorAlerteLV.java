@@ -43,7 +43,7 @@ public class AdaptorAlerteLV extends ArrayAdapter<CantitatiCTS> {
 
             ViewHolder viewHolder = new ViewHolder();
 
-            viewHolder.cpvGrafic = (CircleProgressView) viewRefolosibil.findViewById(R.id.cpvGrafic);
+//            viewHolder.cpvGrafic = (CircleProgressView) viewRefolosibil.findViewById(R.id.cpvGrafic);
             viewHolder.svGrafic=(SpeedView)viewRefolosibil.findViewById(R.id.svGrafic);
 
 

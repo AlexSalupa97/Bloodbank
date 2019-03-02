@@ -178,7 +178,7 @@ public class PrimaPaginaActivity extends AppCompatActivity implements Navigation
 
         tvNavDrawer.setText(nume);
 
-        String stare = Utile.preluareStareAnalize(getApplicationContext());
+        final String stare = Utile.preluareStareAnalize(getApplicationContext());
 
 
         btnVreauSaDonez = (Button) findViewById(R.id.btnVreauSaDonez);
@@ -268,6 +268,15 @@ public class PrimaPaginaActivity extends AppCompatActivity implements Navigation
             }
         });
 
+        Button btnTest=(Button)findViewById(R.id.btnTest);
+        btnTest.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent=new Intent(getApplicationContext(),TestActivity.class);
+                startActivity(intent);
+            }
+        });
+
     }
 
     @Override
@@ -298,6 +307,8 @@ public class PrimaPaginaActivity extends AppCompatActivity implements Navigation
             String url = Utile.URL + "domain.compatibilitati/" + Utile.preluareGrupaSanguina(getApplicationContext());
 
             final RequestQueue requestQueue = Volley.newRequestQueue(PrimaPaginaActivity.this);
+
+
 
 
             JsonArrayRequest objectRequest = new JsonArrayRequest(

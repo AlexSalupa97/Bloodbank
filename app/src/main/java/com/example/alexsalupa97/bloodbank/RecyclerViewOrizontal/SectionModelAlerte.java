@@ -2,17 +2,17 @@ package com.example.alexsalupa97.bloodbank.RecyclerViewOrizontal;
 
 import java.util.ArrayList;
 
-public class SectionModel {
+public class SectionModelAlerte {
 
     private String titlu;
-    private ArrayList<ItemModel> itemeInSectiune;
+    private ArrayList<ItemModelAlerte> itemeInSectiune;
 
-    public SectionModel(String titlu, ArrayList<ItemModel> itemeInSectiune) {
+    public SectionModelAlerte(String titlu, ArrayList<ItemModelAlerte> itemeInSectiune) {
         this.titlu = titlu;
         this.itemeInSectiune = itemeInSectiune;
     }
 
-    public SectionModel() {
+    public SectionModelAlerte() {
     }
 
     public String getTitlu() {
@@ -23,11 +23,11 @@ public class SectionModel {
         this.titlu = titlu;
     }
 
-    public ArrayList<ItemModel> getItemeInSectiune() {
+    public ArrayList<ItemModelAlerte> getItemeInSectiune() {
         return itemeInSectiune;
     }
 
-    public void setItemeInSectiune(ArrayList<ItemModel> itemeInSectiune) {
+    public void setItemeInSectiune(ArrayList<ItemModelAlerte> itemeInSectiune) {
         this.itemeInSectiune = itemeInSectiune;
     }
 }
