@@ -29,7 +29,7 @@ public class AdaptorAlerteRV extends RecyclerView.Adapter<AdaptorAlerteRV.ItemRo
 
     @Override
     public ItemRowHolder onCreateViewHolder(ViewGroup viewGroup, int i) {
-        View v = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.structura_sectiuni_istoric, null);
+        View v = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.structura_sectiuni_alerte, null);
         ItemRowHolder mh = new ItemRowHolder(v);
         return mh;
     }
@@ -48,19 +48,7 @@ public class AdaptorAlerteRV extends RecyclerView.Adapter<AdaptorAlerteRV.ItemRo
         itemRowHolder.recycler_view_list.setHasFixedSize(true);
         itemRowHolder.recycler_view_list.setLayoutManager(new LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false));
         itemRowHolder.recycler_view_list.setAdapter(itemListDataAdapter);
-
-
-        itemRowHolder.btnMore.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-
-                Intent intent=new Intent(context, DetaliiSuplimentareIstoricActivity.class);
-                context.startActivity(intent);
-
-
-            }
-        });
+        
 
 
 
@@ -75,7 +63,6 @@ public class AdaptorAlerteRV extends RecyclerView.Adapter<AdaptorAlerteRV.ItemRo
 
         protected TextView itemTitle;
         protected RecyclerView recycler_view_list;
-        protected Button btnMore;
 
 
         public ItemRowHolder(View view) {
@@ -83,7 +70,6 @@ public class AdaptorAlerteRV extends RecyclerView.Adapter<AdaptorAlerteRV.ItemRo
 
             this.itemTitle = (TextView) view.findViewById(R.id.titluSectiune);
             this.recycler_view_list = (RecyclerView) view.findViewById(R.id.recycler_view_list);
-            this.btnMore = (Button) view.findViewById(R.id.btnMaiMult);
 
 
         }

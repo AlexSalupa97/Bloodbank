@@ -24,7 +24,7 @@ public class AdaptorListaAlerteInSectiuneRV extends RecyclerView.Adapter<Adaptor
 
     @Override
     public SingleItemRowHolder onCreateViewHolder(ViewGroup viewGroup, int position) {
-        View v = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.structura_elem_alerta, null);
+        View v = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.structura_item_alerta, null);
         SingleItemRowHolder mh = new SingleItemRowHolder(v);
         return mh;
     }

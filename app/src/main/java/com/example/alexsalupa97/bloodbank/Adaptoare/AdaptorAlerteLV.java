@@ -1,15 +1,12 @@
 package com.example.alexsalupa97.bloodbank.Adaptoare;
 
 import android.content.Context;
-import android.support.v7.widget.CardView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
-import android.widget.TextView;
 
 import com.example.alexsalupa97.bloodbank.Clase.CantitatiCTS;
-import com.example.alexsalupa97.bloodbank.Clase.IstoricDonatii;
 import com.example.alexsalupa97.bloodbank.R;
 import com.github.anastr.speedviewlib.SpeedView;
 
@@ -37,7 +34,7 @@ public class AdaptorAlerteLV extends ArrayAdapter<CantitatiCTS> {
         final CantitatiCTS curent = getItem(position);
 
         if (viewRefolosibil == null) {
-            viewRefolosibil = LayoutInflater.from(getContext()).inflate(R.layout.structura_elem_alerta, parent, false);
+            viewRefolosibil = LayoutInflater.from(getContext()).inflate(R.layout.structura_item_alerta, parent, false);
 
 
 
