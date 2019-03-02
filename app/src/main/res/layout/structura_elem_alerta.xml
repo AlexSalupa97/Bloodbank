@@ -3,7 +3,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="horizontal">
+    android:orientation="horizontal"
+    android:background="#dcdcdc">
 
 
     <!--<at.grabner.circleprogress.CircleProgressView-->
@@ -19,15 +20,16 @@
 
     <com.github.anastr.speedviewlib.SpeedView
         android:id="@+id/svGrafic"
+        android:layout_marginTop="8dp"
         android:layout_width="100dp"
         android:layout_height="100dp"
-        app:sv_highSpeedColor="@android:color/holo_green_dark"
+        app:sv_highSpeedColor="@android:color/white"
         app:sv_indicator="NeedleIndicator"
         app:sv_speedTextSize="0sp"
         app:sv_lowSpeedColor="@color/colorPrimaryDark"
         app:sv_lowSpeedPercent="33"
         app:sv_markColor="#00000000"
-        app:sv_mediumSpeedColor="@android:color/holo_orange_dark"
+        app:sv_mediumSpeedColor="@android:color/white"
         app:sv_mediumSpeedPercent="66"
         app:sv_minSpeed="0"
         app:sv_tickNumber="0"
