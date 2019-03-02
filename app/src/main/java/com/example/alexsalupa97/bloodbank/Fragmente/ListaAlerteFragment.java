@@ -3,6 +3,7 @@ package com.example.alexsalupa97.bloodbank.Fragmente;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -35,12 +36,10 @@ public class ListaAlerteFragment extends Fragment {
     Map<CTS, Map<GrupeSanguine, Integer>> mapLimitePerCTSPerGrupa;
 
     ArrayList<CantitatiCTS> listaCantitatiCTS;
-    Map<CTS,ArrayList<CantitatiCTS>> mapCantitatiPerCTS;
+    Map<CTS, ArrayList<CantitatiCTS>> mapCantitatiPerCTS;
 
     RecyclerView rvAlerte;
     ArrayList<SectionModelAlerte> sectiuni;
-
-
 
 
     public ListaAlerteFragment() {
@@ -55,9 +54,7 @@ public class ListaAlerteFragment extends Fragment {
         rootView = inflater.inflate(R.layout.fragment_lista_alerte, container, false);
 
 
-
-        rvAlerte =(RecyclerView)rootView.findViewById(R.id.rvAlerte);
-
+        rvAlerte = (RecyclerView) rootView.findViewById(R.id.rvAlerte);
 
 
         try {
@@ -110,22 +107,27 @@ public class ListaAlerteFragment extends Fragment {
             }
 
 
-        sectiuni=new ArrayList<>();
+            sectiuni = new ArrayList<>();
 
-        for(CTS cts:mapCantitatiPerCTS.keySet()) {
-            SectionModelAlerte dm = new SectionModelAlerte();
+            for (CTS cts : mapCantitatiPerCTS.keySet()) {
+                SectionModelAlerte dm = new SectionModelAlerte();
 
-            dm.setTitlu(cts.getNumeCTS());
+                dm.setTitlu(cts.getNumeCTS());
 
-            ArrayList<ItemModelAlerte> itemeInSectiune = new ArrayList<>();
-            for (CantitatiCTS cantitatiCTS : mapCantitatiPerCTS.get(cts)) {
-                itemeInSectiune.add(new ItemModelAlerte(cantitatiCTS));
+                ArrayList<ItemModelAlerte> itemeInSectiune = new ArrayList<>();
+                for (CantitatiCTS cantitatiCTS : mapCantitatiPerCTS.get(cts)) {
+                    itemeInSectiune.add(new ItemModelAlerte(cantitatiCTS));
+                }
+
+                dm.setItemeInSectiune(itemeInSectiune);
+
+                sectiuni.add(dm);
             }
 
-            dm.setItemeInSectiune(itemeInSectiune);
-
-            sectiuni.add(dm);
-        }
+            DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(rvAlerte.getContext(),
+                    LinearLayoutManager.VERTICAL);
+            dividerItemDecoration.setDrawable(getResources().getDrawable(R.drawable.rv_divider));
+            rvAlerte.addItemDecoration(dividerItemDecoration);
 
             rvAlerte.setHasFixedSize(true);
 
