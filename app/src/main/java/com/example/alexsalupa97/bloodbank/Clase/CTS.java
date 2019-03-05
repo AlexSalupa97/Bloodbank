@@ -1,8 +1,11 @@
 package com.example.alexsalupa97.bloodbank.Clase;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import com.google.gson.annotations.SerializedName;
 
-public class CTS {
+public class CTS implements Parcelable {
 
     @SerializedName("idcts")
     private int idCTS;
@@ -130,4 +133,50 @@ public class CTS {
     public void setOras(Orase oras) {
         this.oras = oras;
     }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+
+        dest.writeInt(idCTS);
+        dest.writeString(adresaCTS);
+        dest.writeDouble(coordonataXCTS);
+        dest.writeDouble(coordonataYCTS);
+        dest.writeString(emailCTS);
+        dest.writeString(numeCTS);
+        dest.writeString(parolaCTS);
+        dest.writeString(stareCTS);
+        dest.writeString(telefonCTS);
+        dest.writeParcelable(oras, 1);
+    }
+
+    public CTS(Parcel in) {
+        idCTS = in.readInt();
+        adresaCTS = in.readString();
+        coordonataXCTS = in.readDouble();
+        coordonataYCTS = in.readDouble();
+        emailCTS = in.readString();
+        numeCTS = in.readString();
+        parolaCTS = in.readString();
+        stareCTS = in.readString();
+        telefonCTS = in.readString();
+        oras=in.readParcelable(Orase.class.getClassLoader());
+
+    }
+
+    public static final Creator<CTS> CREATOR = new Creator<CTS>() {
+        @Override
+        public CTS createFromParcel(Parcel in) {
+            return new CTS(in);
+        }
+
+        @Override
+        public CTS[] newArray(int size) {
+            return new CTS[size];
+        }
+    };
 }

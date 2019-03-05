@@ -1,8 +1,11 @@
 package com.example.alexsalupa97.bloodbank.Clase;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import com.google.gson.annotations.SerializedName;
 
-public class Orase {
+public class Orase implements Parcelable {
 
     @SerializedName("idoras")
     private int idOras;
@@ -45,4 +48,35 @@ public class Orase {
     public void setOras(String oras) {
         this.oras = oras;
     }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+
+        dest.writeInt(idOras);
+        dest.writeString(judet);
+        dest.writeString(oras);
+    }
+
+    public Orase(Parcel in) {
+        idOras = in.readInt();
+        judet = in.readString();
+        oras = in.readString();
+    }
+
+    public static final Creator<Orase> CREATOR = new Creator<Orase>() {
+        @Override
+        public Orase createFromParcel(Parcel in) {
+            return new Orase(in);
+        }
+
+        @Override
+        public Orase[] newArray(int size) {
+            return new Orase[size];
+        }
+    };
 }

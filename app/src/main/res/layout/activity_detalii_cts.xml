@@ -4,19 +4,25 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".Activitati.DetaliiCTSActivity"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    tools:context=".Activitati.DetaliiCTSActivity">
 
     <TextView
 
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
+        android:gravity="center_vertical"
+        android:text="Detalii CTS"
         android:textAlignment="center"
         android:textSize="18sp"
-        android:textStyle="bold|italic"
-        android:layout_marginLeft="8dp"
-        android:gravity="center_vertical"
-        android:layout_marginRight="8dp"
-        android:text="Detalii CTS"/>
+        android:textStyle="bold|italic" />
+
+    <Button
+        android:id="@+id/btnEmail"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="email" />
 
 </LinearLayout>
