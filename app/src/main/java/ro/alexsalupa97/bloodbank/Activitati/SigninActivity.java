@@ -116,7 +116,7 @@ public class SigninActivity extends AppCompatActivity {
 
 
                                             Intent intent = new Intent(getApplicationContext(), PrimaPaginaActivity.class);
-                                            setResult(1);
+                                            setResult(100);
                                             startActivity(intent);
                                             finish();
 
@@ -146,6 +146,14 @@ public class SigninActivity extends AppCompatActivity {
                 }
             }
         });
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        Intent intent=new Intent(getApplicationContext(),AlegereLoginActivity.class);
+        startActivity(intent);
+        finish();
     }
 }
 
