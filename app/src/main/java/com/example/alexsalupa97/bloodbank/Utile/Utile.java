@@ -44,7 +44,7 @@ import java.util.Set;
 public class Utile {
 
     public static String fisier = "SharedPreferences";
-    public static String URL = "http://b6b7ed12.ngrok.io/ProiectLicentaBloodbank/webresources/";
+    public static String URL = "http://a9c2a5ce.ngrok.io/ProiectLicentaBloodbank/webresources/";
 
     public static ArrayList<Intrebari> intrebari;
     public static ArrayList<Compatibilitati> compatibilitati;

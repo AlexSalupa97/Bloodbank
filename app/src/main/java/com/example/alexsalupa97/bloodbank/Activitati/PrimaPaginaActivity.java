@@ -8,11 +8,14 @@ import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.app.ProgressDialog;
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.ActivityInfo;
 import android.content.pm.PackageManager;
+import android.content.pm.ResolveInfo;
 import android.graphics.Color;
 import android.location.LocationManager;
 import android.opengl.Visibility;
@@ -199,7 +202,7 @@ public class PrimaPaginaActivity extends AppCompatActivity implements Navigation
                 final RequestQueue requestQueue = Volley.newRequestQueue(PrimaPaginaActivity.this);
 
 
-                if (Utile.preluareStareAnalize(getApplicationContext()).equals("ok")) {
+//                if (Utile.preluareStareAnalize(getApplicationContext()).equals("ok")) {
                     JsonArrayRequest objectRequest = new JsonArrayRequest(
                             Request.Method.GET,
                             url,
@@ -241,7 +244,7 @@ public class PrimaPaginaActivity extends AppCompatActivity implements Navigation
 
 
                 }
-            }
+
         });
 
         btnAlerte = (Button) findViewById(R.id.btnAlerte);
@@ -250,7 +253,6 @@ public class PrimaPaginaActivity extends AppCompatActivity implements Navigation
             public void onClick(View v) {
                 Intent intent = new Intent(getApplicationContext(), TransparentActivity.class);
                 startActivity(intent);
-
 
 
             }
@@ -268,12 +270,22 @@ public class PrimaPaginaActivity extends AppCompatActivity implements Navigation
             }
         });
 
-        Button btnTest=(Button)findViewById(R.id.btnTest);
+        Button btnTest = (Button) findViewById(R.id.btnTest);
         btnTest.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent=new Intent(getApplicationContext(),TestActivity.class);
-                startActivity(intent);
+//                Intent intent=new Intent(getApplicationContext(),TestActivity.class);
+//                startActivity(intent);
+
+                Intent twitterIntent = getShareIntent("twitter", "subject", "text: " + "https://play.google.com/store/apps/developer?id=AlexSalupa97");
+                if (twitterIntent != null)
+                    startActivity(twitterIntent);
+
+//                Intent facebookIntent = getShareIntent("facebook", "", "https://play.google.com/store/apps/developer?id=AlexSalupa97");
+//                if(facebookIntent != null)
+//                    startActivity(facebookIntent);
+
+
             }
         });
 
@@ -298,17 +310,13 @@ public class PrimaPaginaActivity extends AppCompatActivity implements Navigation
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
         int id = menuItem.getItemId();
-        if (id == R.id.setari)
-        {
-            Intent intent=new Intent(getApplicationContext(),SetariActivity.class);
+        if (id == R.id.setari) {
+            Intent intent = new Intent(getApplicationContext(), SetariActivity.class);
             startActivity(intent);
-        }
-        else if (id == R.id.compatibilitati) {
+        } else if (id == R.id.compatibilitati) {
             String url = Utile.URL + "domain.compatibilitati/" + Utile.preluareGrupaSanguina(getApplicationContext());
 
             final RequestQueue requestQueue = Volley.newRequestQueue(PrimaPaginaActivity.this);
-
-
 
 
             JsonArrayRequest objectRequest = new JsonArrayRequest(
@@ -432,124 +440,124 @@ public class PrimaPaginaActivity extends AppCompatActivity implements Navigation
     }
 
     private void buildAlertMessageVreauSaDonez() {
-        final AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setMessage("Urmeaza un set de 10 intrebari pentru a va informa de conditiile necesare pentru a putea dona, doriti sa le abordati? (1 minut)")
-                .setCancelable(false)
-                .setNeutralButton("Cancel", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        dialog.cancel();
-                    }
-                })
-                .setPositiveButton("Da", new DialogInterface.OnClickListener() {
-                    public void onClick(final DialogInterface dialog, final int id) {
-                        String url = Utile.URL + "domain.intrebari";
+        if (Utile.preluareStareAnalize(getApplicationContext()).equals("ok")) {
+            final AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            builder.setMessage("Urmeaza un set de 10 intrebari pentru a va informa de conditiile necesare pentru a putea dona, doriti sa le abordati? (1 minut)")
+                    .setCancelable(false)
+                    .setNeutralButton("Cancel", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            dialog.cancel();
+                        }
+                    })
+                    .setPositiveButton("Da", new DialogInterface.OnClickListener() {
+                        public void onClick(final DialogInterface dialog, final int id) {
+                            String url = Utile.URL + "domain.intrebari";
 
-                        final RequestQueue requestQueue = Volley.newRequestQueue(PrimaPaginaActivity.this);
-
-
-                        if (Utile.preluareStareAnalize(getApplicationContext()).equals("ok")) {
-                            JsonArrayRequest objectRequest = new JsonArrayRequest(
-                                    Request.Method.GET,
-                                    url,
-                                    null,
-                                    new Response.Listener<JSONArray>() {
-
-                                        @Override
-                                        public void onResponse(JSONArray response) {
-                                            GsonBuilder gsonBuilder = new GsonBuilder();
-                                            gsonBuilder.setDateFormat("M/d/yy hh:mm a");
-                                            gsonIntrebari = gsonBuilder.create();
-
-                                            intrebariList = Arrays.asList(gsonIntrebari.fromJson(response.toString(), Intrebari[].class));
-                                            Utile.intrebari = new ArrayList<>(intrebariList);
-
-                                            Intent intent = new Intent(getApplicationContext(), IntrebariActivity.class);
-                                            //intent.putParcelableArrayListExtra("listaIntrebari", Utile.intrebari);
-
-                                            startActivity(intent);
+                            final RequestQueue requestQueue = Volley.newRequestQueue(PrimaPaginaActivity.this);
 
 
+                            if (Utile.preluareStareAnalize(getApplicationContext()).equals("ok")) {
+                                JsonArrayRequest objectRequest = new JsonArrayRequest(
+                                        Request.Method.GET,
+                                        url,
+                                        null,
+                                        new Response.Listener<JSONArray>() {
+
+                                            @Override
+                                            public void onResponse(JSONArray response) {
+                                                GsonBuilder gsonBuilder = new GsonBuilder();
+                                                gsonBuilder.setDateFormat("M/d/yy hh:mm a");
+                                                gsonIntrebari = gsonBuilder.create();
+
+                                                intrebariList = Arrays.asList(gsonIntrebari.fromJson(response.toString(), Intrebari[].class));
+                                                Utile.intrebari = new ArrayList<>(intrebariList);
+
+                                                Intent intent = new Intent(getApplicationContext(), IntrebariActivity.class);
+                                                //intent.putParcelableArrayListExtra("listaIntrebari", Utile.intrebari);
+
+                                                startActivity(intent);
+
+
+                                            }
+                                        },
+                                        new Response.ErrorListener() {
+                                            @Override
+                                            public void onErrorResponse(VolleyError error) {
+                                                Log.d("RestResponse", error.toString());
+                                            }
                                         }
-                                    },
-                                    new Response.ErrorListener() {
-                                        @Override
-                                        public void onErrorResponse(VolleyError error) {
-                                            Log.d("RestResponse", error.toString());
-                                        }
-                                    }
 
-                            );
+                                );
 
-                            requestQueue.add(objectRequest);
+                                requestQueue.add(objectRequest);
+
+
+                            }
 
 
                         }
+                    })
+                    .setNegativeButton("Nu", new DialogInterface.OnClickListener() {
+                        public void onClick(final DialogInterface dialog, final int id) {
+                            String url = Utile.URL + "domain.cts";
 
-                        if (Utile.preluareStareAnalize(getApplicationContext()).equals("!ok")) {
-                            Intent intent = new Intent(getApplicationContext(), AnalizeNotOkActivity.class);
-                            startActivity(intent);
-                        }
-                        if (Utile.preluareStareAnalize(getApplicationContext()).equals("neefectuate")) {
-                            Intent intent = new Intent(getApplicationContext(), AnalizeNeefectuateActivity.class);
-                            startActivity(intent);
-                        }
-
-                    }
-                })
-                .setNegativeButton("Nu", new DialogInterface.OnClickListener() {
-                    public void onClick(final DialogInterface dialog, final int id) {
-                        String url = Utile.URL + "domain.cts";
-
-                        final RequestQueue requestQueue = Volley.newRequestQueue(PrimaPaginaActivity.this);
+                            final RequestQueue requestQueue = Volley.newRequestQueue(PrimaPaginaActivity.this);
 
 
-                        if (Utile.preluareStareAnalize(getApplicationContext()).equals("ok")) {
-                            JsonArrayRequest objectRequest = new JsonArrayRequest(
-                                    Request.Method.GET,
-                                    url,
-                                    null,
-                                    new Response.Listener<JSONArray>() {
+                            if (Utile.preluareStareAnalize(getApplicationContext()).equals("ok")) {
+                                JsonArrayRequest objectRequest = new JsonArrayRequest(
+                                        Request.Method.GET,
+                                        url,
+                                        null,
+                                        new Response.Listener<JSONArray>() {
 
-                                        @Override
-                                        public void onResponse(JSONArray response) {
-                                            GsonBuilder gsonBuilder = new GsonBuilder();
-                                            gsonBuilder.setDateFormat("M/d/yy hh:mm a");
-                                            gsonCTS = gsonBuilder.create();
+                                            @Override
+                                            public void onResponse(JSONArray response) {
+                                                GsonBuilder gsonBuilder = new GsonBuilder();
+                                                gsonBuilder.setDateFormat("M/d/yy hh:mm a");
+                                                gsonCTS = gsonBuilder.create();
 
 
-                                            CTSlist = Arrays.asList(gsonCTS.fromJson(response.toString(), CTS[].class));
-                                            Utile.CTS = new ArrayList<>();
-                                            Utile.orase = new HashSet<>();
-                                            for (CTS c : CTSlist) {
-                                                Utile.CTS.add(c);
-                                                Utile.orase.add(c.getOras());
+                                                CTSlist = Arrays.asList(gsonCTS.fromJson(response.toString(), CTS[].class));
+                                                Utile.CTS = new ArrayList<>();
+                                                Utile.orase = new HashSet<>();
+                                                for (CTS c : CTSlist) {
+                                                    Utile.CTS.add(c);
+                                                    Utile.orase.add(c.getOras());
+                                                }
+
+
+                                                Intent intent = new Intent(getApplicationContext(), ListaCentreActivity.class);
+                                                startActivity(intent);
                                             }
 
 
-                                            Intent intent = new Intent(getApplicationContext(), ListaCentreActivity.class);
-                                            startActivity(intent);
+                                        },
+                                        new Response.ErrorListener() {
+                                            @Override
+                                            public void onErrorResponse(VolleyError error) {
+                                                Log.d("RestResponse", error.toString());
+                                            }
                                         }
 
+                                );
 
-                                    },
-                                    new Response.ErrorListener() {
-                                        @Override
-                                        public void onErrorResponse(VolleyError error) {
-                                            Log.d("RestResponse", error.toString());
-                                        }
-                                    }
-
-                            );
-
-                            requestQueue.add(objectRequest);
+                                requestQueue.add(objectRequest);
 
 
+                            }
                         }
-                    }
-                });
-        final AlertDialog alert = builder.create();
-        alert.show();
+                    });
+            final AlertDialog alert = builder.create();
+            alert.show();
+        } else if (Utile.preluareStareAnalize(getApplicationContext()).equals("!ok")) {
+            Intent intent = new Intent(getApplicationContext(), AnalizeNotOkActivity.class);
+            startActivity(intent);
+        } else if (Utile.preluareStareAnalize(getApplicationContext()).equals("neefectuate")) {
+            Intent intent = new Intent(getApplicationContext(), AnalizeNeefectuateActivity.class);
+            startActivity(intent);
+        }
     }
 
     private void triggerBasicNotification() {
@@ -557,8 +565,6 @@ public class PrimaPaginaActivity extends AppCompatActivity implements Navigation
         resultIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 
 //        Intent backIntent = new Intent(this, PrimaPaginaActivity.class);
-
-
 
 
 //        PendingIntent resultPendingIntent = PendingIntent.getActivities(getApplicationContext(),
@@ -726,6 +732,33 @@ public class PrimaPaginaActivity extends AppCompatActivity implements Navigation
         alarmManager.set(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), pendingIntent);
     }
 
+
+    private Intent getShareIntent(String type, String subject, String text) {
+        boolean found = false;
+        Intent share = new Intent(android.content.Intent.ACTION_SEND);
+        share.setType("text/plain");
+
+        // gets the list of intents that can be loaded.
+        List<ResolveInfo> resInfo = getApplicationContext().getPackageManager().queryIntentActivities(share, 0);
+        System.out.println("resinfo: " + resInfo);
+        if (!resInfo.isEmpty()) {
+            for (ResolveInfo info : resInfo) {
+                if (info.activityInfo.packageName.toLowerCase().contains(type) ||
+                        info.activityInfo.name.toLowerCase().contains(type)) {
+                    share.putExtra(Intent.EXTRA_SUBJECT, subject);
+                    share.putExtra(Intent.EXTRA_TEXT, text);
+                    share.setPackage(info.activityInfo.packageName);
+                    found = true;
+                    break;
+                }
+            }
+            if (!found)
+                return null;
+
+            return share;
+        }
+        return null;
+    }
 //    private Handler handler = new Handler() {
 //        @Override
 //        public void handleMessage(Message msg) {

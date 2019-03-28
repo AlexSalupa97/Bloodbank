@@ -76,7 +76,7 @@ public class AdaptorLVCTS extends ArrayAdapter<CTS> {
             @Override
             public void onClick(View v) {
                 Intent intent=new Intent(context, DetaliiCTSActivity.class);
-                intent.putExtra("ctsApropiere",curent);
+                intent.putExtra("cts",curent);
                 context.startActivity(intent);
             }
         });

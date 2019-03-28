@@ -20,7 +20,7 @@ public class DetaliiCTSActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_detalii_cts);
 
-        ctsCurent= getIntent().getExtras().getParcelable("ctsApropiere");
+        ctsCurent= getIntent().getExtras().getParcelable("cts");
 
         btnEmail=(Button)findViewById(R.id.btnEmail);
 

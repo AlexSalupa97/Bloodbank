@@ -10,13 +10,48 @@
     <TextView
 
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="10"
         android:textAlignment="center"
         android:textSize="18sp"
         android:textStyle="bold|italic"
         android:layout_marginLeft="8dp"
         android:gravity="center_vertical"
         android:layout_marginRight="8dp"
-        android:text="fail"/>
+        android:text="Nu poti dona la acest moment"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:background="#1da1f2"
+        android:orientation="horizontal"
+        android:id="@+id/twitterShareBtn">
+
+        <ImageView
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:src="@drawable/twitter"
+            android:layout_marginLeft="4dp"
+            android:gravity="center_horizontal|center_vertical"/>
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="20"
+            android:layout_gravity="start"
+            android:text="Share on Twitter"
+            android:textColor="@android:color/white"
+            android:textStyle="bold"
+            android:gravity="center"/>
+    </LinearLayout>
+
+    <com.facebook.share.widget.ShareButton
+        android:id="@+id/fbShareBtn"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:text="      Share on Facebook"/>
 
 </LinearLayout>
