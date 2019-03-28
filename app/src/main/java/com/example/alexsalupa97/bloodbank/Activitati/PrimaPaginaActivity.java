@@ -271,6 +271,7 @@ public class PrimaPaginaActivity extends AppCompatActivity implements Navigation
         });
 
         Button btnTest = (Button) findViewById(R.id.btnTest);
+        btnTest.setVisibility(View.GONE);
         btnTest.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

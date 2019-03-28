@@ -9,6 +9,7 @@ import android.view.View;
 import android.widget.LinearLayout;
 
 import com.example.alexsalupa97.bloodbank.R;
+import com.example.alexsalupa97.bloodbank.Utile.Utile;
 import com.facebook.share.model.ShareLinkContent;
 import com.facebook.share.widget.ShareButton;
 
@@ -27,7 +28,7 @@ public class FinalizareFailIntrebariActivity extends AppCompatActivity {
         fbShareBtn = (ShareButton) findViewById(R.id.fbShareBtn);
 
         ShareLinkContent content = new ShareLinkContent.Builder()
-                .setQuote("test")
+                .setQuote("mesaj generic facebook de la "+ Utile.preluareUsername(getApplicationContext())+" din Bloodbank")
                 .setContentUrl(Uri.parse("https://play.google.com/store/apps/developer?id=AlexSalupa97"))
                 .build();
 
@@ -38,7 +39,7 @@ public class FinalizareFailIntrebariActivity extends AppCompatActivity {
         twitterShareBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent twitterIntent = getShareIntent("twitter", "subject", "text: " + "https://play.google.com/store/apps/developer?id=AlexSalupa97");
+                Intent twitterIntent = getShareIntent("twitter", "subject", "mesaj generic twitter de la "+ Utile.preluareUsername(getApplicationContext())+" din Bloodbank" + "\nhttps://play.google.com/store/apps/developer?id=AlexSalupa97");
                 if (twitterIntent != null)
                     startActivity(twitterIntent);
 
