@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:background="@color/colorPrimaryDark"
     android:orientation="vertical"
-    tools:context=".Activitati.AlegereLoginActivity">
+    tools:context="ro.alexsalupa97.bloodbank.Activitati.AlegereLoginActivity">
 
     <Button
         android:id="@+id/btnContExistent"
