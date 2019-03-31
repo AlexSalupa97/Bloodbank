@@ -5,6 +5,7 @@
     android:id="@+id/loginLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@drawable/gradient_red_vertical"
     android:orientation="vertical"
     tools:context="ro.alexsalupa97.bloodbank.Activitati.SigninActivity">
 
@@ -23,7 +24,8 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="2"
-                android:text="Nume: " />
+                android:text="Nume: "
+                android:textColor="@android:color/white" />
 
             <EditText
                 android:id="@+id/etNume"
@@ -31,7 +33,9 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="5"
                 android:hint="Introduceti numele dvs."
-                android:singleLine="true" />
+                android:singleLine="true"
+                android:textColor="@android:color/white"
+                android:textColorHint="@android:color/white" />
         </LinearLayout>
 
         <LinearLayout
@@ -43,7 +47,8 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="2"
-                android:text="Prenume: " />
+                android:text="Prenume: "
+                android:textColor="@android:color/white" />
 
             <EditText
                 android:id="@+id/etPrenume"
@@ -51,7 +56,9 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="5"
                 android:hint="Introduceti prenumele dvs."
-                android:singleLine="true" />
+                android:singleLine="true"
+                android:textColor="@android:color/white"
+                android:textColorHint="@android:color/white" />
         </LinearLayout>
 
         <LinearLayout
@@ -63,7 +70,8 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="2"
-                android:text="Email: " />
+                android:text="Email: "
+                android:textColor="@android:color/white" />
 
             <EditText
                 android:id="@+id/etEmail"
@@ -71,7 +79,9 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="5"
                 android:hint="Introduceti email-ul dvs."
-                android:singleLine="true" />
+                android:singleLine="true"
+                android:textColor="@android:color/white"
+                android:textColorHint="@android:color/white" />
         </LinearLayout>
 
         <LinearLayout
@@ -83,7 +93,8 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="2"
-                android:text="Nr. telefon: " />
+                android:text="Nr. telefon: "
+                android:textColor="@android:color/white" />
 
             <EditText
                 android:id="@+id/etTelefon"
@@ -91,7 +102,9 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="5"
                 android:hint="Introduceti telefonul dvs."
-                android:singleLine="true" />
+                android:singleLine="true"
+                android:textColor="@android:color/white"
+                android:textColorHint="@android:color/white" />
         </LinearLayout>
 
         <LinearLayout
@@ -103,7 +116,8 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="2"
-                android:text="Oras: " />
+                android:text="Oras: "
+                android:textColor="@android:color/white" />
 
             <Spinner
                 android:id="@+id/spOras"
@@ -121,7 +135,8 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="2"
-                android:text="Grupa sanguina: " />
+                android:text="Grupa sanguina: "
+                android:textColor="@android:color/white" />
 
             <Spinner
                 android:id="@+id/spGrupaSanguina"
@@ -137,7 +152,9 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1.2"
-        android:text="Signup" />
+        android:background="#F44236"
+        android:text="Signup"
+        android:textColor="@android:color/white" />
 
 
 </LinearLayout>

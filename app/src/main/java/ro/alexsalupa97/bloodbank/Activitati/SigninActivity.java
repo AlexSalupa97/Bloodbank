@@ -3,13 +3,16 @@ package ro.alexsalupa97.bloodbank.Activitati;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.volley.Request;
@@ -18,6 +21,7 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
+
 import ro.alexsalupa97.bloodbank.R;
 import ro.alexsalupa97.bloodbank.Utile.Utile;
 
@@ -50,7 +54,15 @@ public class SigninActivity extends AppCompatActivity {
         tipUseri.add("Receiver");
         tipUseri.add("CTS");
 
-        adaptorSpinner = new ArrayAdapter<String>(getApplicationContext(), android.R.layout.simple_spinner_dropdown_item, tipUseri);
+        adaptorSpinner = new ArrayAdapter<String>(getApplicationContext(), android.R.layout.simple_spinner_dropdown_item, tipUseri) {
+            @Override
+            public View getView(int position, View convertView, ViewGroup parent) {
+                View view = super.getView(position, convertView, parent);
+                TextView textView=(TextView)view.findViewById(android.R.id.text1);
+                textView.setTextColor(Color.WHITE);
+                return view;
+            }
+        };
 
         spSignin = (Spinner) findViewById(R.id.spSignin);
         spSignin.setAdapter(adaptorSpinner);
@@ -80,21 +92,20 @@ public class SigninActivity extends AppCompatActivity {
                                     String DBNume = null;
                                     String DBGrupaSanguina = null;
                                     String DBStareAnalize = null;
-                                    String DBOras=null;
-                                    String DBJudet=null;
-                                    String DBTelefon=null;
+                                    String DBOras = null;
+                                    String DBJudet = null;
+                                    String DBTelefon = null;
                                     try {
                                         JSONObject jsonDonator = response.getJSONObject("iddonator");
                                         JSONObject jsonGrupaSanguina = jsonDonator.getJSONObject("idgrupasanguina");
-                                        DBTelefon=jsonDonator.getString("telefondonator");
-                                        JSONObject jsonOras=jsonDonator.getJSONObject("idoras");
+                                        DBTelefon = jsonDonator.getString("telefondonator");
+                                        JSONObject jsonOras = jsonDonator.getJSONObject("idoras");
                                         DBUsername = jsonDonator.getString("emaildonator");
                                         DBNume = jsonDonator.getString("numedonator");
                                         DBGrupaSanguina = jsonGrupaSanguina.getString("idgrupasanguina");
                                         DBStareAnalize = response.getString("stareanalize");
-                                        DBJudet=jsonOras.getString("judet");
-                                        DBOras=jsonOras.getString("numeoras");
-
+                                        DBJudet = jsonOras.getString("judet");
+                                        DBOras = jsonOras.getString("numeoras");
 
 
                                         if (DBUsername.equals(etUsername.getText().toString())) {
@@ -107,10 +118,10 @@ public class SigninActivity extends AppCompatActivity {
                                             editor.putString("tip_user", spSignin.getSelectedItem().toString().toLowerCase());
                                             editor.putString("grupaSanguina", DBGrupaSanguina);
                                             editor.putString("stareAnalize", DBStareAnalize);
-                                            editor.putString("orasUser",DBOras);
-                                            editor.putString("judetUser",DBJudet);
-                                            editor.putString("email",DBUsername);
-                                            editor.putString("telefon",DBTelefon);
+                                            editor.putString("orasUser", DBOras);
+                                            editor.putString("judetUser", DBJudet);
+                                            editor.putString("email", DBUsername);
+                                            editor.putString("telefon", DBTelefon);
 
                                             editor.commit();
 
@@ -151,7 +162,7 @@ public class SigninActivity extends AppCompatActivity {
     @Override
     public void onBackPressed() {
         super.onBackPressed();
-        Intent intent=new Intent(getApplicationContext(),AlegereLoginActivity.class);
+        Intent intent = new Intent(getApplicationContext(), AlegereLoginActivity.class);
         startActivity(intent);
         finish();
     }
