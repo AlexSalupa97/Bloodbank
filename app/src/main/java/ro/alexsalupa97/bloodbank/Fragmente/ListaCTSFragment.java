@@ -7,6 +7,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
 
+import java.util.Arrays;
+import java.util.Collections;
+
 import ro.alexsalupa97.bloodbank.Adaptoare.AdaptorLVCTS;
 import ro.alexsalupa97.bloodbank.R;
 import ro.alexsalupa97.bloodbank.Utile.Utile;
@@ -27,6 +30,7 @@ public class ListaCTSFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         rootView = inflater.inflate(R.layout.fragment_cts_all, container, false);
+        Collections.sort(Utile.CTS);
         adaptor = new AdaptorLVCTS(getActivity(), Utile.CTS);
         listView = (ListView) rootView.findViewById(R.id.lvCentreAll);
         listView.setAdapter(adaptor);

@@ -13,6 +13,7 @@ import ro.alexsalupa97.bloodbank.R;
 import ro.alexsalupa97.bloodbank.Utile.Utile;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 
 
 public class SetariActivity extends AppCompatActivity {
@@ -66,8 +67,10 @@ public class SetariActivity extends AppCompatActivity {
 
             }
 
+
             CharSequence[] listaOraseCS=new CharSequence[listaOrase.size()];
             listaOraseCS=listaOrase.toArray(listaOraseCS);
+            Arrays.sort(listaOraseCS);
 
             listPreferenceLocatie.setEntries(listaOraseCS);
             listPreferenceLocatie.setEntryValues(listaOraseCS);

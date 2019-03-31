@@ -22,6 +22,7 @@ import ro.alexsalupa97.bloodbank.RecyclerViewOrizontal.SectionModelAlerte;
 import ro.alexsalupa97.bloodbank.Utile.Utile;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -109,7 +110,11 @@ public class ListaAlerteFragment extends Fragment {
 
             sectiuni = new ArrayList<>();
 
-            for (CTS cts : mapCantitatiPerCTS.keySet()) {
+            ArrayList<CTS> listaCTS=new ArrayList<>(mapCantitatiPerCTS.keySet());
+            Collections.sort(listaCTS);
+
+
+            for (CTS cts : listaCTS) {
                 SectionModelAlerte dm = new SectionModelAlerte();
 
                 dm.setTitlu(cts.getNumeCTS());

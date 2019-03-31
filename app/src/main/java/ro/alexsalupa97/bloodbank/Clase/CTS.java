@@ -5,7 +5,7 @@ import android.os.Parcelable;
 
 import com.google.gson.annotations.SerializedName;
 
-public class CTS implements Parcelable {
+public class CTS implements Parcelable, Comparable {
 
     @SerializedName("idcts")
     private int idCTS;
@@ -132,6 +132,12 @@ public class CTS implements Parcelable {
 
     public void setOras(Orase oras) {
         this.oras = oras;
+    }
+
+    @Override
+    public int compareTo(Object o) {
+        CTS cts=(CTS)o;
+        return this.numeCTS.compareTo(cts.numeCTS);
     }
 
     @Override

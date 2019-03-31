@@ -13,6 +13,7 @@ import ro.alexsalupa97.bloodbank.R;
 import ro.alexsalupa97.bloodbank.Utile.Utile;
 
 import java.util.ArrayList;
+import java.util.Collections;
 
 public class ListaCTSInApropiereFragment extends Fragment {
 
@@ -20,7 +21,6 @@ public class ListaCTSInApropiereFragment extends Fragment {
 
     AdaptorLVCTS adaptor;
     ListView listView;
-
 
 
     public ListaCTSInApropiereFragment() {
@@ -34,12 +34,13 @@ public class ListaCTSInApropiereFragment extends Fragment {
         // Inflate the layout for this fragment
         rootView = inflater.inflate(R.layout.fragment_cts_apropiate, container, false);
 
-        ArrayList<CTS> listaCTSInApropiere=new ArrayList<>();
+        ArrayList<CTS> listaCTSInApropiere = new ArrayList<>();
 
-        for(CTS c:Utile.CTS)
-            if(c.getOras().getOras().equals(Utile.preluareOras(getActivity())))
+        for (CTS c : Utile.CTS)
+            if (c.getOras().getOras().equals(Utile.preluareOras(getActivity())))
                 listaCTSInApropiere.add(c);
 
+        Collections.sort(listaCTSInApropiere);
         adaptor = new AdaptorLVCTS(getActivity(), listaCTSInApropiere);
         listView = (ListView) rootView.findViewById(R.id.lvCentreApropiate);
         listView.setAdapter(adaptor);

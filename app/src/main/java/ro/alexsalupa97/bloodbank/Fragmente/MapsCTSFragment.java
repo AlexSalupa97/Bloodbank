@@ -2,6 +2,7 @@ package ro.alexsalupa97.bloodbank.Fragmente;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Criteria;
 import android.location.Location;
@@ -13,6 +14,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import ro.alexsalupa97.bloodbank.Activitati.DetaliiCTSActivity;
 import ro.alexsalupa97.bloodbank.Clase.CTS;
 import ro.alexsalupa97.bloodbank.R;
 import ro.alexsalupa97.bloodbank.Utile.Utile;
@@ -128,6 +130,19 @@ public class MapsCTSFragment extends Fragment {
                         // Zoom out to zoom level 10, animating with a duration of 2 seconds.
                         googleMap.animateCamera(CameraUpdateFactory.zoomTo(15), 2000, null);
                         return false;
+                    }
+                });
+
+                googleMap.setOnInfoWindowClickListener(new GoogleMap.OnInfoWindowClickListener() {
+                    @Override
+                    public void onInfoWindowClick(Marker marker) {
+                        for(CTS cts:Utile.CTS)
+                            if(marker.getTitle().equals(cts.getNumeCTS()))
+                            {
+                                Intent intent=new Intent(getActivity(), DetaliiCTSActivity.class);
+                                intent.putExtra("cts",cts);
+                                startActivity(intent);
+                            }
                     }
                 });
 
