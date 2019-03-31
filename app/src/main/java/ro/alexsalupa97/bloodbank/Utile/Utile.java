@@ -12,6 +12,8 @@ import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonArrayRequest;
+import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import ro.alexsalupa97.bloodbank.Clase.CTS;
 import ro.alexsalupa97.bloodbank.Clase.Compatibilitati;
@@ -27,6 +29,7 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
 import org.json.JSONArray;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -50,6 +53,9 @@ public class Utile {
     public static ArrayList<IesiriCTS> listaIesiriCTS;
     public static ArrayList<LimiteCTS> listaLimiteCTS;
     public static ArrayList<GrupeSanguine> listaGrupeSanguine;
+
+    public static int idDonator;
+    public static int idReceiver;
 
     static Gson gson;
 
@@ -371,5 +377,65 @@ public class Utile {
         }
 
         return listaDisponibil;
+    }
+
+    public static void REST_GET_countDonatori(final Activity activity) {
+        String url = Utile.URL + "domain.donatori/count";
+
+        final RequestQueue requestQueue = Volley.newRequestQueue(activity);
+
+
+        StringRequest objectRequest = new StringRequest(
+                Request.Method.GET,
+                url,
+                new Response.Listener<String>() {
+
+                    @Override
+                    public void onResponse(String response) {
+                        idDonator=Integer.parseInt(response);
+
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Log.d("RestResponse", error.toString());
+                    }
+                }
+
+        );
+
+        requestQueue.add(objectRequest);
+
+    }
+
+    public static void REST_GET_countReceiveri(final Activity activity) {
+        String url = Utile.URL + "domain.receiveri/count";
+
+        final RequestQueue requestQueue = Volley.newRequestQueue(activity);
+
+
+        StringRequest objectRequest = new StringRequest(
+                Request.Method.GET,
+                url,
+                new Response.Listener<String>() {
+
+                    @Override
+                    public void onResponse(String response) {
+                        idReceiver=Integer.parseInt(response);
+
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Log.d("RestResponse", error.toString());
+                    }
+                }
+
+        );
+
+        requestQueue.add(objectRequest);
+
     }
 }

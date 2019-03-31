@@ -7,6 +7,7 @@ import android.support.v7.app.AppCompatActivity;
 
 import ro.alexsalupa97.bloodbank.AdaptoareFragmente.AdaptorFragmenteSignup;
 import ro.alexsalupa97.bloodbank.R;
+import ro.alexsalupa97.bloodbank.Utile.Utile;
 
 public class SignupActivity extends AppCompatActivity {
 
@@ -17,6 +18,10 @@ public class SignupActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_signup);
+
+        Utile.REST_GET_countDonatori(this);
+        Utile.REST_GET_countReceiveri(this);
+
 
         adaptor = new AdaptorFragmenteSignup(getSupportFragmentManager());
         viewPager = (ViewPager) findViewById(R.id.loginViewpager);
