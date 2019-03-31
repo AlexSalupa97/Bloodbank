@@ -23,6 +23,7 @@ public class SplashScreenActivity extends AppCompatActivity {
         setContentView(R.layout.activity_splash_screen);
 
         Utile.REST_GET_listaCTS(this);
+        Utile.REST_GET_grupeSanguine(this);
 
 
         Thread t = new Thread() {

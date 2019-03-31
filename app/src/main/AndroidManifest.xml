@@ -67,7 +67,8 @@
             android:windowSoftInputMode="stateHidden|adjustResize" />
         <activity
             android:name=".Activitati.SignupActivity"
-            android:label="Sign Up" />
+            android:label="Sign Up"
+            android:windowSoftInputMode="stateHidden|adjustResize"/>
         <activity android:name=".Activitati.AlegereLoginActivity" />
         <activity
             android:name=".Activitati.PrimaPaginaActivity"
