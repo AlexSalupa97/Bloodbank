@@ -19,9 +19,6 @@ public class SignupActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_signup);
 
-        Utile.REST_GET_countDonatori(this);
-        Utile.REST_GET_countReceiveri(this);
-
 
         adaptor = new AdaptorFragmenteSignup(getSupportFragmentManager());
         viewPager = (ViewPager) findViewById(R.id.loginViewpager);
