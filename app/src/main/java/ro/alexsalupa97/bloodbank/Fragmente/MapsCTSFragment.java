@@ -120,6 +120,11 @@ public class MapsCTSFragment extends Fragment {
                     CameraPosition cameraPosition = new CameraPosition.Builder().target(new LatLng(locatieCurenta.getLatitude(), locatieCurenta.getLongitude())).zoom(12).build();
                     googleMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
                 }
+                else
+                {
+                    CameraPosition cameraPosition=new CameraPosition.Builder().target(new LatLng(45.9442858, 25.0094303)).zoom(5).build();
+                    googleMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
+                }
 
                 googleMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
                     @Override
