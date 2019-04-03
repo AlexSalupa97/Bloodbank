@@ -28,6 +28,7 @@ public class AlegereLoginActivity extends AppCompatActivity {
             public void onClick(View v) {
                 Intent intent=new Intent(getApplicationContext(),SignupActivity.class);
                 startActivity(intent);
+                finish();
             }
         });
 

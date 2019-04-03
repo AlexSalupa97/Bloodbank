@@ -1,5 +1,6 @@
 package ro.alexsalupa97.bloodbank.Activitati;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
@@ -34,7 +35,17 @@ public class SignupActivity extends AppCompatActivity {
     }
 
     @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        Intent intent = new Intent(getApplicationContext(), AlegereLoginActivity.class);
+        startActivity(intent);
+        finish();
+    }
+
+    @Override
     public boolean onSupportNavigateUp() {
+        Intent intent = new Intent(getApplicationContext(), AlegereLoginActivity.class);
+        startActivity(intent);
         finish();
         return true;
     }
