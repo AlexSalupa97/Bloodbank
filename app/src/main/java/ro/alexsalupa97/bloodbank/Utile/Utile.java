@@ -2,6 +2,7 @@ package ro.alexsalupa97.bloodbank.Utile;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.util.Log;
 import android.view.Menu;
@@ -15,6 +16,7 @@ import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+
 import ro.alexsalupa97.bloodbank.Clase.CTS;
 import ro.alexsalupa97.bloodbank.Clase.Compatibilitati;
 import ro.alexsalupa97.bloodbank.Clase.GrupeSanguine;
@@ -24,7 +26,9 @@ import ro.alexsalupa97.bloodbank.Clase.Intrebari;
 import ro.alexsalupa97.bloodbank.Clase.IstoricDonatii;
 import ro.alexsalupa97.bloodbank.Clase.LimiteCTS;
 import ro.alexsalupa97.bloodbank.Clase.Orase;
+import ro.alexsalupa97.bloodbank.Clase.Receiveri;
 import ro.alexsalupa97.bloodbank.R;
+
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
@@ -42,7 +46,7 @@ import java.util.Set;
 public class Utile {
 
     public static String fisier = "SharedPreferences";
-    public static String URL = "http://8865ea88.ngrok.io/ProiectLicentaBloodbank/webresources/";
+    public static String URL = "http://84507cb2.ngrok.io/ProiectLicentaBloodbank/webresources/";
 
     public static ArrayList<Intrebari> intrebari;
     public static ArrayList<Compatibilitati> compatibilitati;
@@ -53,6 +57,7 @@ public class Utile {
     public static ArrayList<IesiriCTS> listaIesiriCTS;
     public static ArrayList<LimiteCTS> listaLimiteCTS;
     public static ArrayList<GrupeSanguine> listaGrupeSanguine;
+    public static ArrayList<Receiveri> listaReceiveri;
 
     public static int idDonator;
     public static int idReceiver;
@@ -289,7 +294,7 @@ public class Utile {
                         Utile.CTS = new ArrayList<>(Arrays.asList(gson.fromJson(response.toString(), CTS[].class)));
                         Utile.orase = new HashSet<>();
 
-                        for(CTS cts:Utile.CTS)
+                        for (CTS cts : Utile.CTS)
                             orase.add(cts.getOras());
 
 
@@ -330,9 +335,7 @@ public class Utile {
                         gson = gsonBuilder.create();
 
 
-                            Utile.compatibilitati = new ArrayList<>(Arrays.asList(gson.fromJson(response.toString(), Compatibilitati[].class)));
-
-
+                        Utile.compatibilitati = new ArrayList<>(Arrays.asList(gson.fromJson(response.toString(), Compatibilitati[].class)));
 
 
                     }
@@ -392,7 +395,7 @@ public class Utile {
 
                     @Override
                     public void onResponse(String response) {
-                        idDonator=Integer.parseInt(response);
+                        idDonator = Integer.parseInt(response);
 
                     }
                 },
@@ -422,7 +425,7 @@ public class Utile {
 
                     @Override
                     public void onResponse(String response) {
-                        idReceiver=Integer.parseInt(response);
+                        idReceiver = Integer.parseInt(response);
 
                     }
                 },
@@ -436,6 +439,48 @@ public class Utile {
         );
 
         requestQueue.add(objectRequest);
+
+    }
+
+    public static void REST_GET_Receiveri(final Activity activity, final Class clasa) {
+        String url = Utile.URL + "domain.receiveri";
+
+        final RequestQueue requestQueue = Volley.newRequestQueue(activity);
+
+
+        JsonArrayRequest objectRequest = new JsonArrayRequest(
+                Request.Method.GET,
+                url,
+                null,
+                new Response.Listener<JSONArray>() {
+
+                    @Override
+                    public void onResponse(JSONArray response) {
+                        GsonBuilder gsonBuilder = new GsonBuilder();
+                        gsonBuilder.setDateFormat("M/d/yy hh:mm a");
+                        gson = gsonBuilder.create();
+
+                        Utile.listaReceiveri = new ArrayList<>(Arrays.asList(gson.fromJson(response.toString(), Receiveri[].class)));
+
+                        Intent intent=new Intent(activity,clasa);
+                        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                        activity.getApplicationContext().startActivity(intent);
+
+                    }
+
+
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Log.d("RestResponse", error.toString());
+                    }
+                }
+
+        );
+
+        requestQueue.add(objectRequest);
+
 
     }
 }

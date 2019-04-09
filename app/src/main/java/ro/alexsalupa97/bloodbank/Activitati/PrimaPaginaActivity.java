@@ -78,6 +78,7 @@ public class PrimaPaginaActivity extends AppCompatActivity implements Navigation
     Button btnListaCTS;
     Button btnAlerte;
     Button btnNotificari;
+    Button btnReceiveri;
 
     Gson gsonIntrebari;
     Gson gsonCompatibilitati;
@@ -280,6 +281,14 @@ public class PrimaPaginaActivity extends AppCompatActivity implements Navigation
 //                    startActivity(facebookIntent);
 
 
+            }
+        });
+
+        btnReceiveri=(Button)findViewById(R.id.btnReceiveri);
+        btnReceiveri.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Utile.REST_GET_Receiveri(PrimaPaginaActivity.this, ListaReceiveriActivity.class);
             }
         });
 
