@@ -64,6 +64,13 @@ public class Utile {
 
     static Gson gson;
 
+    public static String preluareTipUser(Context context){
+        String dePreluat;
+        SharedPreferences sharedPreferences = context.getSharedPreferences(fisier, Context.MODE_PRIVATE);
+        String defaultName = "N/A";
+        dePreluat = sharedPreferences.getString("tip_user", defaultName);
+        return dePreluat;
+    }
 
     public static String preluareUsername(Context context) {
         String dePreluat;
@@ -78,6 +85,14 @@ public class Utile {
         SharedPreferences sharedPreferences = context.getSharedPreferences(fisier, Context.MODE_PRIVATE);
         String defaultName = "N/A";
         dePreluat = sharedPreferences.getString("judetUser", defaultName);
+        return dePreluat;
+    }
+
+    public static String preluareCTS(Context context) {
+        String dePreluat;
+        SharedPreferences sharedPreferences = context.getSharedPreferences(fisier, Context.MODE_PRIVATE);
+        String defaultName = "N/A";
+        dePreluat = sharedPreferences.getString("cts", defaultName);
         return dePreluat;
     }
 
@@ -483,4 +498,6 @@ public class Utile {
 
 
     }
+
+
 }

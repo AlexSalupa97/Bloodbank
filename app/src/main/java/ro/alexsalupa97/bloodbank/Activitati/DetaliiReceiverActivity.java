@@ -13,8 +13,11 @@ import com.facebook.share.widget.ShareButton;
 
 import java.util.List;
 
+import ro.alexsalupa97.bloodbank.Clase.CTS;
+import ro.alexsalupa97.bloodbank.Clase.GrupeSanguine;
 import ro.alexsalupa97.bloodbank.Clase.Receiveri;
 import ro.alexsalupa97.bloodbank.R;
+import ro.alexsalupa97.bloodbank.Utile.Utile;
 
 public class DetaliiReceiverActivity extends AppCompatActivity {
 
@@ -26,12 +29,29 @@ public class DetaliiReceiverActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_detalii_receiver);
 
-        final Receiveri receiver;
+        Receiveri receiver;
         receiver=getIntent().getParcelableExtra("receiver");
+
+        if(receiver==null) {
+            receiver=new Receiveri();
+            receiver.setNumeReceiver(Utile.preluareUsername(getApplicationContext()));
+            receiver.setTelefonReceiver(Utile.preluareTelefon(getApplicationContext()));
+            receiver.setEmailReceiver(Utile.preluareEmail(getApplicationContext()));
+            for(CTS cts:Utile.CTS)
+                if(cts.getNumeCTS().equals((Utile.preluareCTS(getApplicationContext()))))
+                    receiver.setCts(cts);
+
+            for(GrupeSanguine grupeSanguine:Utile.listaGrupeSanguine)
+                if(grupeSanguine.getGrupaSanguina().equals((Utile.preluareGrupaSanguina(getApplicationContext()))))
+                    receiver.setGrupaSanguina(grupeSanguine);
+
+        }
+
+        final Receiveri receiverFinal=receiver;
 
         fbShareBtn = (ShareButton) findViewById(R.id.fbShareBtn);
         ShareLinkContent content = new ShareLinkContent.Builder()
-                .setQuote("Doneaza pentru "+receiver.getNumeReceiver())
+                .setQuote("Doneaza pentru "+receiverFinal.getNumeReceiver())
                 .setContentUrl(Uri.parse("https://play.google.com/store/apps/developer?id=AlexSalupa97"))
                 .build();
 
@@ -42,7 +62,7 @@ public class DetaliiReceiverActivity extends AppCompatActivity {
         twitterShareBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent twitterIntent = getShareIntent("twitter", "subject", "Doneaza pentru "+receiver.getNumeReceiver() + "\nhttps://play.google.com/store/apps/developer?id=AlexSalupa97");
+                Intent twitterIntent = getShareIntent("twitter", "subject", "Doneaza pentru "+receiverFinal.getNumeReceiver() + "\nhttps://play.google.com/store/apps/developer?id=AlexSalupa97");
                 if (twitterIntent != null)
                     startActivity(twitterIntent);
 

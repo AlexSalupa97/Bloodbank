@@ -46,15 +46,16 @@ public class SplashScreenActivity extends AppCompatActivity {
                     String name = sharedPreferences.getString("login_name", defaultName);
 
 
-
                     if (name.equals("")) {
                         Intent intent = new Intent(getApplicationContext(), AlegereLoginActivity.class);
                         startActivity(intent);
                         finish();
-                    }
-                    else {
-
+                    } else if (Utile.preluareTipUser(getApplicationContext()).equals("donator")) {
                         Intent mainIntent = new Intent(getApplicationContext(), PrimaPaginaActivity.class);
+                        startActivity(mainIntent);
+                        finish();
+                    } else if (Utile.preluareTipUser(getApplicationContext()).equals("receiver")) {
+                        Intent mainIntent = new Intent(getApplicationContext(), DetaliiReceiverMainActivity.class);
                         startActivity(mainIntent);
                         finish();
                     }
