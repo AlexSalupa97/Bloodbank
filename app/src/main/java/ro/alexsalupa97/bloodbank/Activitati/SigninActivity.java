@@ -155,6 +155,84 @@ public class SigninActivity extends AppCompatActivity {
                             });
                     requestQueue.add(objectRequest);
                 }
+                else if(spSignin.getSelectedItem().toString().toLowerCase().equals("receiver")){
+                    String url = Utile.URL + "domain.receiveri/email/" + username;
+
+                    final RequestQueue requestQueue = Volley.newRequestQueue(SigninActivity.this);
+
+                    JsonObjectRequest objectRequest = new JsonObjectRequest(
+                            Request.Method.GET,
+                            url,
+                            null,
+                            new Response.Listener<JSONObject>() {
+                                @Override
+                                public void onResponse(JSONObject response) {
+
+
+                                    String DBUsername = null;
+                                    String DBParola = null;
+                                    String DBNume = null;
+                                    String DBGrupaSanguina = null;
+                                    String DBCTS = null;
+                                    String DBTelefon = null;
+                                    try {
+                                        JSONObject jsonGrupaSanguina = response.getJSONObject("idgrupasanguina");
+                                        DBGrupaSanguina=jsonGrupaSanguina.getString("idgrupasanguina");
+                                        DBTelefon = response.getString("telefonreceiver");
+                                        JSONObject jsonCTS = response.getJSONObject("idcts");
+                                        DBCTS = jsonCTS.getString("numects");
+                                        DBUsername = response.getString("emailreceiver");
+                                        DBNume = response.getString("numereceiver");
+                                        int x=1;
+
+
+
+                                        if (DBUsername.equals(etUsername.getText().toString())) {
+
+
+                                            SharedPreferences sharedPreferences = getSharedPreferences(fisier, Context.MODE_PRIVATE);
+                                            SharedPreferences.Editor editor = sharedPreferences.edit();
+
+                                            editor.putString("login_name", DBNume);
+                                            editor.putString("tip_user", spSignin.getSelectedItem().toString().toLowerCase());
+                                            editor.putString("grupaSanguina", DBGrupaSanguina);
+                                            editor.putString("cts", DBCTS);
+                                            editor.putString("email", DBUsername);
+                                            editor.putString("telefon", DBTelefon);
+
+                                            editor.commit();
+
+
+                                            Intent intent = new Intent(getApplicationContext(), DetaliiReceiverMainActivity.class);
+                                            setResult(100);
+                                            startActivity(intent);
+                                            finish();
+
+                                        } else
+                                            Toast.makeText(getApplicationContext(), "Introduceti credentialele corecte", Toast.LENGTH_LONG).show();
+
+
+                                    } catch (JSONException e) {
+
+                                        Toast.makeText(getApplicationContext(), "Introduceti credentialele corecte", Toast.LENGTH_LONG).show();
+
+
+                                    }
+
+
+                                }
+                            },
+                            new Response.ErrorListener() {
+                                @Override
+                                public void onErrorResponse(VolleyError error) {
+
+                                    Toast.makeText(getApplicationContext(), "Introduceti credentialele corecte", Toast.LENGTH_LONG).show();
+
+                                }
+                            });
+                    requestQueue.add(objectRequest);
+
+                }
             }
         });
     }
