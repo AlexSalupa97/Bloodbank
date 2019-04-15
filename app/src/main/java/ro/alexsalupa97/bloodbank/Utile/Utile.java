@@ -24,10 +24,12 @@ import ro.alexsalupa97.bloodbank.Clase.IesiriCTS;
 import ro.alexsalupa97.bloodbank.Clase.IntrariCTS;
 import ro.alexsalupa97.bloodbank.Clase.Intrebari;
 import ro.alexsalupa97.bloodbank.Clase.IstoricDonatii;
+import ro.alexsalupa97.bloodbank.Clase.IstoricReceiver;
 import ro.alexsalupa97.bloodbank.Clase.LimiteCTS;
 import ro.alexsalupa97.bloodbank.Clase.Orase;
 import ro.alexsalupa97.bloodbank.Clase.Receiveri;
 import ro.alexsalupa97.bloodbank.R;
+
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -46,13 +48,14 @@ import java.util.Set;
 public class Utile {
 
     public static String fisier = "SharedPreferences";
-    public static String URL = "http://856e631f.ngrok.io/ProiectLicentaBloodbank/webresources/";
+    public static String URL = "http://99143bc8.ngrok.io/ProiectLicentaBloodbank/webresources/";
 
     public static ArrayList<Intrebari> intrebari;
     public static ArrayList<Compatibilitati> compatibilitati;
     public static ArrayList<CTS> CTS;
     public static Set<Orase> orase;
     public static ArrayList<IstoricDonatii> listaIstoricDonatii;
+    public static ArrayList<IstoricReceiver> listaIstoricReceiver;
     public static ArrayList<IntrariCTS> listaIntrariCTS;
     public static ArrayList<IesiriCTS> listaIesiriCTS;
     public static ArrayList<LimiteCTS> listaLimiteCTS;
@@ -61,6 +64,8 @@ public class Utile {
 
     public static int idDonator;
     public static int idReceiver;
+
+    public static boolean firstTimeReceiver;
 
     static Gson gson;
 
@@ -93,6 +98,14 @@ public class Utile {
         SharedPreferences sharedPreferences = context.getSharedPreferences(fisier, Context.MODE_PRIVATE);
         String defaultName = "N/A";
         dePreluat = sharedPreferences.getString("cts", defaultName);
+        return dePreluat;
+    }
+
+    public static String preluareIDReceiver(Context context) {
+        String dePreluat;
+        SharedPreferences sharedPreferences = context.getSharedPreferences(fisier, Context.MODE_PRIVATE);
+        String defaultName = "N/A";
+        dePreluat = sharedPreferences.getString("id", defaultName);
         return dePreluat;
     }
 
@@ -497,6 +510,41 @@ public class Utile {
         requestQueue.add(objectRequest);
 
 
+    }
+
+    public static void REST_GET_istoricReceiver(final Activity activity, final String idReceiverCurent){
+        String url = Utile.URL + "domain.istoricreceiveri/receiver/"+idReceiverCurent;
+
+        final RequestQueue requestQueue = Volley.newRequestQueue(activity);
+
+
+        JsonArrayRequest objectRequest = new JsonArrayRequest(
+                Request.Method.GET,
+                url,
+                null,
+                new Response.Listener<JSONArray>() {
+
+                    @Override
+                    public void onResponse(JSONArray response) {
+                        GsonBuilder gsonBuilder = new GsonBuilder();
+                        gsonBuilder.setDateFormat("M/d/yy hh:mm a");
+                        gson = gsonBuilder.create();
+
+                        Utile.listaIstoricReceiver = new ArrayList<>(Arrays.asList(gson.fromJson(response.toString(), IstoricReceiver[].class)));
+
+
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Log.d("RestResponse", error.toString());
+                    }
+                }
+
+        );
+
+        requestQueue.add(objectRequest);
     }
 
 

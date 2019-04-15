@@ -175,6 +175,7 @@ public class SigninActivity extends AppCompatActivity {
                                     String DBGrupaSanguina = null;
                                     String DBCTS = null;
                                     String DBTelefon = null;
+                                    String DBID=null;
                                     try {
                                         JSONObject jsonGrupaSanguina = response.getJSONObject("idgrupasanguina");
                                         DBGrupaSanguina=jsonGrupaSanguina.getString("idgrupasanguina");
@@ -183,7 +184,8 @@ public class SigninActivity extends AppCompatActivity {
                                         DBCTS = jsonCTS.getString("numects");
                                         DBUsername = response.getString("emailreceiver");
                                         DBNume = response.getString("numereceiver");
-                                        int x=1;
+                                        DBID=response.getString("idreceiver");
+
 
 
 
@@ -199,6 +201,7 @@ public class SigninActivity extends AppCompatActivity {
                                             editor.putString("cts", DBCTS);
                                             editor.putString("email", DBUsername);
                                             editor.putString("telefon", DBTelefon);
+                                            editor.putString("id",DBID);
 
                                             editor.commit();
 

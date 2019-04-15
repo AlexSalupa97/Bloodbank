@@ -206,6 +206,7 @@ public class SignupReceiverFragment extends Fragment {
                                                 editor.putString("cts", receiver.getCts().getNumeCTS());
                                                 editor.putString("email", receiver.getEmailReceiver());
                                                 editor.putString("telefon", receiver.getTelefonReceiver());
+                                                editor.putString("id",String.valueOf(receiver.getIdReceiver()));
 
                                                 editor.commit();
 
