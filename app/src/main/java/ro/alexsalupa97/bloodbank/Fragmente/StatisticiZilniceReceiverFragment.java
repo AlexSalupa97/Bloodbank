@@ -147,7 +147,6 @@ public class StatisticiZilniceReceiverFragment extends Fragment {
         Collections.shuffle(StatisticiReceiverActivity.listaStatistici);
         StatisticiReceiverActivity.tvStatistici.setText(StatisticiReceiverActivity.listaStatistici.get(0));
 
-        Toast.makeText(getActivity(),StatisticiReceiverActivity.listaStatistici.size()+" ",Toast.LENGTH_SHORT).show();
 
         return rootView;
     }
