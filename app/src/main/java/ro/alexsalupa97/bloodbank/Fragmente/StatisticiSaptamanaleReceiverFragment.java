@@ -16,7 +16,10 @@ import com.jjoe64.graphview.series.BarGraphSeries;
 import com.jjoe64.graphview.series.DataPoint;
 import com.jjoe64.graphview.series.LineGraphSeries;
 
+import org.joda.time.Instant;
+
 import java.text.DateFormat;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -25,7 +28,9 @@ import java.util.GregorianCalendar;
 import java.util.List;
 import java.util.Locale;
 
+import ro.alexsalupa97.bloodbank.Clase.IstoricReceiver;
 import ro.alexsalupa97.bloodbank.R;
+import ro.alexsalupa97.bloodbank.Utile.Utile;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -56,12 +61,12 @@ public class StatisticiSaptamanaleReceiverFragment extends Fragment {
         DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy", Locale.ENGLISH);
         Date dateEnd = new Date();
 
-        String dateStartString = dateFormat.format(dateStart);
-        String dateEndString = dateFormat.format(dateEnd);
-        int indexStart = dateStartString.indexOf("/");
-        int indexEnd = dateEndString.indexOf("/");
-        dateStartString = dateStartString.substring(0, indexStart);
-        dateEndString = dateEndString.substring(0, indexEnd);
+//        String dateStartString = dateFormat.format(dateStart);
+//        String dateEndString = dateFormat.format(dateEnd);
+//        int indexStart = dateStartString.indexOf("/");
+//        int indexEnd = dateEndString.indexOf("/");
+//        dateStartString = dateStartString.substring(0, indexStart);
+//        dateEndString = dateEndString.substring(0, indexEnd);
 
         Calendar calendar = Calendar.getInstance();
         calendar.add(Calendar.DATE, 0);
@@ -72,7 +77,21 @@ public class StatisticiSaptamanaleReceiverFragment extends Fragment {
             cal.add(Calendar.DATE, 1);
         }
 
-        int x = 1;
+        Integer[] listaCantitatiPerZi=new Integer[7];
+        for (int i = 0; i < datesInRange.size(); i++) {
+            listaCantitatiPerZi[i]=0;
+            for (IstoricReceiver istoricReceiver : Utile.listaIstoricReceiver) {
+                Calendar cal1 = Calendar.getInstance();
+                Calendar cal2 = Calendar.getInstance();
+                cal1.setTime(getDateFromString(istoricReceiver));
+                cal2.setTime(datesInRange.get(i));
+                boolean sameDay = cal1.get(Calendar.DAY_OF_YEAR) == cal2.get(Calendar.DAY_OF_YEAR) &&
+                        cal1.get(Calendar.YEAR) == cal2.get(Calendar.YEAR);
+                if (sameDay) {
+                    listaCantitatiPerZi[i] += istoricReceiver.getCantitatePrimitaML();
+                }
+            }
+        }
 
         ArrayList<String> arrayValoriPeX = new ArrayList<>();
         for (int i = 0; i < datesInRange.size(); i++) {
@@ -83,7 +102,7 @@ public class StatisticiSaptamanaleReceiverFragment extends Fragment {
             arrayValoriPeX.add(dateDayString);
 
 
-            series.appendData(new DataPoint(i + 1, 10000 * Math.random()), false, 7);
+            series.appendData(new DataPoint(i + 1, listaCantitatiPerZi[i]), false, 7);
 
         }
 
@@ -126,8 +145,20 @@ public class StatisticiSaptamanaleReceiverFragment extends Fragment {
         graph.setTitleTextSize(60);
         graph.addSeries(series);
 
+        getDateFromString(Utile.listaIstoricReceiver.get(0));
 
         return rootView;
+    }
+
+    public Date getDateFromString(IstoricReceiver istoricReceiver) {
+        DateFormat format = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'.'SSSX");
+
+        Instant instant=Instant.parse(istoricReceiver.getDataPrimire());
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTimeInMillis(instant.getMillis());
+        Date date=calendar.getTime();
+        return date;
+
     }
 
 }
