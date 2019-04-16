@@ -7,6 +7,7 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.jjoe64.graphview.GraphView;
 import com.jjoe64.graphview.GridLabelRenderer;
@@ -14,7 +15,10 @@ import com.jjoe64.graphview.LegendRenderer;
 import com.jjoe64.graphview.helper.StaticLabelsFormatter;
 import com.jjoe64.graphview.series.BarGraphSeries;
 import com.jjoe64.graphview.series.DataPoint;
+import com.jjoe64.graphview.series.DataPointInterface;
 import com.jjoe64.graphview.series.LineGraphSeries;
+import com.jjoe64.graphview.series.OnDataPointTapListener;
+import com.jjoe64.graphview.series.Series;
 
 import org.joda.time.Instant;
 
@@ -115,6 +119,13 @@ public class StatisticiZilniceReceiverFragment extends Fragment {
         graph.setTitle(dateFormat.format(date));
         graph.setTitleTextSize(60);
         graph.addSeries(series);
+
+        series.setOnDataPointTapListener(new OnDataPointTapListener() {
+            @Override
+            public void onTap(Series series, DataPointInterface dataPoint) {
+                Toast.makeText(getContext(),String.valueOf(dataPoint.getY()+" ml la ora "+(int)dataPoint.getX()+":00"),Toast.LENGTH_SHORT).show();
+            }
+        });
 
         return rootView;
     }

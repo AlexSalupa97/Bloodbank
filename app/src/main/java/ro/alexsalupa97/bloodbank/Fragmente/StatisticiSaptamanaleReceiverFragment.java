@@ -7,6 +7,7 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.jjoe64.graphview.GraphView;
 import com.jjoe64.graphview.GridLabelRenderer;
@@ -14,7 +15,10 @@ import com.jjoe64.graphview.LegendRenderer;
 import com.jjoe64.graphview.helper.StaticLabelsFormatter;
 import com.jjoe64.graphview.series.BarGraphSeries;
 import com.jjoe64.graphview.series.DataPoint;
+import com.jjoe64.graphview.series.DataPointInterface;
 import com.jjoe64.graphview.series.LineGraphSeries;
+import com.jjoe64.graphview.series.OnDataPointTapListener;
+import com.jjoe64.graphview.series.Series;
 
 import org.joda.time.Instant;
 
@@ -58,7 +62,7 @@ public class StatisticiSaptamanaleReceiverFragment extends Fragment {
         cal.add(Calendar.DATE, -6);
         Date dateStart = cal.getTime();
 
-        DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy", Locale.ENGLISH);
+        final DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy", Locale.ENGLISH);
         Date dateEnd = new Date();
 
 //        String dateStartString = dateFormat.format(dateStart);
@@ -71,7 +75,7 @@ public class StatisticiSaptamanaleReceiverFragment extends Fragment {
         Calendar calendar = Calendar.getInstance();
         calendar.add(Calendar.DATE, 0);
         calendar.add(Calendar.SECOND,10); //procesare mai greoaie => nu se ia ultima data, mai adaugam secunde la endDate
-        ArrayList<Date> datesInRange = new ArrayList<>();
+        final ArrayList<Date> datesInRange = new ArrayList<>();
         while (cal.before(calendar)) {
             Date result = cal.getTime();
             datesInRange.add(result);
@@ -94,7 +98,7 @@ public class StatisticiSaptamanaleReceiverFragment extends Fragment {
             }
         }
 
-        ArrayList<String> arrayValoriPeX = new ArrayList<>();
+        final ArrayList<String> arrayValoriPeX = new ArrayList<>();
         for (int i = 0; i < datesInRange.size(); i++) {
             String dateString = dateFormat.format(datesInRange.get(i));
             int indexString = dateString.indexOf("/");
@@ -103,7 +107,7 @@ public class StatisticiSaptamanaleReceiverFragment extends Fragment {
             arrayValoriPeX.add(dateDayString);
 
 
-            series.appendData(new DataPoint(i + 1, listaCantitatiPerZi[i]), false, 7);
+            series.appendData(new DataPoint(i, listaCantitatiPerZi[i]), false, 7);
 
         }
 
@@ -115,7 +119,7 @@ public class StatisticiSaptamanaleReceiverFragment extends Fragment {
 
         String[] valoriPeX = new String[arrayValoriPeX.size()];
         valoriPeX = arrayValoriPeX.toArray(valoriPeX);
-        StaticLabelsFormatter staticLabelsFormatter = new StaticLabelsFormatter(graph);
+        final StaticLabelsFormatter staticLabelsFormatter = new StaticLabelsFormatter(graph);
         staticLabelsFormatter.setHorizontalLabels(valoriPeX);
         graph.getGridLabelRenderer().setLabelFormatter(staticLabelsFormatter);
         graph.getGridLabelRenderer().setHorizontalLabelsAngle(90);
@@ -148,12 +152,18 @@ public class StatisticiSaptamanaleReceiverFragment extends Fragment {
 
         getDateFromString(Utile.listaIstoricReceiver.get(0));
 
+        series.setOnDataPointTapListener(new OnDataPointTapListener() {
+            @Override
+            public void onTap(Series series, DataPointInterface dataPoint) {
+                String date=dateFormat.format(datesInRange.get((int)dataPoint.getX()));
+                Toast.makeText(getContext(),String.valueOf(dataPoint.getY()+"ml la data de "+date),Toast.LENGTH_SHORT).show();
+            }
+        });
+
         return rootView;
     }
 
     public Date getDateFromString(IstoricReceiver istoricReceiver) {
-        DateFormat format = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'.'SSSX");
-
         Instant instant=Instant.parse(istoricReceiver.getDataPrimire());
         Calendar calendar = Calendar.getInstance();
         calendar.setTimeInMillis(instant.getMillis());
