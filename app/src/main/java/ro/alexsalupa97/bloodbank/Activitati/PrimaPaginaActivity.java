@@ -45,9 +45,11 @@ import ro.alexsalupa97.bloodbank.Clase.CTS;
 import ro.alexsalupa97.bloodbank.Clase.Compatibilitati;
 import ro.alexsalupa97.bloodbank.Clase.Intrebari;
 import ro.alexsalupa97.bloodbank.Clase.IstoricDonatii;
+import ro.alexsalupa97.bloodbank.Fragmente.MapsCTSFragment;
 import ro.alexsalupa97.bloodbank.Notificari.ActionAlerteBroadcast;
 import ro.alexsalupa97.bloodbank.Notificari.ActionCentreBroadcast;
 import ro.alexsalupa97.bloodbank.Notificari.NotificariBroadcast;
+import ro.alexsalupa97.bloodbank.Utile.CalculDistante;
 import ro.alexsalupa97.bloodbank.Utile.Utile;
 import ro.alexsalupa97.bloodbank.R;
 import com.google.gson.Gson;
@@ -59,6 +61,7 @@ import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 
@@ -92,6 +95,9 @@ public class PrimaPaginaActivity extends AppCompatActivity implements Navigation
 
     ProgressDialog pd;
 
+    public static CTS closestCTS;
+    HashMap<CTS,Double> mapListaDistante;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -115,6 +121,20 @@ public class PrimaPaginaActivity extends AppCompatActivity implements Navigation
 
         statusCheck();
 
+        MapsCTSFragment.locatieCurenta= CalculDistante.getMyLocation(PrimaPaginaActivity.this);
+
+
+        mapListaDistante=new HashMap<>();
+        for(CTS cts: Utile.CTS){
+            mapListaDistante.put(cts,CalculDistante.distanceBetweenTwoCoordinates(MapsCTSFragment.locatieCurenta.getLatitude(), MapsCTSFragment.locatieCurenta.getLongitude(), cts.getCoordonataXCTS(), cts.getCoordonataYCTS()));
+        }
+
+        double minDistance=Double.MAX_VALUE;
+        for(CTS cts:mapListaDistante.keySet())
+            if(mapListaDistante.get(cts)<minDistance){
+                minDistance=mapListaDistante.get(cts);
+                closestCTS=cts;
+            }
 
         sharedPreferences = getSharedPreferences(fisier, Context.MODE_PRIVATE);
 

@@ -2,15 +2,20 @@ package ro.alexsalupa97.bloodbank.Adaptoare;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.net.Uri;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import ro.alexsalupa97.bloodbank.Activitati.DetaliiCTSActivity;
+import ro.alexsalupa97.bloodbank.Activitati.ListaCentreActivity;
+import ro.alexsalupa97.bloodbank.Activitati.PrimaPaginaActivity;
 import ro.alexsalupa97.bloodbank.Clase.CTS;
 import ro.alexsalupa97.bloodbank.R;
 
@@ -30,6 +35,7 @@ public class AdaptorLVCTS extends ArrayAdapter<CTS> {
         public TextView adresaCTS;
         public TextView telefonCTS;
         public Button btnApelare;
+        public ImageView ivLogoIcon;
     }
 
     @Override
@@ -48,6 +54,7 @@ public class AdaptorLVCTS extends ArrayAdapter<CTS> {
             viewHolder.adresaCTS = (TextView) viewRefolosibil.findViewById(R.id.lvAdresaCTS);
             viewHolder.telefonCTS = (TextView) viewRefolosibil.findViewById(R.id.lvTelefonCTS);
             viewHolder.btnApelare=(Button)viewRefolosibil.findViewById(R.id.btnApelare);
+            viewHolder.ivLogoIcon=(ImageView)viewRefolosibil.findViewById(R.id.ivLogoIcon);
 
 
             viewRefolosibil.setTag(viewHolder);
@@ -60,6 +67,16 @@ public class AdaptorLVCTS extends ArrayAdapter<CTS> {
         holder.numeCTS.setText(curent.getNumeCTS());
         holder.adresaCTS.setText(curent.getAdresaCTS());
         holder.telefonCTS.setText(curent.getTelefonCTS());
+
+        if(curent.getNumeCTS().equals(PrimaPaginaActivity.closestCTS.getNumeCTS())) {
+//            viewRefolosibil.setPadding(4,4,4,4);
+//            viewRefolosibil.setBackgroundColor(context.getResources().getColor(R.color.celalaltRosu));
+            holder.ivLogoIcon.setImageResource(R.drawable.recomandat);
+        }
+        else{
+            holder.ivLogoIcon.setImageResource(R.mipmap.ic_bloodbank_launcher_round);
+//            viewRefolosibil.setBackgroundColor(Color.WHITE);
+        }
 
 
         holder.btnApelare.setOnClickListener(new View.OnClickListener() {

@@ -9,7 +9,7 @@
     android:orientation="horizontal">
 
     <ImageView
-        android:id="@+id/lvLogoIcon"
+        android:id="@+id/ivLogoIcon"
         android:layout_width="0dp"
         android:layout_height="match_parent"
         android:layout_weight="1"

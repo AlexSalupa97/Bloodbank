@@ -96,6 +96,7 @@ public class MapsCTSFragment extends Fragment {
                 googleMap.getUiSettings().setMyLocationButtonEnabled(true);
                 googleMap.getUiSettings().setZoomControlsEnabled(true);
 
+                int x=1;
 
                 googleMap.setOnMyLocationButtonClickListener(new GoogleMap.OnMyLocationButtonClickListener() {
                     @Override
@@ -183,18 +184,5 @@ public class MapsCTSFragment extends Fragment {
         mMapView.onLowMemory();
     }
 
-    private Location getMyLocation() {
-        LocationManager lm = (LocationManager)getActivity().getSystemService(Context.LOCATION_SERVICE);
-        Location myLocation = null;
-        if (ContextCompat.checkSelfPermission(getActivity(), android.Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED || ContextCompat.checkSelfPermission(getActivity(), android.Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
-            lm.getLastKnownLocation(LocationManager.GPS_PROVIDER);
-        }
-        if (myLocation == null) {
-            Criteria criteria = new Criteria();
-            criteria.setAccuracy(Criteria.ACCURACY_COARSE);
-            String provider = lm.getBestProvider(criteria, true);
-            myLocation = lm.getLastKnownLocation(provider);
-        }
-        return myLocation;
-    }
+
 }
