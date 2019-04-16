@@ -89,7 +89,7 @@ public class StatisticiSaptamanaleReceiverFragment extends Fragment {
 
         graph.getGridLabelRenderer().setPadding(32);
 
-        graph.getGridLabelRenderer().setHorizontalAxisTitle("Ore");
+        graph.getGridLabelRenderer().setHorizontalAxisTitle("Zile");
         graph.getGridLabelRenderer().setGridStyle(GridLabelRenderer.GridStyle.NONE);
 //        graph.getViewport().setDrawBorder(true);
 
@@ -121,6 +121,7 @@ public class StatisticiSaptamanaleReceiverFragment extends Fragment {
 
 
         series.setSpacing(20);
+        graph.getGridLabelRenderer().setLabelsSpace(20); //overlapping x-y solution
         graph.setTitle(dateFormat.format(dateStart) + " - " + dateFormat.format(dateEnd));
         graph.setTitleTextSize(60);
         graph.addSeries(series);

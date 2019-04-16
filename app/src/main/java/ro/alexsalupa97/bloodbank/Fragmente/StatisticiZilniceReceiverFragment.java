@@ -89,7 +89,8 @@ public class StatisticiZilniceReceiverFragment extends Fragment {
         graph.getViewport().setMaxX(series.getHighestValueX() + (xInterval / 2.0));
 
 
-        series.setSpacing(20);
+        series.setSpacing(10);
+        graph.getGridLabelRenderer().setLabelsSpace(20);
         graph.setTitle(dateFormat.format(date));
         graph.setTitleTextSize(60);
         graph.addSeries(series);
