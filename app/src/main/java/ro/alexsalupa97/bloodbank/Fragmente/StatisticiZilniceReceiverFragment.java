@@ -45,22 +45,25 @@ public class StatisticiZilniceReceiverFragment extends Fragment {
 
         GraphView graph = (GraphView) rootView.findViewById(R.id.gvStatistici);
         BarGraphSeries<DataPoint> series = new BarGraphSeries<>();
-        ArrayList<String> arrayValoriPeX=new ArrayList<>();
+        ArrayList<String> arrayValoriPeX = new ArrayList<>();
         for (int i = 0; i < 24; i++) {
-            arrayValoriPeX.add(String.valueOf(i));
+            if (i < 10)
+                arrayValoriPeX.add("0" + String.valueOf(i) + ":00");
+            else
+                arrayValoriPeX.add(String.valueOf(i) + ":00");
             series.appendData(new DataPoint(i, 10000 * Math.random()), false, 30);
         }
-        DateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy", Locale.ENGLISH);
+        DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy", Locale.ENGLISH);
         Date date = new Date();
 
-       graph.getGridLabelRenderer().setPadding(32);
+        graph.getGridLabelRenderer().setPadding(32);
 
         graph.getGridLabelRenderer().setHorizontalAxisTitle("Ore");
-        graph.getGridLabelRenderer().setGridStyle( GridLabelRenderer.GridStyle.NONE );
+        graph.getGridLabelRenderer().setGridStyle(GridLabelRenderer.GridStyle.NONE);
 //        graph.getViewport().setDrawBorder(true);
 
-        String[] valoriPeX=new String[arrayValoriPeX.size()];
-        valoriPeX=arrayValoriPeX.toArray(valoriPeX);
+        String[] valoriPeX = new String[arrayValoriPeX.size()];
+        valoriPeX = arrayValoriPeX.toArray(valoriPeX);
         StaticLabelsFormatter staticLabelsFormatter = new StaticLabelsFormatter(graph);
         staticLabelsFormatter.setHorizontalLabels(valoriPeX);
         graph.getGridLabelRenderer().setLabelFormatter(staticLabelsFormatter);
@@ -73,7 +76,7 @@ public class StatisticiZilniceReceiverFragment extends Fragment {
 
         series.setTitle("Cantitati (ml)");
         graph.getLegendRenderer().setVisible(true);
-        graph.getLegendRenderer().setBackgroundColor(android.R.color.white);
+        graph.getLegendRenderer().setBackgroundColor(Color.parseColor("#ececec"));
         graph.getLegendRenderer().setAlign(LegendRenderer.LegendAlign.TOP);
 
         double xInterval = 1.0;
