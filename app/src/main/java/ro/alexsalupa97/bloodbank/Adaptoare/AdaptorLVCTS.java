@@ -72,10 +72,12 @@ public class AdaptorLVCTS extends ArrayAdapter<CTS> {
 //            viewRefolosibil.setPadding(4,4,4,4);
 //            viewRefolosibil.setBackgroundColor(context.getResources().getColor(R.color.celalaltRosu));
             holder.ivLogoIcon.setImageResource(R.drawable.recomandat);
+            holder.ivLogoIcon.setPadding(20,0,0,0);
         }
         else{
             holder.ivLogoIcon.setImageResource(R.mipmap.ic_bloodbank_launcher_round);
 //            viewRefolosibil.setBackgroundColor(Color.WHITE);
+            holder.ivLogoIcon.setPadding(0,0,0,0);
         }
 
 
