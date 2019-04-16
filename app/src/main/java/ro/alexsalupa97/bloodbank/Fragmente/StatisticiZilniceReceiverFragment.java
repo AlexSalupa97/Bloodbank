@@ -7,6 +7,7 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.jjoe64.graphview.GraphView;
@@ -26,10 +27,12 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collections;
 import java.util.Date;
 import java.util.Locale;
 import java.util.Random;
 
+import ro.alexsalupa97.bloodbank.Activitati.StatisticiReceiverActivity;
 import ro.alexsalupa97.bloodbank.Clase.IstoricReceiver;
 import ro.alexsalupa97.bloodbank.R;
 import ro.alexsalupa97.bloodbank.Utile.Utile;
@@ -48,12 +51,14 @@ public class StatisticiZilniceReceiverFragment extends Fragment {
     public static String valoareData;
     public static String valoareCantitateML;
 
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         rootView = inflater.inflate(R.layout.fragment_statistici_zilnice_receiver, container, false);
 
+        StatisticiReceiverActivity.tvStatistici=(TextView)getActivity().findViewById(R.id.tvStatistici);
         GraphView graph = (GraphView) rootView.findViewById(R.id.gvStatistici);
         BarGraphSeries<DataPoint> series = new BarGraphSeries<>();
         ArrayList<String> arrayValoriPeX = new ArrayList<>();
@@ -61,8 +66,8 @@ public class StatisticiZilniceReceiverFragment extends Fragment {
         DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy", Locale.ENGLISH);
         Date date = new Date();
 
-        int[] listaCantitatiPerOre=new int[24];
-        int iValoareCantitateML=Integer.MIN_VALUE;
+        int[] listaCantitatiPerOre = new int[24];
+        int iValoareCantitateML = Integer.MIN_VALUE;
 
         for (int i = 0; i < 24; i++) {
             if (i < 10)
@@ -76,18 +81,17 @@ public class StatisticiZilniceReceiverFragment extends Fragment {
                 cal2.setTime(date);
                 boolean sameDay = cal1.get(Calendar.DAY_OF_YEAR) == cal2.get(Calendar.DAY_OF_YEAR) &&
                         cal1.get(Calendar.YEAR) == cal2.get(Calendar.YEAR);
-                if (sameDay&&i==cal1.get(Calendar.HOUR_OF_DAY)) {
-                    listaCantitatiPerOre[cal1.get(Calendar.HOUR_OF_DAY)]+=listaCantitatiPerOre[cal1.get(Calendar.HOUR_OF_DAY)]+istoricReceiver.getCantitatePrimitaML();
+                if (sameDay && i == cal1.get(Calendar.HOUR_OF_DAY)) {
+                    listaCantitatiPerOre[cal1.get(Calendar.HOUR_OF_DAY)] += listaCantitatiPerOre[cal1.get(Calendar.HOUR_OF_DAY)] + istoricReceiver.getCantitatePrimitaML();
                 }
             }
             series.appendData(new DataPoint(i, listaCantitatiPerOre[i]), false, listaCantitatiPerOre.length);
-            if(iValoareCantitateML<listaCantitatiPerOre[i]) {
+            if (iValoareCantitateML < listaCantitatiPerOre[i]) {
                 iValoareCantitateML = listaCantitatiPerOre[i];
-                valoareCantitateML=String.valueOf(iValoareCantitateML);
-                valoareData=arrayValoriPeX.get(i);
+                valoareCantitateML = String.valueOf(iValoareCantitateML);
+                valoareData = arrayValoriPeX.get(i);
             }
         }
-
 
 
         graph.getGridLabelRenderer().setPadding(32);
@@ -132,15 +136,24 @@ public class StatisticiZilniceReceiverFragment extends Fragment {
         series.setOnDataPointTapListener(new OnDataPointTapListener() {
             @Override
             public void onTap(Series series, DataPointInterface dataPoint) {
-                Toast.makeText(getContext(),String.valueOf(dataPoint.getY()+" ml la ora "+(int)dataPoint.getX()+":00"),Toast.LENGTH_SHORT).show();
+                Toast.makeText(getContext(), String.valueOf(dataPoint.getY() + " ml la ora " + (int) dataPoint.getX() + ":00"), Toast.LENGTH_SHORT).show();
             }
         });
+
+        if (StatisticiZilniceReceiverFragment.valoareData != null&&!StatisticiReceiverActivity.dejaAdaugatZilnic) {
+            StatisticiReceiverActivity.listaStatistici.add("In aceasta zi, ora cea mai \"bogata\" in donatii a fost " + StatisticiZilniceReceiverFragment.valoareData + ", cu o cantitate de sange primita de " + StatisticiZilniceReceiverFragment.valoareCantitateML + "ml.");
+            StatisticiReceiverActivity.dejaAdaugatZilnic=true;
+        }
+        Collections.shuffle(StatisticiReceiverActivity.listaStatistici);
+        StatisticiReceiverActivity.tvStatistici.setText(StatisticiReceiverActivity.listaStatistici.get(0));
+
+        Toast.makeText(getActivity(),StatisticiReceiverActivity.listaStatistici.size()+" ",Toast.LENGTH_SHORT).show();
 
         return rootView;
     }
 
     public Date getDateFromString(IstoricReceiver istoricReceiver) {
-        Instant instant=Instant.parse(istoricReceiver.getDataPrimire());
+        Instant instant = Instant.parse(istoricReceiver.getDataPrimire());
         Calendar calendar = Calendar.getInstance();
         calendar.setTimeInMillis(instant.getMillis());
         return calendar.getTime();

@@ -27,11 +27,13 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collections;
 import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.List;
 import java.util.Locale;
 
+import ro.alexsalupa97.bloodbank.Activitati.StatisticiReceiverActivity;
 import ro.alexsalupa97.bloodbank.Clase.IstoricReceiver;
 import ro.alexsalupa97.bloodbank.R;
 import ro.alexsalupa97.bloodbank.Utile.Utile;
@@ -49,6 +51,7 @@ public class StatisticiSaptamanaleReceiverFragment extends Fragment {
     View rootView;
     public static String valoareData;
     public static String valoareCantitateML;
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -168,6 +171,15 @@ public class StatisticiSaptamanaleReceiverFragment extends Fragment {
                 Toast.makeText(getContext(),String.valueOf(dataPoint.getY()+"ml la data de "+date),Toast.LENGTH_SHORT).show();
             }
         });
+
+        if (StatisticiSaptamanaleReceiverFragment.valoareData != null&&!StatisticiReceiverActivity.dejaAdaugatSaptamanal) {
+            StatisticiReceiverActivity.listaStatistici.add("In aceasta saptamana, cele mai multe donatii s-au inregistrat in data de " + StatisticiSaptamanaleReceiverFragment.valoareData + ", cu " + StatisticiZilniceReceiverFragment.valoareCantitateML + "ml primiti.");
+            StatisticiReceiverActivity.dejaAdaugatSaptamanal=true;
+        }
+        Collections.shuffle(StatisticiReceiverActivity.listaStatistici);
+        StatisticiReceiverActivity.tvStatistici.setText(StatisticiReceiverActivity.listaStatistici.get(0));
+
+        Toast.makeText(getActivity(),StatisticiReceiverActivity.listaStatistici.size()+" ",Toast.LENGTH_SHORT).show();
 
         return rootView;
     }
