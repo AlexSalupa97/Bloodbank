@@ -107,7 +107,7 @@ public class StatisticiSaptamanaleReceiverFragment extends Fragment {
             arrayValoriPeX.add(dateDayString);
 
 
-            series.appendData(new DataPoint(i, listaCantitatiPerZi[i]), false, 7);
+            series.appendData(new DataPoint(i, listaCantitatiPerZi[i]), false, datesInRange.size());
 
         }
 

@@ -77,7 +77,7 @@ public class StatisticiZilniceReceiverFragment extends Fragment {
                     listaCantitatiPerOre[cal1.get(Calendar.HOUR_OF_DAY)]+=listaCantitatiPerOre[cal1.get(Calendar.HOUR_OF_DAY)]+istoricReceiver.getCantitatePrimitaML();
                 }
             }
-            series.appendData(new DataPoint(i, listaCantitatiPerOre[i]), false, 30);
+            series.appendData(new DataPoint(i, listaCantitatiPerOre[i]), false, listaCantitatiPerOre.length);
         }
 
 
