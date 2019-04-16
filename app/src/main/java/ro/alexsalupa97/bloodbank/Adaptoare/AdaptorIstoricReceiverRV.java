@@ -15,6 +15,7 @@ import android.widget.TextView;
 import java.util.ArrayList;
 
 import ro.alexsalupa97.bloodbank.Activitati.DetaliiSuplimentareIstoricActivity;
+import ro.alexsalupa97.bloodbank.Activitati.StatisticiReceiverActivity;
 import ro.alexsalupa97.bloodbank.R;
 import ro.alexsalupa97.bloodbank.RecyclerViewOrizontal.SectionModelIstoric;
 
@@ -57,10 +58,8 @@ public class AdaptorIstoricReceiverRV extends RecyclerView.Adapter<AdaptorIstori
         itemRowHolder.btnMore.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
-
-
-
+                Intent intent=new Intent(context.getApplicationContext(), StatisticiReceiverActivity.class);
+                context.startActivity(intent);
             }
         });
 
@@ -91,7 +90,10 @@ public class AdaptorIstoricReceiverRV extends RecyclerView.Adapter<AdaptorIstori
             this.recycler_view_list = (RecyclerView) view.findViewById(R.id.recycler_view_list);
             this.btnMore = (Button) view.findViewById(R.id.btnMaiMult);
 
+            btnMore.setText("Statistici");
             btnMore.setBackgroundColor(Color.parseColor("#ececec"));
+
+
 
 
         }

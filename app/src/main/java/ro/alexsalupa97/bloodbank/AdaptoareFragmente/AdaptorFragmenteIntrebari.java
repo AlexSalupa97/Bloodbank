@@ -8,8 +8,7 @@ import android.support.v4.app.FragmentStatePagerAdapter;
 import ro.alexsalupa97.bloodbank.Fragmente.IntrebareFragment;
 import ro.alexsalupa97.bloodbank.Utile.Utile;
 
-public class AdaptorFragmenteIntrebari extends FragmentStatePagerAdapter
-{
+public class AdaptorFragmenteIntrebari extends FragmentStatePagerAdapter {
     public AdaptorFragmenteIntrebari(FragmentManager fragmentManager) {
         super(fragmentManager);
     }
@@ -22,12 +21,12 @@ public class AdaptorFragmenteIntrebari extends FragmentStatePagerAdapter
 
     @Override
     public Fragment getItem(int position) {
-            IntrebareFragment intrebareFragment = new IntrebareFragment();
-            Bundle bundle = new Bundle();
-            position++;
-            bundle.putParcelable("intrebare", Utile.intrebari.get(position - 1));
-            intrebareFragment.setArguments(bundle);
-            return intrebareFragment;
+        IntrebareFragment intrebareFragment = new IntrebareFragment();
+        Bundle bundle = new Bundle();
+        position++;
+        bundle.putParcelable("intrebare", Utile.intrebari.get(position - 1));
+        intrebareFragment.setArguments(bundle);
+        return intrebareFragment;
     }
 
 }

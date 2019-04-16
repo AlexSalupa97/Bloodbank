@@ -40,6 +40,7 @@ import org.json.JSONArray;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 import ro.alexsalupa97.bloodbank.Adaptoare.AdaptorIstoricReceiverRV;
@@ -165,23 +166,30 @@ public class DetaliiReceiverMainActivity extends AppCompatActivity implements Na
             receiver.setNumeReceiver(Utile.preluareUsername(getApplicationContext()));
             receiver.setTelefonReceiver(Utile.preluareTelefon(getApplicationContext()));
             receiver.setEmailReceiver(Utile.preluareEmail(getApplicationContext()));
-            for (CTS cts : Utile.CTS)
-                if (cts.getNumeCTS().equals((Utile.preluareCTS(getApplicationContext()))))
-                    receiver.setCts(cts);
+            try {
+                for (CTS cts : Utile.CTS)
+                    if (cts.getNumeCTS().equals((Utile.preluareCTS(getApplicationContext()))))
+                        receiver.setCts(cts);
 
-            for (GrupeSanguine grupeSanguine : Utile.listaGrupeSanguine)
-                if (grupeSanguine.getGrupaSanguina().equals((Utile.preluareGrupaSanguina(getApplicationContext()))))
-                    receiver.setGrupaSanguina(grupeSanguine);
+                for (GrupeSanguine grupeSanguine : Utile.listaGrupeSanguine)
+                    if (grupeSanguine.getGrupaSanguina().equals((Utile.preluareGrupaSanguina(getApplicationContext()))))
+                        receiver.setGrupaSanguina(grupeSanguine);
+            }
+            catch (Exception ex){
+
+            }
 
         }
+
+
+        rvIstoricReceiver=(RecyclerView)findViewById(R.id.rvIstoricReceiver);
+        btnIstoricReceiver=(Button)findViewById(R.id.btnIstoricReceiver);
+
         if (!Utile.firstTimeReceiver) {
             rvIstoricReceiver.setVisibility(View.VISIBLE);
             btnIstoricReceiver.setVisibility(View.GONE);
         }
-
-        rvIstoricReceiver=(RecyclerView)findViewById(R.id.rvIstoricReceiver);
-
-        btnIstoricReceiver=(Button)findViewById(R.id.btnIstoricReceiver);
+        
         btnIstoricReceiver.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -223,6 +231,7 @@ public class DetaliiReceiverMainActivity extends AppCompatActivity implements Na
                                     itemeInSectiune.add(new ItemModelIstoric(substring,id.getCantitatePrimitaML()+"ml"));
                                 }
 
+                                Collections.sort(itemeInSectiune);
                                 dm.setItemeInSectiune(itemeInSectiune);
 
                                 sectiuni.add(dm);

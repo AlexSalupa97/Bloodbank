@@ -16,9 +16,13 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:replace="android:allowBackup">
-        <activity android:name=".Activitati.DetaliiReceiverMainActivity"
-            android:label="Pagina mea"
+        <activity android:name=".Activitati.StatisticiReceiverActivity"
+            android:label="Statistici"
             android:screenOrientation="portrait"></activity>
+        <activity
+            android:name=".Activitati.DetaliiReceiverMainActivity"
+            android:label="Pagina mea"
+            android:screenOrientation="portrait" />
         <activity
             android:name=".Activitati.DetaliiReceiverActivity"
             android:label="Detalii receiver"

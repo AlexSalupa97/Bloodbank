@@ -1,6 +1,6 @@
 package ro.alexsalupa97.bloodbank.RecyclerViewOrizontal;
 
-public class ItemModelIstoric {
+public class ItemModelIstoric implements Comparable {
 
     private String dataDonare;
     private String cantitateDonata;
@@ -27,5 +27,11 @@ public class ItemModelIstoric {
 
     public void setCantitateDonata(String cantitateDonata) {
         this.cantitateDonata = cantitateDonata;
+    }
+
+    @Override
+    public int compareTo(Object o) {
+        ItemModelIstoric itemModelIstoric=(ItemModelIstoric)o;
+        return -(this.dataDonare.compareTo(itemModelIstoric.dataDonare));
     }
 }
