@@ -70,6 +70,7 @@ public class StatisticiSaptamanaleReceiverFragment extends Fragment {
 
         Calendar calendar = Calendar.getInstance();
         calendar.add(Calendar.DATE, 0);
+        calendar.add(Calendar.SECOND,10); //procesare mai greoaie => nu se ia ultima data, mai adaugam secunde la endDate
         ArrayList<Date> datesInRange = new ArrayList<>();
         while (cal.before(calendar)) {
             Date result = cal.getTime();

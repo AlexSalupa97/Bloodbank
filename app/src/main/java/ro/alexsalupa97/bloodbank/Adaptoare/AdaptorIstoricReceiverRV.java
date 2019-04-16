@@ -16,6 +16,7 @@ import java.util.ArrayList;
 
 import ro.alexsalupa97.bloodbank.Activitati.DetaliiSuplimentareIstoricActivity;
 import ro.alexsalupa97.bloodbank.Activitati.StatisticiReceiverActivity;
+import ro.alexsalupa97.bloodbank.Activitati.TransparentReceiverActivity;
 import ro.alexsalupa97.bloodbank.R;
 import ro.alexsalupa97.bloodbank.RecyclerViewOrizontal.SectionModelIstoric;
 

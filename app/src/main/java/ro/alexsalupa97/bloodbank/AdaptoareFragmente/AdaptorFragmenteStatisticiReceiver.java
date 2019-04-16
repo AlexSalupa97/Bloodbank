@@ -18,17 +18,17 @@ public class AdaptorFragmenteStatisticiReceiver extends FragmentStatePagerAdapte
 
     @Override
     public int getCount() {
-        return 3;
+        return 4;
     }
 
 
     @Override
     public Fragment getItem(int position) {
         if (position == 0)
-//            return new StatisticiZilniceReceiverFragment();
-//        else if (position == 1)
-            return new StatisticiSaptamanaleReceiverFragment();
+            return new StatisticiZilniceReceiverFragment();
         else if (position == 1)
+            return new StatisticiSaptamanaleReceiverFragment();
+        else if (position == 2)
             return new StatisticiLunareReceiverFragment();
         else
             return new StatisticiAnualeReceiverFragment();
@@ -38,10 +38,10 @@ public class AdaptorFragmenteStatisticiReceiver extends FragmentStatePagerAdapte
     @Override
     public CharSequence getPageTitle(int position) {
         if (position == 0)
-//            return " Zilnice";
-//        else if (position == 1)
-            return "Saptamanale";
+            return " Zilnice";
         else if (position == 1)
+            return "Saptamanale";
+        else if (position == 2)
             return "Lunare";
         else
             return "Anuale";
