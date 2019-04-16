@@ -45,6 +45,8 @@ public class StatisticiZilniceReceiverFragment extends Fragment {
     }
 
     View rootView;
+    public static String valoareData;
+    public static String valoareCantitateML;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -60,6 +62,7 @@ public class StatisticiZilniceReceiverFragment extends Fragment {
         Date date = new Date();
 
         int[] listaCantitatiPerOre=new int[24];
+        int iValoareCantitateML=Integer.MIN_VALUE;
 
         for (int i = 0; i < 24; i++) {
             if (i < 10)
@@ -78,7 +81,13 @@ public class StatisticiZilniceReceiverFragment extends Fragment {
                 }
             }
             series.appendData(new DataPoint(i, listaCantitatiPerOre[i]), false, listaCantitatiPerOre.length);
+            if(iValoareCantitateML<listaCantitatiPerOre[i]) {
+                iValoareCantitateML = listaCantitatiPerOre[i];
+                valoareCantitateML=String.valueOf(iValoareCantitateML);
+                valoareData=arrayValoriPeX.get(i);
+            }
         }
+
 
 
         graph.getGridLabelRenderer().setPadding(32);

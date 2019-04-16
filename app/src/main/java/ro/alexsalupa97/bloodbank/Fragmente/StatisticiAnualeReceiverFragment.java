@@ -44,6 +44,8 @@ public class StatisticiAnualeReceiverFragment extends Fragment {
     }
 
     View rootView;
+    public static String valoareData;
+    public static String valoareCantitateML;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -85,15 +87,15 @@ public class StatisticiAnualeReceiverFragment extends Fragment {
                 Calendar cal2 = Calendar.getInstance();
                 cal1.setTime(getDateFromString(istoricReceiver));
                 cal2.setTime(datesInRange.get(i));
-                boolean sameDay = cal1.get(Calendar.DAY_OF_YEAR) == cal2.get(Calendar.DAY_OF_YEAR) &&
-                        cal1.get(Calendar.YEAR) == cal2.get(Calendar.YEAR);
-                if (sameDay) {
+                boolean sameMonth=cal1.get(Calendar.MONTH) == cal2.get(Calendar.MONTH);
+                if (sameMonth) {
                     listaCantitatiPerZi[i] += istoricReceiver.getCantitatePrimitaML();
                 }
             }
         }
 
         final ArrayList<String> arrayValoriPeX = new ArrayList<>();
+        int iValoareMax=Integer.MIN_VALUE;
         for (int i = 0; i < datesInRange.size(); i++) {
             String dateString = dateFormat.format(datesInRange.get(i));
             int indexStartLuna = dateString.indexOf("/");
@@ -142,6 +144,12 @@ public class StatisticiAnualeReceiverFragment extends Fragment {
 
 
             series.appendData(new DataPoint(i, listaCantitatiPerZi[i]), false, datesInRange.size());
+
+            if(iValoareMax<listaCantitatiPerZi[i]){
+                iValoareMax=listaCantitatiPerZi[i];
+                valoareCantitateML=String.valueOf(iValoareMax);
+                valoareData=arrayValoriPeX.get(i);
+            }
 
         }
 

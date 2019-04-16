@@ -45,6 +45,9 @@ public class StatisticiLunareReceiverFragment extends Fragment {
 
     View rootView;
 
+    public static String valoareData;
+    public static String valoareCantitateML;
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -94,6 +97,7 @@ public class StatisticiLunareReceiverFragment extends Fragment {
         }
 
         final ArrayList<String> arrayValoriPeX = new ArrayList<>();
+        int iValoareMax=Integer.MIN_VALUE;
         for (int i = 0; i < datesInRange.size(); i++) {
             String dateString = dateFormat.format(datesInRange.get(i));
             int indexString = dateString.indexOf("/");
@@ -103,6 +107,12 @@ public class StatisticiLunareReceiverFragment extends Fragment {
 
 
             series.appendData(new DataPoint(i, listaCantitatiPerZi[i]), false, datesInRange.size());
+
+            if(iValoareMax<listaCantitatiPerZi[i]){
+                iValoareMax=listaCantitatiPerZi[i];
+                valoareCantitateML=String.valueOf(iValoareMax);
+                valoareData=dateFormat.format(datesInRange.get(i));
+            }
 
         }
 
