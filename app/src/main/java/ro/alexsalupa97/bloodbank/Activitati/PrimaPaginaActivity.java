@@ -95,8 +95,6 @@ public class PrimaPaginaActivity extends AppCompatActivity implements Navigation
 
     ProgressDialog pd;
 
-    public static CTS closestCTS;
-    HashMap<CTS,Double> mapListaDistante;
 
 
     @Override
@@ -124,17 +122,7 @@ public class PrimaPaginaActivity extends AppCompatActivity implements Navigation
         MapsCTSFragment.locatieCurenta= CalculDistante.getMyLocation(PrimaPaginaActivity.this);
 
 
-        mapListaDistante=new HashMap<>();
-        for(CTS cts: Utile.CTS){
-            mapListaDistante.put(cts,CalculDistante.distanceBetweenTwoCoordinates(MapsCTSFragment.locatieCurenta.getLatitude(), MapsCTSFragment.locatieCurenta.getLongitude(), cts.getCoordonataXCTS(), cts.getCoordonataYCTS()));
-        }
 
-        double minDistance=Double.MAX_VALUE;
-        for(CTS cts:mapListaDistante.keySet())
-            if(mapListaDistante.get(cts)<minDistance){
-                minDistance=mapListaDistante.get(cts);
-                closestCTS=cts;
-            }
 
         sharedPreferences = getSharedPreferences(fisier, Context.MODE_PRIVATE);
 
@@ -285,16 +273,16 @@ public class PrimaPaginaActivity extends AppCompatActivity implements Navigation
         });
 
         Button btnTest = (Button) findViewById(R.id.btnTest);
-        btnTest.setVisibility(View.GONE);
+//        btnTest.setVisibility(View.GONE);
         btnTest.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-//                Intent intent=new Intent(getApplicationContext(),TestActivity.class);
-//                startActivity(intent);
+                Intent intent=new Intent(getApplicationContext(),TestActivity.class);
+                startActivity(intent);
 
-                Intent twitterIntent = getShareIntent("twitter", "subject", "text: " + "https://play.google.com/store/apps/developer?id=AlexSalupa97");
-                if (twitterIntent != null)
-                    startActivity(twitterIntent);
+//                Intent twitterIntent = getShareIntent("twitter", "subject", "text: " + "https://play.google.com/store/apps/developer?id=AlexSalupa97");
+//                if (twitterIntent != null)
+//                    startActivity(twitterIntent);
 
 //                Intent facebookIntent = getShareIntent("facebook", "", "https://play.google.com/store/apps/developer?id=AlexSalupa97");
 //                if(facebookIntent != null)

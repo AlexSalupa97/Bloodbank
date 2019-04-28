@@ -9,7 +9,15 @@
 
     <ExpandableListView
         android:id="@+id/lvExp"
+        android:visibility="gone"
         android:layout_height="match_parent"
         android:layout_width="match_parent"/>
+
+    <TimePicker
+        android:id="@+id/tpProgramare"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:timePickerMode="spinner"
+        />
 
 </LinearLayout>

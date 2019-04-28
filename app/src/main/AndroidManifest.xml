@@ -16,9 +16,13 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:replace="android:allowBackup">
-        <activity android:name=".Activitati.TransparentReceiverActivity"
+        <activity android:name=".Activitati.ProgramareActivity"
             android:screenOrientation="portrait"
-            android:theme="@style/TransparentCompat"></activity>
+            android:label="Programare"></activity>
+        <activity
+            android:name=".Activitati.TransparentReceiverActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/TransparentCompat" />
         <activity
             android:name=".Activitati.StatisticiReceiverActivity"
             android:label="Statistici"

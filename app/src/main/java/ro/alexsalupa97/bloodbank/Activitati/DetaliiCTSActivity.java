@@ -26,6 +26,8 @@ public class DetaliiCTSActivity extends AppCompatActivity {
 
     ActionBar actionBar;
 
+    Button btnProgramare;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -68,6 +70,16 @@ public class DetaliiCTSActivity extends AppCompatActivity {
             public void onClick(View v) {
                 Intent intent = new Intent(Intent.ACTION_DIAL);
                 intent.setData(Uri.parse("tel:"+ctsCurent.getTelefonCTS()));
+                startActivity(intent);
+            }
+        });
+
+        btnProgramare=(Button)findViewById(R.id.btnProgramare);
+        btnProgramare.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent=new Intent(getApplicationContext(),ProgramareActivity.class);
+                intent.putExtra("cts",ctsCurent);
                 startActivity(intent);
             }
         });
