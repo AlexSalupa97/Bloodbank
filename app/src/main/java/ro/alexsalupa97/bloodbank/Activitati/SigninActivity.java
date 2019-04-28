@@ -122,6 +122,7 @@ public class SigninActivity extends AppCompatActivity {
                                             editor.putString("judetUser", DBJudet);
                                             editor.putString("email", DBUsername);
                                             editor.putString("telefon", DBTelefon);
+                                            editor.putString("donator",jsonDonator.toString());
 
                                             editor.commit();
 

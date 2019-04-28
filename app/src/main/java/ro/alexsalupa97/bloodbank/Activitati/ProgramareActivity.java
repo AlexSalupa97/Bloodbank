@@ -25,11 +25,13 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.HttpHeaderParser;
 import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
 import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.UnsupportedEncodingException;
@@ -39,6 +41,7 @@ import java.util.Arrays;
 import java.util.Calendar;
 
 import ro.alexsalupa97.bloodbank.Clase.CTS;
+import ro.alexsalupa97.bloodbank.Clase.Donatori;
 import ro.alexsalupa97.bloodbank.Clase.GrupeSanguine;
 import ro.alexsalupa97.bloodbank.Clase.Programari;
 import ro.alexsalupa97.bloodbank.R;
@@ -68,6 +71,8 @@ public class ProgramareActivity extends AppCompatActivity {
     String minut;
 
     static Gson gson;
+
+    int idProgramare;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -114,6 +119,7 @@ public class ProgramareActivity extends AppCompatActivity {
                     zi = String.valueOf(dayOfMonth);
 
                 dataSelectata = zi + luna + year;
+                data = oraSelectata + dataSelectata;
                 tvVerificareDisponibilitate.setVisibility(View.GONE);
                 btnVerificareDisponibilitate.setVisibility(View.VISIBLE);
                 Toast.makeText(getApplicationContext(), dataSelectata, Toast.LENGTH_SHORT).show();
@@ -156,6 +162,7 @@ public class ProgramareActivity extends AppCompatActivity {
                 else
                     minut = String.valueOf(getMinute());
                 oraSelectata = ora + minut;
+                data = oraSelectata + dataSelectata;
                 tvVerificareDisponibilitate.setVisibility(View.GONE);
                 btnVerificareDisponibilitate.setVisibility(View.VISIBLE);
                 Toast.makeText(getApplicationContext(), oraSelectata, Toast.LENGTH_SHORT).show();
@@ -216,76 +223,146 @@ public class ProgramareActivity extends AppCompatActivity {
 
         });
 
+        final Donatori donator = Utile.preluareDonator(getApplicationContext());
+
 
         btnEfectuareProgramare = (Button) findViewById(R.id.btnEfectuareProgramare);
         btnEfectuareProgramare.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (tvVerificareDisponibilitate.getVisibility() == View.VISIBLE)
-                    Toast.makeText(getApplicationContext(), "da", Toast.LENGTH_SHORT).show();
-//                    String url=Utile.URL+"domain.programari/";
-//
-//                    final RequestQueue requestQueue = Volley.newRequestQueue(ProgramareActivity.this);
-//
-//                    JsonObjectRequest jsonObjReq = new JsonObjectRequest(Request.Method.POST,
-//                            url, jsonProgramare,
-//                            new Response.Listener<JSONObject>() {
-//                                @Override
-//                                public void onResponse(JSONObject response) {
-//
-//
-//
-//
-////                                    Toast.makeText(getActivity(), "Inregistrare facuta cu succes", Toast.LENGTH_LONG).show();
-////
-////                                    Intent intent=new Intent(getActivity(), PrimaPaginaActivity.class);
-////                                    startActivity(intent);
-////                                    getActivity().finish();
-//                                }
-//                            },
-//                            new Response.ErrorListener() {
-//                                @Override
-//                                public void onErrorResponse(VolleyError error) {
-//
-//                                    if(error.toString().contains("ServerError")) {
-//                                        Log.d("restresponse", error.toString());
-//                                    }
-//
-//
-//                                }
-//                            }){
-//
-//                        @Override
-//                        protected Response<JSONObject> parseNetworkResponse(NetworkResponse response) {
-//
-//
-//                            try {
-//                                String json = new String(
-//                                        response.data,
-//                                        "UTF-8"
-//                                );
-//
-//                                if (json.length() == 0) {
-//                                    return Response.success(
-//                                            null,
-//                                            HttpHeaderParser.parseCacheHeaders(response)
-//                                    );
-//                                }
-//                                else {
-//                                    return super.parseNetworkResponse(response);
-//                                }
-//                            }
-//                            catch (UnsupportedEncodingException e) {
-//                                return Response.error(new ParseError(e));
-//                            }
-//
-//
-//                        }
-//                    };
-//                    requestQueue.add(jsonObjReq);
+                if (tvVerificareDisponibilitate.getVisibility() == View.VISIBLE) {
+
+                    String url = Utile.URL + "domain.programari/count";
+                    final RequestQueue requestQueue = Volley.newRequestQueue(ProgramareActivity.this);
+
+                    StringRequest objectRequest = new StringRequest(
+                            Request.Method.GET,
+                            url,
+                            new Response.Listener<String>() {
+
+                                @Override
+                                public void onResponse(final String response) {
+                                    idProgramare=Integer.parseInt(response);
+
+
+                                    String url=Utile.URL+"domain.programari/";
+
+                                    final JSONObject jsonProgramare = new JSONObject();
+                                    final JSONObject jsonDonator=new JSONObject();
+                                    final JSONObject jsonCTS=new JSONObject();
+                                    final JSONObject jsonOrasDonator=new JSONObject();
+                                    final JSONObject jsonGrupaSanguina=new JSONObject();
+                                    final JSONObject jsonOras=new JSONObject();
+
+                                    try {
+                                        jsonGrupaSanguina.put("idgrupasanguina",donator.getGrupaSanguina().getGrupaSanguina());
+
+                                        jsonOrasDonator.put("idoras",donator.getOrasDonator().getIdOras());
+                                        jsonOrasDonator.put("judet",donator.getOrasDonator().getJudet());
+                                        jsonOrasDonator.put("numeoras",donator.getOrasDonator().getOras());
+
+                                        jsonDonator.put("emaildonator", donator.getEmailDonator());
+                                        jsonDonator.put("iddonator", donator.getIdDonator());
+                                        jsonDonator.put("idgrupasanguina", jsonGrupaSanguina);
+                                        jsonDonator.put("idoras", jsonOrasDonator);
+                                        jsonDonator.put("numedonator", donator.getNumeDonator());
+                                        jsonDonator.put("telefondonator", donator.getTelefonDonator());
+
+                                        jsonOras.put("idoras",ctsCurent.getOras().getIdOras());
+                                        jsonOras.put("judet",ctsCurent.getOras().getJudet());
+                                        jsonOras.put("numeoras",ctsCurent.getOras().getOras());
+
+                                        jsonCTS.put("adresacts",ctsCurent.getAdresaCTS());
+                                        jsonCTS.put("coordonataxcts",ctsCurent.getCoordonataYCTS());
+                                        jsonCTS.put("coordonataycts",ctsCurent.getCoordonataYCTS());
+                                        jsonCTS.put("emailcts",ctsCurent.getEmailCTS());
+                                        jsonCTS.put("idcts",ctsCurent.getIdCTS());
+                                        jsonCTS.put("idoras",jsonOras);
+                                        jsonCTS.put("numects",ctsCurent.getNumeCTS());
+                                        jsonCTS.put("starects",ctsCurent.getStareCTS());
+                                        jsonCTS.put("telefoncts",ctsCurent.getTelefonCTS());
+
+                                        jsonProgramare.put("dataProgramare", data);
+                                        jsonProgramare.put("idcts", jsonCTS);
+                                        jsonProgramare.put("iddonator", jsonDonator);
+                                        jsonProgramare.put("idprogramare",idProgramare+1);
+                                    } catch (JSONException e) {
+
+                                    }
+
+                                    JsonObjectRequest jsonObjReq = new JsonObjectRequest(Request.Method.POST,
+                                            url, jsonProgramare,
+                                            new Response.Listener<JSONObject>() {
+                                                @Override
+                                                public void onResponse(JSONObject response) {
+
+
+                                                    Toast.makeText(getApplicationContext(), "Programare facuta cu succes", Toast.LENGTH_LONG).show();
+
+                                                }
+                                            },
+                                            new Response.ErrorListener() {
+                                                @Override
+                                                public void onErrorResponse(VolleyError error) {
+
+                                                    if(error.toString().contains("ServerError")) {
+                                                        Toast.makeText(getApplicationContext(), "Eroare de server", Toast.LENGTH_LONG).show();
+                                                        Log.d("restresponse", error.toString());
+                                                    }
+
+
+                                                }
+                                            }){
+
+                                        @Override
+                                        protected Response<JSONObject> parseNetworkResponse(NetworkResponse response) {
+
+
+                                            try {
+                                                String json = new String(
+                                                        response.data,
+                                                        "UTF-8"
+                                                );
+
+                                                if (json.length() == 0) {
+                                                    return Response.success(
+                                                            null,
+                                                            HttpHeaderParser.parseCacheHeaders(response)
+                                                    );
+                                                }
+                                                else {
+                                                    return super.parseNetworkResponse(response);
+                                                }
+                                            }
+                                            catch (UnsupportedEncodingException e) {
+                                                return Response.error(new ParseError(e));
+                                            }
+
+
+                                        }
+                                    };
+                                    requestQueue.add(jsonObjReq);
+
+                                }
+
+                            },
+                            new Response.ErrorListener() {
+                                @Override
+                                public void onErrorResponse(VolleyError error) {
+                                    Log.d("RestResponse", error.toString());
+                                }
+                            }
+
+                    );
+
+                    requestQueue.add(objectRequest);
+
+
+                }
+
+
             }
         });
-
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);

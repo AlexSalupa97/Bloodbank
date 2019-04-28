@@ -19,6 +19,7 @@ import com.android.volley.toolbox.Volley;
 
 import ro.alexsalupa97.bloodbank.Clase.CTS;
 import ro.alexsalupa97.bloodbank.Clase.Compatibilitati;
+import ro.alexsalupa97.bloodbank.Clase.Donatori;
 import ro.alexsalupa97.bloodbank.Clase.GrupeSanguine;
 import ro.alexsalupa97.bloodbank.Clase.IesiriCTS;
 import ro.alexsalupa97.bloodbank.Clase.IntrariCTS;
@@ -68,6 +69,22 @@ public class Utile {
     public static boolean firstTimeReceiver;
 
     static Gson gson;
+
+    public static Donatori preluareDonator(Context context) {
+        Gson gson = new Gson();
+        SharedPreferences sharedPreferences = context.getSharedPreferences(fisier, Context.MODE_PRIVATE);
+        String defaultName = "N/A";
+        String dePreluat = sharedPreferences.getString("donator", defaultName);
+        return gson.fromJson(dePreluat, Donatori.class);
+    }
+
+    public static String preluareDonatorString(Context context){
+        String dePreluat;
+        SharedPreferences sharedPreferences = context.getSharedPreferences(fisier, Context.MODE_PRIVATE);
+        String defaultName = "N/A";
+        dePreluat = sharedPreferences.getString("donator", defaultName);
+        return dePreluat;
+    }
 
     public static String preluareTipUser(Context context){
         String dePreluat;
