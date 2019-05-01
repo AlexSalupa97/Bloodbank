@@ -21,7 +21,9 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
+import com.google.gson.Gson;
 
+import ro.alexsalupa97.bloodbank.Clase.CTS;
 import ro.alexsalupa97.bloodbank.R;
 import ro.alexsalupa97.bloodbank.Utile.Utile;
 
@@ -42,6 +44,8 @@ public class SigninActivity extends AppCompatActivity {
     EditText etUsername;
     EditText etPassword;
 
+    Gson gson;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -58,7 +62,7 @@ public class SigninActivity extends AppCompatActivity {
             @Override
             public View getView(int position, View convertView, ViewGroup parent) {
                 View view = super.getView(position, convertView, parent);
-                TextView textView=(TextView)view.findViewById(android.R.id.text1);
+                TextView textView = (TextView) view.findViewById(android.R.id.text1);
                 textView.setTextColor(Color.WHITE);
                 return view;
             }
@@ -122,7 +126,7 @@ public class SigninActivity extends AppCompatActivity {
                                             editor.putString("judetUser", DBJudet);
                                             editor.putString("email", DBUsername);
                                             editor.putString("telefon", DBTelefon);
-                                            editor.putString("donator",jsonDonator.toString());
+                                            editor.putString("donator", jsonDonator.toString());
 
                                             editor.commit();
 
@@ -155,8 +159,7 @@ public class SigninActivity extends AppCompatActivity {
                                 }
                             });
                     requestQueue.add(objectRequest);
-                }
-                else if(spSignin.getSelectedItem().toString().toLowerCase().equals("receiver")){
+                } else if (spSignin.getSelectedItem().toString().toLowerCase().equals("receiver")) {
                     String url = Utile.URL + "domain.receiveri/email/" + username;
 
                     final RequestQueue requestQueue = Volley.newRequestQueue(SigninActivity.this);
@@ -176,18 +179,16 @@ public class SigninActivity extends AppCompatActivity {
                                     String DBGrupaSanguina = null;
                                     String DBCTS = null;
                                     String DBTelefon = null;
-                                    String DBID=null;
+                                    String DBID = null;
                                     try {
                                         JSONObject jsonGrupaSanguina = response.getJSONObject("idgrupasanguina");
-                                        DBGrupaSanguina=jsonGrupaSanguina.getString("idgrupasanguina");
+                                        DBGrupaSanguina = jsonGrupaSanguina.getString("idgrupasanguina");
                                         DBTelefon = response.getString("telefonreceiver");
                                         JSONObject jsonCTS = response.getJSONObject("idcts");
                                         DBCTS = jsonCTS.getString("numects");
                                         DBUsername = response.getString("emailreceiver");
                                         DBNume = response.getString("numereceiver");
-                                        DBID=response.getString("idreceiver");
-
-
+                                        DBID = response.getString("idreceiver");
 
 
                                         if (DBUsername.equals(etUsername.getText().toString())) {
@@ -202,7 +203,7 @@ public class SigninActivity extends AppCompatActivity {
                                             editor.putString("cts", DBCTS);
                                             editor.putString("email", DBUsername);
                                             editor.putString("telefon", DBTelefon);
-                                            editor.putString("id",DBID);
+                                            editor.putString("id", DBID);
 
                                             editor.commit();
 
@@ -235,6 +236,57 @@ public class SigninActivity extends AppCompatActivity {
                                 }
                             });
                     requestQueue.add(objectRequest);
+
+                } else {
+                    String url = Utile.URL + "domain.cts/email/" + username;
+
+
+                    final RequestQueue requestQueue = Volley.newRequestQueue(SigninActivity.this);
+
+                    JsonObjectRequest objectRequest = new JsonObjectRequest(
+                            Request.Method.GET,
+                            url,
+                            null,
+                            new Response.Listener<JSONObject>() {
+                                @Override
+                                public void onResponse(JSONObject response) {
+
+                                    if (response.length() != 0) {
+
+
+                                        SharedPreferences sharedPreferences = getSharedPreferences(fisier, Context.MODE_PRIVATE);
+                                        SharedPreferences.Editor editor = sharedPreferences.edit();
+
+                                        editor.putString("login_name", response.toString());
+
+
+                                        editor.commit();
+
+
+                                        Intent intent = new Intent(getApplicationContext(), DetaliiCTSMainActivity.class);
+                                        setResult(100);
+                                        startActivity(intent);
+                                        finish();
+
+                                    } else
+                                        Toast.makeText(getApplicationContext(), "Introduceti credentialele corecte", Toast.LENGTH_LONG).show();
+
+
+                                }
+
+
+                            },
+
+                            new Response.ErrorListener() {
+                                @Override
+                                public void onErrorResponse(VolleyError error) {
+
+                                    Toast.makeText(getApplicationContext(), "Introduceti credentialele corecte", Toast.LENGTH_LONG).show();
+
+                                }
+                            });
+                    requestQueue.add(objectRequest);
+
 
                 }
             }

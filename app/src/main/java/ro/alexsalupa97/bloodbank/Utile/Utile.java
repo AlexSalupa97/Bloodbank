@@ -49,7 +49,7 @@ import java.util.Set;
 public class Utile {
 
     public static String fisier = "SharedPreferences";
-    public static String URL = "http://88d45265.ngrok.io/ProiectLicentaBloodbank/webresources/";
+    public static String URL = "http://caad76c3.ngrok.io/ProiectLicentaBloodbank/webresources/";
 
     public static ArrayList<Intrebari> intrebari;
     public static ArrayList<Compatibilitati> compatibilitati;
@@ -76,6 +76,14 @@ public class Utile {
         String defaultName = "N/A";
         String dePreluat = sharedPreferences.getString("donator", defaultName);
         return gson.fromJson(dePreluat, Donatori.class);
+    }
+
+    public static CTS preluareCTSLogin(Context context) {
+        Gson gson = new Gson();
+        SharedPreferences sharedPreferences = context.getSharedPreferences(fisier, Context.MODE_PRIVATE);
+        String defaultName = "N/A";
+        String dePreluat = sharedPreferences.getString("login_name", defaultName);
+        return gson.fromJson(dePreluat, CTS.class);
     }
 
     public static String preluareDonatorString(Context context){

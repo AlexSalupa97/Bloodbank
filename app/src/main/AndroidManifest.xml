@@ -16,9 +16,13 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:replace="android:allowBackup">
-        <activity android:name=".Activitati.ProgramareActivity"
+        <activity android:name=".Activitati.DetaliiCTSMainActivity"
             android:screenOrientation="portrait"
-            android:label="Programare"></activity>
+            android:label="Detalii CTS"></activity>
+        <activity
+            android:name=".Activitati.ProgramareActivity"
+            android:label="Programare"
+            android:screenOrientation="portrait" />
         <activity
             android:name=".Activitati.TransparentReceiverActivity"
             android:screenOrientation="portrait"

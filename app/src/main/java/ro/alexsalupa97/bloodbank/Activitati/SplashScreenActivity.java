@@ -60,6 +60,10 @@ public class SplashScreenActivity extends AppCompatActivity {
                         Intent mainIntent = new Intent(getApplicationContext(), DetaliiReceiverMainActivity.class);
                         startActivity(mainIntent);
                         finish();
+                    } else{
+                        Intent mainIntent = new Intent(getApplicationContext(), DetaliiCTSMainActivity.class);
+                        startActivity(mainIntent);
+                        finish();
                     }
                 }
             }
