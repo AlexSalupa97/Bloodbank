@@ -49,7 +49,7 @@ import java.util.Set;
 public class Utile {
 
     public static String fisier = "SharedPreferences";
-    public static String URL = "http://caad76c3.ngrok.io/ProiectLicentaBloodbank/webresources/";
+    public static String URL = "http://eddc454e.ngrok.io/ProiectLicentaBloodbank/webresources/";
 
     public static ArrayList<Intrebari> intrebari;
     public static ArrayList<Compatibilitati> compatibilitati;

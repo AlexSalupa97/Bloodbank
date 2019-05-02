@@ -16,7 +16,10 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:replace="android:allowBackup">
-        <activity android:name=".Activitati.TransparentActivityCTS"></activity>
+        <activity android:name=".Activitati.StatisticiCTSActivity"
+            android:screenOrientation="portrait"
+            android:label="Statistici"></activity>
+        <activity android:name=".Activitati.TransparentActivityCTS" />
         <activity
             android:name=".Activitati.DetaliiCTSMainActivity"
             android:label="Detalii CTS"

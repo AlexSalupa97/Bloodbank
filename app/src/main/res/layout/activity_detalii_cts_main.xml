@@ -153,6 +153,7 @@
         </FrameLayout>
 
         <Button
+            android:id="@+id/btnSituatieCTS"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="2"
@@ -169,6 +170,5 @@
         app:headerLayout="@layout/navigation_drawer_layout"
         app:itemIconTint="@color/colorPrimaryDark"
         app:itemTextColor="@color/colorPrimaryDark"
-        app:menu="@menu/meniu_receiver"></android.support.design.widget.NavigationView>
-
+        app:menu="@menu/meniu_cts"/>
 </android.support.v4.widget.DrawerLayout>

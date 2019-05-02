@@ -17,6 +17,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
 import android.widget.TextView;
 
 import com.android.volley.Request;
@@ -66,106 +67,131 @@ public class DetaliiCTSMainActivity extends AppCompatActivity implements Navigat
     RecyclerView rvAlerte;
     ArrayList<SectionModelAlerte> sectiuni;
 
+    Button btnSituatieCTS;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_detalii_cts_main);
 
-        CTS ctsActual = Utile.preluareCTSLogin(getApplicationContext());
-        rvAlerte = (RecyclerView)findViewById(R.id.rvSituatieSanguinaCTS);
+        try {
+
+            CTS ctsActual = Utile.preluareCTSLogin(getApplicationContext());
+            rvAlerte = (RecyclerView) findViewById(R.id.rvSituatieSanguinaCTS);
 
 
-        sharedPreferences = getSharedPreferences(fisier, Context.MODE_PRIVATE);
+            sharedPreferences = getSharedPreferences(fisier, Context.MODE_PRIVATE);
 
-        drawerLayout = (DrawerLayout) findViewById(R.id.drawer);
+            drawerLayout = (DrawerLayout) findViewById(R.id.drawer);
 
-        navigationView = (NavigationView) findViewById(R.id.navigation_drawer);
-        navigationView.setNavigationItemSelectedListener(this);
+            navigationView = (NavigationView) findViewById(R.id.navigation_drawer);
+            navigationView.setNavigationItemSelectedListener(this);
 
-        toggle = new ActionBarDrawerToggle(this, drawerLayout, R.string.open, R.string.close);
+            toggle = new ActionBarDrawerToggle(this, drawerLayout, R.string.open, R.string.close);
 
-        drawerLayout.addDrawerListener(toggle);
-        toggle.syncState();
+            drawerLayout.addDrawerListener(toggle);
+            toggle.syncState();
 
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        View headerView = navigationView.getHeaderView(0);
-        tvNavDrawer = (TextView) headerView.findViewById(R.id.nav_header_textView);
-
-
-        tvNavDrawer.setText(ctsActual.getNumeCTS());
-
-        getSupportActionBar().setElevation(0);
-
-        mapCantitatiDisponibilePerCTSPerGrupa = new HashMap<>(Utile.incarcareMapDisponibil_particular(ctsActual));
-        mapLimitePerCTSPerGrupa = new HashMap<>();
+            View headerView = navigationView.getHeaderView(0);
+            tvNavDrawer = (TextView) headerView.findViewById(R.id.nav_header_textView);
 
 
-        Map<GrupeSanguine, Integer> mapIntermediar = new HashMap<>();
-        for (LimiteCTS limite : Utile.listaLimiteCTS)
-                mapIntermediar.put(limite.getGrupaSanguina(), limite.getLimitaML());
-        mapLimitePerCTSPerGrupa.put(ctsActual, mapIntermediar);
+            tvNavDrawer.setText(ctsActual.getNumeCTS());
+
+            getSupportActionBar().setElevation(0);
+
+            try {
+                mapCantitatiDisponibilePerCTSPerGrupa = new HashMap<>(Utile.incarcareMapDisponibil_particular(ctsActual));
+            } catch (Exception ex) {
+
+            }
+            mapLimitePerCTSPerGrupa = new HashMap<>();
 
 
-        mapCantitatiPerCTS = new HashMap<>();
+            Map<GrupeSanguine, Integer> mapIntermediar = new HashMap<>();
+            try {
+                for (LimiteCTS limite : Utile.listaLimiteCTS)
+                    mapIntermediar.put(limite.getGrupaSanguina(), limite.getLimitaML());
+            } catch (Exception ex) {
 
-        for (CTS cts : mapCantitatiDisponibilePerCTSPerGrupa.keySet()) {
-            String deAfisat = "\n\n";
+            }
+            mapLimitePerCTSPerGrupa.put(ctsActual, mapIntermediar);
 
 
-            Map<GrupeSanguine, Integer> mapCantitatiDisponibile = mapCantitatiDisponibilePerCTSPerGrupa.get(cts);
-            Map<GrupeSanguine, Integer> mapLimite = mapLimitePerCTSPerGrupa.get(cts);
+            mapCantitatiPerCTS = new HashMap<>();
+
+            for (CTS cts : mapCantitatiDisponibilePerCTSPerGrupa.keySet()) {
+                String deAfisat = "\n\n";
 
 
-            deAfisat += "\t" + cts.getNumeCTS();
+                Map<GrupeSanguine, Integer> mapCantitatiDisponibile = mapCantitatiDisponibilePerCTSPerGrupa.get(cts);
+                Map<GrupeSanguine, Integer> mapLimite = mapLimitePerCTSPerGrupa.get(cts);
 
-            listaCantitatiCTS = new ArrayList<>();
 
-            for (GrupeSanguine grupeSanguine : Utile.listaGrupeSanguine) {
+                deAfisat += "\t" + cts.getNumeCTS();
 
-                try {
-                    CantitatiCTS cantitateCTSCurent = new CantitatiCTS();
-                    cantitateCTSCurent.setCts(cts);
-                    cantitateCTSCurent.setGrupaSanguina(grupeSanguine);
-                    cantitateCTSCurent.setCantitateDisponibilaML(mapCantitatiDisponibile.get(grupeSanguine));
-                    cantitateCTSCurent.setCantitateLimitaML(mapLimite.get(grupeSanguine));
-                    listaCantitatiCTS.add(cantitateCTSCurent);
-                } catch (Exception ex) {
+                listaCantitatiCTS = new ArrayList<>();
+
+                for (GrupeSanguine grupeSanguine : Utile.listaGrupeSanguine) {
+
+                    try {
+                        CantitatiCTS cantitateCTSCurent = new CantitatiCTS();
+                        cantitateCTSCurent.setCts(cts);
+                        cantitateCTSCurent.setGrupaSanguina(grupeSanguine);
+                        cantitateCTSCurent.setCantitateDisponibilaML(mapCantitatiDisponibile.get(grupeSanguine));
+                        cantitateCTSCurent.setCantitateLimitaML(mapLimite.get(grupeSanguine));
+                        listaCantitatiCTS.add(cantitateCTSCurent);
+                    } catch (Exception ex) {
+
+                    }
 
                 }
 
+                mapCantitatiPerCTS.put(cts, listaCantitatiCTS);
             }
 
-            mapCantitatiPerCTS.put(cts, listaCantitatiCTS);
-        }
+            sectiuni = new ArrayList<>();
 
-        sectiuni = new ArrayList<>();
-
-        ArrayList<CTS> listaCTS=new ArrayList<>(mapCantitatiPerCTS.keySet());
-        Collections.sort(listaCTS);
+            ArrayList<CTS> listaCTS = new ArrayList<>(mapCantitatiPerCTS.keySet());
+            Collections.sort(listaCTS);
 
 
-        for (CTS cts : listaCTS) {
-            SectionModelAlerte dm = new SectionModelAlerte();
+            for (CTS cts : listaCTS) {
+                SectionModelAlerte dm = new SectionModelAlerte();
 
-            dm.setTitlu("Situatia cantitatilor de sange");
+                dm.setTitlu("Situatia cantitatilor de sange");
 
-            ArrayList<ItemModelAlerte> itemeInSectiune = new ArrayList<>();
-            for (CantitatiCTS cantitatiCTS : mapCantitatiPerCTS.get(cts)) {
-                itemeInSectiune.add(new ItemModelAlerte(cantitatiCTS));
+                ArrayList<ItemModelAlerte> itemeInSectiune = new ArrayList<>();
+                for (CantitatiCTS cantitatiCTS : mapCantitatiPerCTS.get(cts)) {
+                    itemeInSectiune.add(new ItemModelAlerte(cantitatiCTS));
+                }
+
+                dm.setItemeInSectiune(itemeInSectiune);
+
+                sectiuni.add(dm);
             }
 
-            dm.setItemeInSectiune(itemeInSectiune);
 
-            sectiuni.add(dm);
+            rvAlerte.setHasFixedSize(true);
+
+            AdaptorAlerteCTSRV adapter = new AdaptorAlerteCTSRV(getApplicationContext(), sectiuni);
+            rvAlerte.setLayoutManager(new LinearLayoutManager(getApplicationContext(), LinearLayoutManager.VERTICAL, false));
+            rvAlerte.setAdapter(adapter);
+
+            btnSituatieCTS = (Button) findViewById(R.id.btnSituatieCTS);
+            btnSituatieCTS.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent = new Intent(getApplicationContext(), StatisticiCTSActivity.class);
+                    startActivity(intent);
+                }
+            });
         }
+        catch (Exception ex){
 
-
-        rvAlerte.setHasFixedSize(true);
-
-        AdaptorAlerteCTSRV adapter = new AdaptorAlerteCTSRV(getApplicationContext(), sectiuni);
-        rvAlerte.setLayoutManager(new LinearLayoutManager(getApplicationContext(), LinearLayoutManager.VERTICAL, false));
-        rvAlerte.setAdapter(adapter);
+        }
     }
 
     @Override

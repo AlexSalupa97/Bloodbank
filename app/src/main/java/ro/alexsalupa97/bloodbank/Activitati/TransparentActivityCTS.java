@@ -39,7 +39,7 @@ public class TransparentActivityCTS extends AppCompatActivity {
                     Utile.REST_GET_istoricIesiriCTS_particular(TransparentActivityCTS.this,cts);
                     Utile.REST_GET_limiteCTS_particular(TransparentActivityCTS.this,cts);
                     Utile.REST_GET_grupeSanguine(TransparentActivityCTS.this);
-                    sleep(1500);
+                    sleep(2000);
 
                 } catch (InterruptedException e) {
                     e.printStackTrace();
