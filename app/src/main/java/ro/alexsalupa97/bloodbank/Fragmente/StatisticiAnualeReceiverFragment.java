@@ -205,12 +205,16 @@ public class StatisticiAnualeReceiverFragment extends Fragment {
             }
         });
 
-        if (StatisticiAnualeReceiverFragment.valoareData != null&&!StatisticiReceiverActivity.dejaAdaugatAnual) {
+        if (Integer.parseInt(StatisticiAnualeReceiverFragment.valoareCantitateML) != 0&&!StatisticiReceiverActivity.dejaAdaugatAnual) {
             StatisticiReceiverActivity.listaStatistici.add("In ultimul an, cele mai multe donatii s-au inregistrat in luna " + StatisticiAnualeReceiverFragment.valoareData + ", cu " + StatisticiAnualeReceiverFragment.valoareCantitateML + "ml primiti.");
             StatisticiReceiverActivity.dejaAdaugatAnual=true;
         }
         Collections.shuffle(StatisticiReceiverActivity.listaStatistici);
-        StatisticiReceiverActivity.tvStatistici.setText(StatisticiReceiverActivity.listaStatistici.get(0));
+        try {
+            StatisticiReceiverActivity.tvStatistici.setText(StatisticiReceiverActivity.listaStatistici.get(0));
+        }catch (Exception ex){
+
+        }
 
 
         return rootView;

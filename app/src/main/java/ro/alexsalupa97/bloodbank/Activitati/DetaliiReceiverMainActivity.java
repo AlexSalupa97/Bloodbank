@@ -9,6 +9,7 @@ import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v4.widget.ViewDragHelper;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
@@ -28,6 +29,7 @@ import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonArrayRequest;
+import com.android.volley.toolbox.RequestFuture;
 import com.android.volley.toolbox.Volley;
 
 import com.facebook.share.model.ShareLinkContent;
@@ -41,17 +43,27 @@ import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.concurrent.ExecutionException;
 
+import ro.alexsalupa97.bloodbank.Adaptoare.AdaptorAlerteCTSRV;
 import ro.alexsalupa97.bloodbank.Adaptoare.AdaptorIstoricReceiverRV;
 import ro.alexsalupa97.bloodbank.Clase.CTS;
+import ro.alexsalupa97.bloodbank.Clase.CantitatiCTS;
 import ro.alexsalupa97.bloodbank.Clase.Compatibilitati;
 import ro.alexsalupa97.bloodbank.Clase.GrupeSanguine;
+import ro.alexsalupa97.bloodbank.Clase.IesiriCTS;
+import ro.alexsalupa97.bloodbank.Clase.IntrariCTS;
 import ro.alexsalupa97.bloodbank.Clase.IstoricDonatii;
 import ro.alexsalupa97.bloodbank.Clase.IstoricReceiver;
+import ro.alexsalupa97.bloodbank.Clase.LimiteCTS;
 import ro.alexsalupa97.bloodbank.Clase.Receiveri;
 import ro.alexsalupa97.bloodbank.R;
+import ro.alexsalupa97.bloodbank.RecyclerViewOrizontal.ItemModelAlerte;
 import ro.alexsalupa97.bloodbank.RecyclerViewOrizontal.ItemModelIstoric;
+import ro.alexsalupa97.bloodbank.RecyclerViewOrizontal.SectionModelAlerte;
 import ro.alexsalupa97.bloodbank.RecyclerViewOrizontal.SectionModelIstoric;
 import ro.alexsalupa97.bloodbank.Utile.Utile;
 
@@ -68,7 +80,6 @@ public class DetaliiReceiverMainActivity extends AppCompatActivity implements Na
     ShareButton fbShareBtn;
     LinearLayout twitterShareBtn;
 
-    Button btnIstoricReceiver;
     RecyclerView rvIstoricReceiver;
     ArrayList<SectionModelIstoric> sectiuni;
 
@@ -79,6 +90,8 @@ public class DetaliiReceiverMainActivity extends AppCompatActivity implements Na
     TextView tvEmail;
     TextView tvTelefon;
 
+    SwipeRefreshLayout swiperefreshRVSituatieSanguinaReceiver;
+
     Gson gson;
 
     @Override
@@ -88,56 +101,19 @@ public class DetaliiReceiverMainActivity extends AppCompatActivity implements Na
 
         getSupportActionBar().setElevation(0);
 
-        tvNumeReceiver=(TextView)findViewById(R.id.tvNumeReceiver);
-        tvAdresa=(TextView)findViewById(R.id.tvAdresa);
-        tvEmail=(TextView)findViewById(R.id.tvEmail);
-        tvTelefon=(TextView)findViewById(R.id.tvTelefon);
+        tvNumeReceiver = (TextView) findViewById(R.id.tvNumeReceiver);
+        tvAdresa = (TextView) findViewById(R.id.tvAdresa);
+        tvEmail = (TextView) findViewById(R.id.tvEmail);
+        tvTelefon = (TextView) findViewById(R.id.tvTelefon);
 
         tvNumeReceiver.setText(Utile.preluareUsername(getApplicationContext()));
-        tvEmail.setText(tvEmail.getText()+" "+Utile.preluareEmail(getApplicationContext()));
-        tvTelefon.setText(tvTelefon.getText()+" "+Utile.preluareTelefon(getApplicationContext()));
-        tvAdresa.setText(tvAdresa.getText()+" "+Utile.preluareCTS(getApplicationContext()));
+        tvEmail.setText(tvEmail.getText() + " " + Utile.preluareEmail(getApplicationContext()));
+        tvTelefon.setText(tvTelefon.getText() + " " + Utile.preluareTelefon(getApplicationContext()));
+        tvAdresa.setText(tvAdresa.getText() + " " + Utile.preluareCTS(getApplicationContext()));
 
         sharedPreferences = getSharedPreferences(fisier, Context.MODE_PRIVATE);
 
         drawerLayout = (DrawerLayout) findViewById(R.id.drawer);
-
-//        Field mDragger = null;
-//        try {
-//            mDragger = drawerLayout.getClass().getDeclaredField(
-//                    "mLeftDragger");
-//        } catch (NoSuchFieldException e) {
-//            e.printStackTrace();
-//        }
-//        mDragger.setAccessible(true);
-//        ViewDragHelper draggerObj = null;
-//        try {
-//            draggerObj = (ViewDragHelper) mDragger
-//                    .get(drawerLayout);
-//        } catch (IllegalAccessException e) {
-//            e.printStackTrace();
-//        }
-//
-//        Field mEdgeSize = null;
-//        try {
-//            mEdgeSize = draggerObj.getClass().getDeclaredField(
-//                    "mEdgeSize");
-//        } catch (NoSuchFieldException e) {
-//            e.printStackTrace();
-//        }
-//        mEdgeSize.setAccessible(true);
-//        int edge = 0;
-//        try {
-//            edge = mEdgeSize.getInt(draggerObj);
-//        } catch (IllegalAccessException e) {
-//            e.printStackTrace();
-//        }
-//
-//        try {
-//            mEdgeSize.setInt(draggerObj, edge * 15);
-//        } catch (IllegalAccessException e) {
-//            e.printStackTrace();
-//        }
 
 
         navigationView = (NavigationView) findViewById(R.id.navigation_drawer);
@@ -174,89 +150,111 @@ public class DetaliiReceiverMainActivity extends AppCompatActivity implements Na
                 for (GrupeSanguine grupeSanguine : Utile.listaGrupeSanguine)
                     if (grupeSanguine.getGrupaSanguina().equals((Utile.preluareGrupaSanguina(getApplicationContext()))))
                         receiver.setGrupaSanguina(grupeSanguine);
-            }
-            catch (Exception ex){
+            } catch (Exception ex) {
 
             }
 
         }
 
+        rvIstoricReceiver = (RecyclerView) findViewById(R.id.rvIstoricReceiver);
 
-        rvIstoricReceiver=(RecyclerView)findViewById(R.id.rvIstoricReceiver);
-        btnIstoricReceiver=(Button)findViewById(R.id.btnIstoricReceiver);
+        swiperefreshRVSituatieSanguinaReceiver=(SwipeRefreshLayout)findViewById(R.id.swiperefreshRVSituatieSanguinaReceiver);
+        swiperefreshRVSituatieSanguinaReceiver.setColorSchemeColors(getResources().getColor(R.color.colorPrimary));
 
-        if (!Utile.firstTimeReceiver) {
-            rvIstoricReceiver.setVisibility(View.VISIBLE);
-            btnIstoricReceiver.setVisibility(View.GONE);
-        }
-        
-        btnIstoricReceiver.setOnClickListener(new View.OnClickListener() {
+
+        Thread thread = new Thread(new Runnable() {
             @Override
-            public void onClick(View v) {
-
-                String url = Utile.URL + "domain.istoricreceiveri/receiver/"+Utile.preluareIDReceiver(getApplicationContext());
-
-                final RequestQueue requestQueue = Volley.newRequestQueue(DetaliiReceiverMainActivity.this);
-
-
-                JsonArrayRequest objectRequest = new JsonArrayRequest(
-                        Request.Method.GET,
-                        url,
-                        null,
-                        new Response.Listener<JSONArray>() {
-
-                            @Override
-                            public void onResponse(JSONArray response) {
-                                GsonBuilder gsonBuilder = new GsonBuilder();
-                                gsonBuilder.setDateFormat("M/d/yy hh:mm a");
-                                gson = gsonBuilder.create();
-                                Utile.listaIstoricReceiver = new ArrayList<>(Arrays.asList(gson.fromJson(response.toString(), IstoricReceiver[].class)));
-
-                                Utile.firstTimeReceiver=false;
-                                rvIstoricReceiver.setVisibility(View.VISIBLE);
-                                btnIstoricReceiver.setVisibility(View.GONE);
-
-
-
-                                sectiuni=new ArrayList<>();
-
-                                SectionModelIstoric dm = new SectionModelIstoric();
-
-                                dm.setTitlu("Donatii primite");
-
-                                ArrayList<ItemModelIstoric> itemeInSectiune = new ArrayList<ItemModelIstoric>();
-                                for (IstoricReceiver id:Utile.listaIstoricReceiver) {
-                                    int index=id.getDataPrimire().indexOf("T");
-                                    String substring=id.getDataPrimire().substring(0,index);
-                                    itemeInSectiune.add(new ItemModelIstoric(substring,id.getCantitatePrimitaML()+"ml"));
-                                }
-
-                                Collections.sort(itemeInSectiune);
-                                dm.setItemeInSectiune(itemeInSectiune);
-
-                                sectiuni.add(dm);
-
-                                rvIstoricReceiver.setHasFixedSize(true);
-
-                                AdaptorIstoricReceiverRV adaptor=new AdaptorIstoricReceiverRV(DetaliiReceiverMainActivity.this,sectiuni);
-                                rvIstoricReceiver.setLayoutManager(new LinearLayoutManager(DetaliiReceiverMainActivity.this, LinearLayoutManager.VERTICAL, false));
-                                rvIstoricReceiver.setAdapter(adaptor);
-
-                            }
-                        },
-                        new Response.ErrorListener() {
-                            @Override
-                            public void onErrorResponse(VolleyError error) {
-                                Log.d("RestResponse", error.toString());
-                            }
+            public void run() {
+                try {
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            swiperefreshRVSituatieSanguinaReceiver.setRefreshing(true);
                         }
+                    });
+                    RequestQueue requestQueue = Volley.newRequestQueue(DetaliiReceiverMainActivity.this);
+                    RequestFuture<JSONArray> future1 = RequestFuture.newFuture();
+                    JsonArrayRequest request1 = new JsonArrayRequest(Request.Method.GET, Utile.URL + "domain.istoricreceiveri/receiver/" + Utile.preluareIDReceiver(getApplicationContext()), null, future1, future1);
+                    RequestFuture<JSONArray> future3 = RequestFuture.newFuture();
+                    JsonArrayRequest request3 = new JsonArrayRequest(Request.Method.GET, Utile.URL + "domain.grupesanguine", null, future3, future3);
 
-                );
+                    requestQueue.add(request1);
+                    requestQueue.add(request3);
 
-                requestQueue.add(objectRequest);
+                    JSONArray response1 = future1.get();
+                    JSONArray response3 = future3.get();
+
+                    gson = new Gson();
+
+
+                    Utile.listaGrupeSanguine = new ArrayList<>(Arrays.asList(gson.fromJson(response3.toString(), GrupeSanguine[].class)));
+                    Utile.listaIstoricReceiver = new ArrayList<>(Arrays.asList(gson.fromJson(response1.toString(), IstoricReceiver[].class)));
+
+                    sectiuni = new ArrayList<>();
+
+                    SectionModelIstoric dm = new SectionModelIstoric();
+
+                    dm.setTitlu("Donatii primite");
+
+                    ArrayList<ItemModelIstoric> itemeInSectiune = new ArrayList<ItemModelIstoric>();
+                    for (IstoricReceiver id : Utile.listaIstoricReceiver) {
+                        int index = id.getDataPrimire().indexOf("T");
+                        String substring = id.getDataPrimire().substring(0, index);
+                        itemeInSectiune.add(new ItemModelIstoric(substring, id.getCantitatePrimitaML() + "ml"));
+                    }
+
+                    Collections.sort(itemeInSectiune);
+                    dm.setItemeInSectiune(itemeInSectiune);
+
+                    sectiuni.add(dm);
+
+                    rvIstoricReceiver.setHasFixedSize(true);
+
+                    final AdaptorIstoricReceiverRV adaptor = new AdaptorIstoricReceiverRV(DetaliiReceiverMainActivity.this, sectiuni);
+
+
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            rvIstoricReceiver.setLayoutManager(new LinearLayoutManager(getApplicationContext(), LinearLayoutManager.VERTICAL, false));
+                            rvIstoricReceiver.setAdapter(adaptor);
+                            swiperefreshRVSituatieSanguinaReceiver.setRefreshing(false);
+                        }
+                    });
+
+                } catch (InterruptedException e) {
+                } catch (ExecutionException e) {
+                }
             }
         });
+        thread.start();
 
+        swiperefreshRVSituatieSanguinaReceiver.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+
+
+                Thread t = new Thread() {
+                    @Override
+                    public void run() {
+                        try {
+
+                            runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    swiperefreshRVSituatieSanguinaReceiver.setRefreshing(false);
+                                }
+                            });
+                        } catch (Exception e) {
+                            Log.e("SplashScreenActivity", e.getMessage());
+                        }
+                    }
+                };
+
+                t.start();
+
+            }
+        });
 
         final Receiveri receiverFinal = receiver;
 

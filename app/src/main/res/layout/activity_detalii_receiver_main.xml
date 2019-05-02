@@ -90,8 +90,8 @@
                                 android:layout_width="0dp"
                                 android:layout_height="match_parent"
                                 android:layout_marginLeft="8dp"
-                                android:gravity="center|start"
                                 android:layout_weight="7"
+                                android:gravity="center|start"
                                 android:text="  Mail: " />
 
 
@@ -117,8 +117,8 @@
                                 android:layout_width="0dp"
                                 android:layout_height="match_parent"
                                 android:layout_marginLeft="8dp"
-                                android:gravity="center|start"
                                 android:layout_weight="7"
+                                android:gravity="center|start"
                                 android:text="  Telefon: " />
 
 
@@ -134,21 +134,18 @@
 
                     </LinearLayout>
 
-
-                    <android.support.v7.widget.RecyclerView
-                        android:background="#ececec"
-                        android:visibility="gone"
-                        android:id="@+id/rvIstoricReceiver"
+                    <android.support.v4.widget.SwipeRefreshLayout
+                        android:id="@+id/swiperefreshRVSituatieSanguinaReceiver"
                         android:layout_width="match_parent"
                         android:layout_height="0dp"
-                        android:layout_weight="1.1" />
+                        android:layout_weight="1.1">
 
-                    <Button
-                        android:layout_width="match_parent"
-                        android:id="@+id/btnIstoricReceiver"
-                        android:layout_height="0dp"
-                        android:layout_weight="1.1"
-                        android:text="Vezi situatia donatiilor"/>
+                        <android.support.v7.widget.RecyclerView
+                            android:id="@+id/rvIstoricReceiver"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:background="#ececec" />
+                    </android.support.v4.widget.SwipeRefreshLayout>
 
 
                 </LinearLayout>

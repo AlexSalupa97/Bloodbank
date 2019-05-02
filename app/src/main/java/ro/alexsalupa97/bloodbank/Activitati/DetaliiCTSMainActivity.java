@@ -92,9 +92,6 @@ public class DetaliiCTSMainActivity extends AppCompatActivity implements Navigat
         final CTS ctsActual = Utile.preluareCTSLogin(getApplicationContext());
 
 
-
-
-
         getSupportActionBar().setTitle(ctsActual.getNumeCTS());
         rvAlerte = (RecyclerView) findViewById(R.id.rvSituatieSanguinaCTS);
 
@@ -121,10 +118,19 @@ public class DetaliiCTSMainActivity extends AppCompatActivity implements Navigat
 
         getSupportActionBar().setElevation(0);
 
+        swiperefreshRVSituatieSanguinaCTS = (SwipeRefreshLayout) findViewById(R.id.swiperefreshRVSituatieSanguinaCTS);
+        swiperefreshRVSituatieSanguinaCTS.setColorSchemeColors(getResources().getColor(R.color.colorPrimary));
+
         Thread thread = new Thread(new Runnable() {
             @Override
             public void run() {
                 try {
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            swiperefreshRVSituatieSanguinaCTS.setRefreshing(true);
+                        }
+                    });
                     RequestQueue requestQueue = Volley.newRequestQueue(DetaliiCTSMainActivity.this);
                     RequestFuture<JSONArray> future = RequestFuture.newFuture();
                     JsonArrayRequest request = new JsonArrayRequest(Request.Method.GET, Utile.URL + "domain.limitects/cts/" + ctsActual.getEmailCTS(), null, future, future);
@@ -230,6 +236,7 @@ public class DetaliiCTSMainActivity extends AppCompatActivity implements Navigat
                         public void run() {
                             rvAlerte.setLayoutManager(new LinearLayoutManager(getApplicationContext(), LinearLayoutManager.VERTICAL, false));
                             rvAlerte.setAdapter(adapter);
+                            swiperefreshRVSituatieSanguinaCTS.setRefreshing(false);
                         }
                     });
 
@@ -241,8 +248,7 @@ public class DetaliiCTSMainActivity extends AppCompatActivity implements Navigat
         thread.start();
 
 
-        swiperefreshRVSituatieSanguinaCTS = (SwipeRefreshLayout) findViewById(R.id.swiperefreshRVSituatieSanguinaCTS);
-        swiperefreshRVSituatieSanguinaCTS.setColorSchemeColors(getResources().getColor(R.color.colorPrimary));
+
         swiperefreshRVSituatieSanguinaCTS.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
@@ -252,14 +258,13 @@ public class DetaliiCTSMainActivity extends AppCompatActivity implements Navigat
                     @Override
                     public void run() {
                         try {
-                            sleep(2000);
                             runOnUiThread(new Runnable() {
                                 @Override
                                 public void run() {
                                     swiperefreshRVSituatieSanguinaCTS.setRefreshing(false);
                                 }
                             });
-                        } catch (InterruptedException e) {
+                        } catch (Exception e) {
                             Log.e("SplashScreenActivity", e.getMessage());
                         }
                     }

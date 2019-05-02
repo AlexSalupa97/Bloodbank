@@ -169,12 +169,16 @@ public class StatisticiLunareReceiverFragment extends Fragment {
             }
         });
 
-        if (StatisticiLunareReceiverFragment.valoareData != null&&!StatisticiReceiverActivity.dejaAdaugatLunar) {
+        if (Integer.parseInt(StatisticiLunareReceiverFragment.valoareCantitateML) != 0&&!StatisticiReceiverActivity.dejaAdaugatLunar) {
             StatisticiReceiverActivity.listaStatistici.add("Luna curenta a adus cea mai mare cantitate sanguina in ziua de " + StatisticiLunareReceiverFragment.valoareData + ": " + StatisticiLunareReceiverFragment.valoareCantitateML + "ml.");
             StatisticiReceiverActivity.dejaAdaugatLunar=true;
         }
         Collections.shuffle(StatisticiReceiverActivity.listaStatistici);
-        StatisticiReceiverActivity.tvStatistici.setText(StatisticiReceiverActivity.listaStatistici.get(0));
+        try {
+            StatisticiReceiverActivity.tvStatistici.setText(StatisticiReceiverActivity.listaStatistici.get(0));
+        }catch (Exception ex){
+
+        }
 
         return rootView;
     }

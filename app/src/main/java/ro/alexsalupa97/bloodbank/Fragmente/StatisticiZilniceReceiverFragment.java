@@ -140,12 +140,16 @@ public class StatisticiZilniceReceiverFragment extends Fragment {
             }
         });
 
-        if (StatisticiZilniceReceiverFragment.valoareData != null&&!StatisticiReceiverActivity.dejaAdaugatZilnic) {
+        if (Integer.parseInt(StatisticiZilniceReceiverFragment.valoareCantitateML) != 0&&!StatisticiReceiverActivity.dejaAdaugatZilnic) {
             StatisticiReceiverActivity.listaStatistici.add("In aceasta zi, ora cea mai \"bogata\" in donatii a fost " + StatisticiZilniceReceiverFragment.valoareData + ", cu o cantitate de sange primita de " + StatisticiZilniceReceiverFragment.valoareCantitateML + "ml.");
             StatisticiReceiverActivity.dejaAdaugatZilnic=true;
         }
         Collections.shuffle(StatisticiReceiverActivity.listaStatistici);
-        StatisticiReceiverActivity.tvStatistici.setText(StatisticiReceiverActivity.listaStatistici.get(0));
+        try {
+            StatisticiReceiverActivity.tvStatistici.setText(StatisticiReceiverActivity.listaStatistici.get(0));
+        }catch (Exception ex){
+
+        }
 
 
         return rootView;

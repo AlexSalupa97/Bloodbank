@@ -172,12 +172,16 @@ public class StatisticiSaptamanaleReceiverFragment extends Fragment {
             }
         });
 
-        if (StatisticiSaptamanaleReceiverFragment.valoareData != null&&!StatisticiReceiverActivity.dejaAdaugatSaptamanal) {
+        if (Integer.parseInt(StatisticiSaptamanaleReceiverFragment.valoareCantitateML) != 0&&!StatisticiReceiverActivity.dejaAdaugatSaptamanal) {
             StatisticiReceiverActivity.listaStatistici.add("In aceasta saptamana, cele mai multe donatii s-au inregistrat in data de " + StatisticiSaptamanaleReceiverFragment.valoareData + ", cu " + StatisticiZilniceReceiverFragment.valoareCantitateML + "ml primiti.");
             StatisticiReceiverActivity.dejaAdaugatSaptamanal=true;
         }
         Collections.shuffle(StatisticiReceiverActivity.listaStatistici);
-        StatisticiReceiverActivity.tvStatistici.setText(StatisticiReceiverActivity.listaStatistici.get(0));
+        try {
+            StatisticiReceiverActivity.tvStatistici.setText(StatisticiReceiverActivity.listaStatistici.get(0));
+        }catch (Exception e){
+
+        }
 
 
         return rootView;
