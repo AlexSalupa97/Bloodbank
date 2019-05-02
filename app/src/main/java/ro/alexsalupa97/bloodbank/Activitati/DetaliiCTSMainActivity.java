@@ -7,6 +7,7 @@ import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -67,6 +68,8 @@ public class DetaliiCTSMainActivity extends AppCompatActivity implements Navigat
     RecyclerView rvAlerte;
     ArrayList<SectionModelAlerte> sectiuni;
 
+    SwipeRefreshLayout swiperefreshRVSituatieSanguinaCTS;
+
     Button btnSituatieCTS;
 
     @Override
@@ -76,7 +79,9 @@ public class DetaliiCTSMainActivity extends AppCompatActivity implements Navigat
 
         try {
 
-            CTS ctsActual = Utile.preluareCTSLogin(getApplicationContext());
+
+            final CTS ctsActual = Utile.preluareCTSLogin(getApplicationContext());
+            getSupportActionBar().setTitle(ctsActual.getNumeCTS());
             rvAlerte = (RecyclerView) findViewById(R.id.rvSituatieSanguinaCTS);
 
 
@@ -176,9 +181,41 @@ public class DetaliiCTSMainActivity extends AppCompatActivity implements Navigat
 
             rvAlerte.setHasFixedSize(true);
 
-            AdaptorAlerteCTSRV adapter = new AdaptorAlerteCTSRV(getApplicationContext(), sectiuni);
+            final AdaptorAlerteCTSRV adapter = new AdaptorAlerteCTSRV(getApplicationContext(), sectiuni);
             rvAlerte.setLayoutManager(new LinearLayoutManager(getApplicationContext(), LinearLayoutManager.VERTICAL, false));
             rvAlerte.setAdapter(adapter);
+
+            swiperefreshRVSituatieSanguinaCTS=(SwipeRefreshLayout)findViewById(R.id.swiperefreshRVSituatieSanguinaCTS);
+            swiperefreshRVSituatieSanguinaCTS.setColorSchemeColors(getResources().getColor(R.color.colorPrimary));
+            swiperefreshRVSituatieSanguinaCTS.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+                @Override
+                public void onRefresh() {
+
+
+
+                    Thread t = new Thread() {
+                        @Override
+                        public void run() {
+                            try {
+                                sleep(2000);
+                                runOnUiThread(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        adapter.notifyDataSetChanged();
+                                        rvAlerte.setAdapter(adapter);
+                                        swiperefreshRVSituatieSanguinaCTS.setRefreshing(false);
+                                    }
+                                });
+                            } catch (InterruptedException e) {
+                                Log.e("SplashScreenActivity", e.getMessage());
+                            }
+                        }
+                    };
+
+                    t.start();
+
+                }
+            });
 
             btnSituatieCTS = (Button) findViewById(R.id.btnSituatieCTS);
             btnSituatieCTS.setOnClickListener(new View.OnClickListener() {

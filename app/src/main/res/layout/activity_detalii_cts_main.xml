@@ -132,12 +132,18 @@
 
                     </LinearLayout>
 
-                    <android.support.v7.widget.RecyclerView
-                        android:id="@+id/rvSituatieSanguinaCTS"
+                    <android.support.v4.widget.SwipeRefreshLayout
+                        android:id="@+id/swiperefreshRVSituatieSanguinaCTS"
                         android:layout_width="match_parent"
                         android:layout_height="0dp"
-                        android:layout_weight="1.1"
-                        android:background="#ececec" />
+                        android:layout_weight="1.1">
+
+                        <android.support.v7.widget.RecyclerView
+                            android:id="@+id/rvSituatieSanguinaCTS"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:background="#ececec" />
+                    </android.support.v4.widget.SwipeRefreshLayout>
 
                 </LinearLayout>
             </LinearLayout>
@@ -170,5 +176,5 @@
         app:headerLayout="@layout/navigation_drawer_layout"
         app:itemIconTint="@color/colorPrimaryDark"
         app:itemTextColor="@color/colorPrimaryDark"
-        app:menu="@menu/meniu_cts"/>
+        app:menu="@menu/meniu_cts" />
 </android.support.v4.widget.DrawerLayout>
