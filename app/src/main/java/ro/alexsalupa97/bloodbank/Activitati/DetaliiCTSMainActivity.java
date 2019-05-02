@@ -20,22 +20,28 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonArrayRequest;
+import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.RequestFuture;
 import com.android.volley.toolbox.Volley;
+import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
 import org.json.JSONArray;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.ExecutionException;
 
 import ro.alexsalupa97.bloodbank.Adaptoare.AdaptorAlerteCTSRV;
 import ro.alexsalupa97.bloodbank.Adaptoare.AdaptorAlerteRV;
@@ -43,6 +49,8 @@ import ro.alexsalupa97.bloodbank.Clase.CTS;
 import ro.alexsalupa97.bloodbank.Clase.CantitatiCTS;
 import ro.alexsalupa97.bloodbank.Clase.Compatibilitati;
 import ro.alexsalupa97.bloodbank.Clase.GrupeSanguine;
+import ro.alexsalupa97.bloodbank.Clase.IesiriCTS;
+import ro.alexsalupa97.bloodbank.Clase.IntrariCTS;
 import ro.alexsalupa97.bloodbank.Clase.LimiteCTS;
 import ro.alexsalupa97.bloodbank.R;
 import ro.alexsalupa97.bloodbank.RecyclerViewOrizontal.ItemModelAlerte;
@@ -70,165 +78,207 @@ public class DetaliiCTSMainActivity extends AppCompatActivity implements Navigat
 
     SwipeRefreshLayout swiperefreshRVSituatieSanguinaCTS;
 
+    Gson gson;
+
     Button btnSituatieCTS;
+
+    AdaptorAlerteCTSRV adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_detalii_cts_main);
 
-        try {
+        final CTS ctsActual = Utile.preluareCTSLogin(getApplicationContext());
 
 
-            final CTS ctsActual = Utile.preluareCTSLogin(getApplicationContext());
-            getSupportActionBar().setTitle(ctsActual.getNumeCTS());
-            rvAlerte = (RecyclerView) findViewById(R.id.rvSituatieSanguinaCTS);
 
 
-            sharedPreferences = getSharedPreferences(fisier, Context.MODE_PRIVATE);
 
-            drawerLayout = (DrawerLayout) findViewById(R.id.drawer);
-
-            navigationView = (NavigationView) findViewById(R.id.navigation_drawer);
-            navigationView.setNavigationItemSelectedListener(this);
-
-            toggle = new ActionBarDrawerToggle(this, drawerLayout, R.string.open, R.string.close);
-
-            drawerLayout.addDrawerListener(toggle);
-            toggle.syncState();
-
-            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-
-            View headerView = navigationView.getHeaderView(0);
-            tvNavDrawer = (TextView) headerView.findViewById(R.id.nav_header_textView);
+        getSupportActionBar().setTitle(ctsActual.getNumeCTS());
+        rvAlerte = (RecyclerView) findViewById(R.id.rvSituatieSanguinaCTS);
 
 
-            tvNavDrawer.setText(ctsActual.getNumeCTS());
+        sharedPreferences = getSharedPreferences(fisier, Context.MODE_PRIVATE);
 
-            getSupportActionBar().setElevation(0);
+        drawerLayout = (DrawerLayout) findViewById(R.id.drawer);
 
-            try {
-                mapCantitatiDisponibilePerCTSPerGrupa = new HashMap<>(Utile.incarcareMapDisponibil_particular(ctsActual));
-            } catch (Exception ex) {
+        navigationView = (NavigationView) findViewById(R.id.navigation_drawer);
+        navigationView.setNavigationItemSelectedListener(this);
 
-            }
-            mapLimitePerCTSPerGrupa = new HashMap<>();
+        toggle = new ActionBarDrawerToggle(this, drawerLayout, R.string.open, R.string.close);
 
+        drawerLayout.addDrawerListener(toggle);
+        toggle.syncState();
 
-            Map<GrupeSanguine, Integer> mapIntermediar = new HashMap<>();
-            try {
-                for (LimiteCTS limite : Utile.listaLimiteCTS)
-                    mapIntermediar.put(limite.getGrupaSanguina(), limite.getLimitaML());
-            } catch (Exception ex) {
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-            }
-            mapLimitePerCTSPerGrupa.put(ctsActual, mapIntermediar);
+        View headerView = navigationView.getHeaderView(0);
+        tvNavDrawer = (TextView) headerView.findViewById(R.id.nav_header_textView);
 
 
-            mapCantitatiPerCTS = new HashMap<>();
+        tvNavDrawer.setText(ctsActual.getNumeCTS());
 
-            for (CTS cts : mapCantitatiDisponibilePerCTSPerGrupa.keySet()) {
-                String deAfisat = "\n\n";
+        getSupportActionBar().setElevation(0);
+
+        Thread thread = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    RequestQueue requestQueue = Volley.newRequestQueue(DetaliiCTSMainActivity.this);
+                    RequestFuture<JSONArray> future = RequestFuture.newFuture();
+                    JsonArrayRequest request = new JsonArrayRequest(Request.Method.GET, Utile.URL + "domain.limitects/cts/" + ctsActual.getEmailCTS(), null, future, future);
+                    RequestFuture<JSONArray> future1 = RequestFuture.newFuture();
+                    JsonArrayRequest request1 = new JsonArrayRequest(Request.Method.GET, Utile.URL + "domain.istoricintraricts/cts/" + ctsActual.getEmailCTS(), null, future1, future1);
+                    RequestFuture<JSONArray> future2 = RequestFuture.newFuture();
+                    JsonArrayRequest request2 = new JsonArrayRequest(Request.Method.GET, Utile.URL + "domain.istoriciesiricts/cts/" + ctsActual.getEmailCTS(), null, future2, future2);
+                    RequestFuture<JSONArray> future3 = RequestFuture.newFuture();
+                    JsonArrayRequest request3 = new JsonArrayRequest(Request.Method.GET, Utile.URL + "domain.grupesanguine", null, future3, future3);
+
+                    requestQueue.add(request);
+                    requestQueue.add(request1);
+                    requestQueue.add(request2);
+                    requestQueue.add(request3);
+
+                    JSONArray response = future.get();
+                    JSONArray response1 = future1.get();
+                    JSONArray response2 = future2.get();
+                    JSONArray response3 = future3.get();
+
+                    gson=new Gson();
+
+                    Utile.listaLimiteCTS = new ArrayList<>(Arrays.asList(gson.fromJson(response.toString(), LimiteCTS[].class)));
+                    Utile.listaIntrariCTS = new ArrayList<>(Arrays.asList(gson.fromJson(response1.toString(), IntrariCTS[].class)));
+                    Utile.listaIesiriCTS = new ArrayList<>(Arrays.asList(gson.fromJson(response2.toString(), IesiriCTS[].class)));
+                    Utile.listaGrupeSanguine = new ArrayList<>(Arrays.asList(gson.fromJson(response3.toString(), GrupeSanguine[].class)));
+
+                    mapCantitatiDisponibilePerCTSPerGrupa = new HashMap<>(Utile.incarcareMapDisponibil_particular(ctsActual));
+
+                    mapLimitePerCTSPerGrupa = new HashMap<>();
 
 
-                Map<GrupeSanguine, Integer> mapCantitatiDisponibile = mapCantitatiDisponibilePerCTSPerGrupa.get(cts);
-                Map<GrupeSanguine, Integer> mapLimite = mapLimitePerCTSPerGrupa.get(cts);
-
-
-                deAfisat += "\t" + cts.getNumeCTS();
-
-                listaCantitatiCTS = new ArrayList<>();
-
-                for (GrupeSanguine grupeSanguine : Utile.listaGrupeSanguine) {
-
+                    Map<GrupeSanguine, Integer> mapIntermediar = new HashMap<>();
                     try {
-                        CantitatiCTS cantitateCTSCurent = new CantitatiCTS();
-                        cantitateCTSCurent.setCts(cts);
-                        cantitateCTSCurent.setGrupaSanguina(grupeSanguine);
-                        cantitateCTSCurent.setCantitateDisponibilaML(mapCantitatiDisponibile.get(grupeSanguine));
-                        cantitateCTSCurent.setCantitateLimitaML(mapLimite.get(grupeSanguine));
-                        listaCantitatiCTS.add(cantitateCTSCurent);
+                        for (LimiteCTS limite : Utile.listaLimiteCTS)
+                            mapIntermediar.put(limite.getGrupaSanguina(), limite.getLimitaML());
                     } catch (Exception ex) {
 
                     }
-
-                }
-
-                mapCantitatiPerCTS.put(cts, listaCantitatiCTS);
-            }
-
-            sectiuni = new ArrayList<>();
-
-            ArrayList<CTS> listaCTS = new ArrayList<>(mapCantitatiPerCTS.keySet());
-            Collections.sort(listaCTS);
+                    mapLimitePerCTSPerGrupa.put(ctsActual, mapIntermediar);
 
 
-            for (CTS cts : listaCTS) {
-                SectionModelAlerte dm = new SectionModelAlerte();
+                    mapCantitatiPerCTS = new HashMap<>();
 
-                dm.setTitlu("Situatia cantitatilor de sange");
-
-                ArrayList<ItemModelAlerte> itemeInSectiune = new ArrayList<>();
-                for (CantitatiCTS cantitatiCTS : mapCantitatiPerCTS.get(cts)) {
-                    itemeInSectiune.add(new ItemModelAlerte(cantitatiCTS));
-                }
-
-                dm.setItemeInSectiune(itemeInSectiune);
-
-                sectiuni.add(dm);
-            }
+                    for (CTS cts : mapCantitatiDisponibilePerCTSPerGrupa.keySet()) {
+                        String deAfisat = "\n\n";
 
 
-            rvAlerte.setHasFixedSize(true);
-
-            final AdaptorAlerteCTSRV adapter = new AdaptorAlerteCTSRV(getApplicationContext(), sectiuni);
-            rvAlerte.setLayoutManager(new LinearLayoutManager(getApplicationContext(), LinearLayoutManager.VERTICAL, false));
-            rvAlerte.setAdapter(adapter);
-
-            swiperefreshRVSituatieSanguinaCTS=(SwipeRefreshLayout)findViewById(R.id.swiperefreshRVSituatieSanguinaCTS);
-            swiperefreshRVSituatieSanguinaCTS.setColorSchemeColors(getResources().getColor(R.color.colorPrimary));
-            swiperefreshRVSituatieSanguinaCTS.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
-                @Override
-                public void onRefresh() {
+                        Map<GrupeSanguine, Integer> mapCantitatiDisponibile = mapCantitatiDisponibilePerCTSPerGrupa.get(cts);
+                        Map<GrupeSanguine, Integer> mapLimite = mapLimitePerCTSPerGrupa.get(cts);
 
 
+                        deAfisat += "\t" + cts.getNumeCTS();
 
-                    Thread t = new Thread() {
+                        listaCantitatiCTS = new ArrayList<>();
+
+                        for (GrupeSanguine grupeSanguine : Utile.listaGrupeSanguine) {
+
+                            try {
+                                CantitatiCTS cantitateCTSCurent = new CantitatiCTS();
+                                cantitateCTSCurent.setCts(cts);
+                                cantitateCTSCurent.setGrupaSanguina(grupeSanguine);
+                                cantitateCTSCurent.setCantitateDisponibilaML(mapCantitatiDisponibile.get(grupeSanguine));
+                                cantitateCTSCurent.setCantitateLimitaML(mapLimite.get(grupeSanguine));
+                                listaCantitatiCTS.add(cantitateCTSCurent);
+                            } catch (Exception ex) {
+
+                            }
+
+                        }
+
+                        mapCantitatiPerCTS.put(cts, listaCantitatiCTS);
+                    }
+
+                    sectiuni = new ArrayList<>();
+
+                    ArrayList<CTS> listaCTS = new ArrayList<>(mapCantitatiPerCTS.keySet());
+                    Collections.sort(listaCTS);
+
+
+                    for (CTS cts : listaCTS) {
+                        SectionModelAlerte dm = new SectionModelAlerte();
+
+                        dm.setTitlu("Situatia cantitatilor de sange");
+
+                        ArrayList<ItemModelAlerte> itemeInSectiune = new ArrayList<>();
+                        for (CantitatiCTS cantitatiCTS : mapCantitatiPerCTS.get(cts)) {
+                            itemeInSectiune.add(new ItemModelAlerte(cantitatiCTS));
+                        }
+
+                        dm.setItemeInSectiune(itemeInSectiune);
+
+                        sectiuni.add(dm);
+                    }
+
+
+                    rvAlerte.setHasFixedSize(true);
+
+                    adapter = new AdaptorAlerteCTSRV(getApplicationContext(), sectiuni);
+
+                    runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
-                            try {
-                                sleep(2000);
-                                runOnUiThread(new Runnable() {
-                                    @Override
-                                    public void run() {
-                                        adapter.notifyDataSetChanged();
-                                        rvAlerte.setAdapter(adapter);
-                                        swiperefreshRVSituatieSanguinaCTS.setRefreshing(false);
-                                    }
-                                });
-                            } catch (InterruptedException e) {
-                                Log.e("SplashScreenActivity", e.getMessage());
-                            }
+                            rvAlerte.setLayoutManager(new LinearLayoutManager(getApplicationContext(), LinearLayoutManager.VERTICAL, false));
+                            rvAlerte.setAdapter(adapter);
                         }
-                    };
+                    });
 
-                    t.start();
-
+                } catch (InterruptedException e) {
+                } catch (ExecutionException e) {
                 }
-            });
+            }
+        });
+        thread.start();
 
-            btnSituatieCTS = (Button) findViewById(R.id.btnSituatieCTS);
-            btnSituatieCTS.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    Intent intent = new Intent(getApplicationContext(), StatisticiCTSActivity.class);
-                    startActivity(intent);
-                }
-            });
-        }
-        catch (Exception ex){
 
-        }
+        swiperefreshRVSituatieSanguinaCTS = (SwipeRefreshLayout) findViewById(R.id.swiperefreshRVSituatieSanguinaCTS);
+        swiperefreshRVSituatieSanguinaCTS.setColorSchemeColors(getResources().getColor(R.color.colorPrimary));
+        swiperefreshRVSituatieSanguinaCTS.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+
+
+                Thread t = new Thread() {
+                    @Override
+                    public void run() {
+                        try {
+                            sleep(2000);
+                            runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    swiperefreshRVSituatieSanguinaCTS.setRefreshing(false);
+                                }
+                            });
+                        } catch (InterruptedException e) {
+                            Log.e("SplashScreenActivity", e.getMessage());
+                        }
+                    }
+                };
+
+                t.start();
+
+            }
+        });
+
+        btnSituatieCTS = (Button) findViewById(R.id.btnSituatieCTS);
+        btnSituatieCTS.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getApplicationContext(), StatisticiCTSActivity.class);
+                startActivity(intent);
+            }
+        });
+
     }
 
     @Override

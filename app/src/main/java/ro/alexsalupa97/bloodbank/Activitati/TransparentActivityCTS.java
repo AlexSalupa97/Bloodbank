@@ -35,10 +35,10 @@ public class TransparentActivityCTS extends AppCompatActivity {
             public void run() {
 
                 try {
-                    Utile.REST_GET_istoricIntrariCTS_particular(TransparentActivityCTS.this,cts);
-                    Utile.REST_GET_istoricIesiriCTS_particular(TransparentActivityCTS.this,cts);
-                    Utile.REST_GET_limiteCTS_particular(TransparentActivityCTS.this,cts);
-                    Utile.REST_GET_grupeSanguine(TransparentActivityCTS.this);
+//                    Utile.REST_GET_istoricIntrariCTS_particular(TransparentActivityCTS.this,cts);
+//                    Utile.REST_GET_istoricIesiriCTS_particular(TransparentActivityCTS.this,cts);
+//                    Utile.REST_GET_limiteCTS_particular(TransparentActivityCTS.this,cts);
+//                    Utile.REST_GET_grupeSanguine(TransparentActivityCTS.this);
                     sleep(2000);
 
                 } catch (InterruptedException e) {
