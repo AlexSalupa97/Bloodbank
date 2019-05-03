@@ -20,6 +20,9 @@ public class AlegereLoginActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_alegere_login);
 
+        getSupportActionBar().setElevation(0);
+        getSupportActionBar().setTitle("");
+
         btnContExistent=(Button)findViewById(R.id.btnContExistent);
         btnContNou=(Button)findViewById(R.id.btnContNou);
 

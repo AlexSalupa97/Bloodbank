@@ -46,6 +46,7 @@ public class FinalizareSuccesIntrebariActivity extends AppCompatActivity {
 
                 Intent intent = new Intent(getApplicationContext(), ListaCentreActivity.class);
                 startActivity(intent);
+                finish();
 
             }
         });

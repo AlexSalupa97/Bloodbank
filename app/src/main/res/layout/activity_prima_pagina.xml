@@ -9,65 +9,72 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical"
         android:background="@drawable/gradient_red_vertical"
+        android:orientation="vertical"
         tools:context="ro.alexsalupa97.bloodbank.Activitati.PrimaPaginaActivity">
 
         <ImageView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:src="@drawable/bloodbank_graffiti"/>
+            android:layout_marginTop="-60dp"
+            android:src="@drawable/bloodbank_graffiti" />
 
         <Button
             android:id="@+id/btnVreauSaDonez"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
             android:layout_marginLeft="54dp"
+            android:layout_marginTop="20dp"
             android:layout_marginRight="54dp"
-            android:text="Vreau sa donez"/>
-
-
+            android:background="@drawable/rounded_button"
+            android:text="Vreau sa donez"
+            android:textColor="@color/colorPrimaryDark" />
 
 
         <Button
             android:id="@+id/btnAlerte"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
             android:layout_marginLeft="54dp"
+            android:layout_marginTop="20dp"
             android:layout_marginRight="54dp"
-            android:text="Alerte"/>
+            android:background="@drawable/rounded_button"
+            android:text="Alerte"
+            android:textColor="@color/colorPrimaryDark" />
 
         <Button
             android:id="@+id/btnNotificari"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
             android:layout_marginLeft="54dp"
+            android:layout_marginTop="20dp"
             android:layout_marginRight="54dp"
-            android:text="Notificari"/>
+            android:background="@drawable/rounded_button"
+            android:text="Notificari"
+            android:textColor="@color/colorPrimaryDark" />
 
         <Button
             android:id="@+id/btnReceiveri"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
             android:layout_marginLeft="54dp"
+            android:layout_marginTop="20dp"
             android:layout_marginRight="54dp"
-            android:text="Vezi lista receiverilor"/>
+            android:background="@drawable/rounded_button"
+            android:text="Vezi lista receiverilor"
+            android:textColor="@color/colorPrimaryDark" />
 
 
         <Button
             android:id="@+id/btnTest"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
             android:layout_marginLeft="54dp"
+            android:layout_marginTop="20dp"
             android:layout_marginRight="54dp"
-            android:text="Test"/>
-
-
+            android:background="@drawable/rounded_button"
+            android:text="Test"
+            android:textColor="@color/colorPrimaryDark" />
 
 
     </LinearLayout>
@@ -76,13 +83,11 @@
         android:id="@+id/navigation_drawer"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
-        android:background="@android:color/white"
         android:layout_gravity="start"
-        app:itemTextColor="@color/colorPrimaryDark"
-        app:itemIconTint="@color/colorPrimaryDark"
-        app:menu="@menu/navigation_drawer_prima_pagina"
+        android:background="@android:color/white"
         app:headerLayout="@layout/navigation_drawer_layout"
-        >
-    </android.support.design.widget.NavigationView>
+        app:itemIconTint="@color/colorPrimaryDark"
+        app:itemTextColor="@color/colorPrimaryDark"
+        app:menu="@menu/navigation_drawer_prima_pagina"></android.support.design.widget.NavigationView>
 
 </android.support.v4.widget.DrawerLayout>

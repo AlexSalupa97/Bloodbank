@@ -8,14 +8,21 @@
     android:orientation="vertical"
     tools:context="ro.alexsalupa97.bloodbank.Activitati.AlegereLoginActivity">
 
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="-60dp"
+        android:src="@drawable/bloodbank_graffiti"
+        />
+
     <Button
         android:id="@+id/btnContExistent"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginLeft="54dp"
-        android:layout_marginTop="200dp"
+        android:layout_marginTop="54dp"
         android:layout_marginRight="54dp"
-        android:background="@android:color/white"
+        android:background="@drawable/rounded_button"
         android:text="Am deja un cont"
         android:textColor="@color/colorPrimaryDark" />
 
@@ -24,9 +31,9 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginLeft="54dp"
-        android:layout_marginTop="80dp"
+        android:layout_marginTop="20dp"
         android:layout_marginRight="54dp"
-        android:background="@android:color/white"
+        android:background="@drawable/rounded_button"
         android:text="Inregistrare cont nou"
         android:textColor="@color/colorPrimaryDark" />
 
