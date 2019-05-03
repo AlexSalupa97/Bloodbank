@@ -14,6 +14,10 @@
         android:id="@+id/menu_center"
         android:checkableBehavior="none">
         <item
+            android:id="@+id/listaCentre"
+            android:icon="@drawable/hospital_building"
+            android:title="Lista centrelor de transfuzie"/>
+        <item
             android:id="@+id/compatibilitati"
             android:icon="@drawable/compatibilitati"
             android:title="Compatibilitatile grupei"/>

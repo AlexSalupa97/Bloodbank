@@ -13,31 +13,28 @@
         android:background="@drawable/gradient_red_vertical"
         tools:context="ro.alexsalupa97.bloodbank.Activitati.PrimaPaginaActivity">
 
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:src="@drawable/bloodbank_graffiti"/>
+
         <Button
             android:id="@+id/btnVreauSaDonez"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="54dp"
+            android:layout_marginTop="20dp"
             android:layout_marginLeft="54dp"
             android:layout_marginRight="54dp"
             android:text="Vreau sa donez"/>
 
 
-        <Button
-            android:id="@+id/btnListaCTS"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="54dp"
-            android:layout_marginLeft="54dp"
-            android:layout_marginRight="54dp"
-            android:text="Vezi lista centrelor de transfuzie"/>
 
 
         <Button
             android:id="@+id/btnAlerte"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="54dp"
+            android:layout_marginTop="20dp"
             android:layout_marginLeft="54dp"
             android:layout_marginRight="54dp"
             android:text="Alerte"/>
@@ -46,7 +43,7 @@
             android:id="@+id/btnNotificari"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="54dp"
+            android:layout_marginTop="20dp"
             android:layout_marginLeft="54dp"
             android:layout_marginRight="54dp"
             android:text="Notificari"/>
@@ -55,7 +52,7 @@
             android:id="@+id/btnReceiveri"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="54dp"
+            android:layout_marginTop="20dp"
             android:layout_marginLeft="54dp"
             android:layout_marginRight="54dp"
             android:text="Vezi lista receiverilor"/>
@@ -65,7 +62,7 @@
             android:id="@+id/btnTest"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="54dp"
+            android:layout_marginTop="20dp"
             android:layout_marginLeft="54dp"
             android:layout_marginRight="54dp"
             android:text="Test"/>

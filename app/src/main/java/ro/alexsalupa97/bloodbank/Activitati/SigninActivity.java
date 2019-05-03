@@ -263,7 +263,7 @@ public class SigninActivity extends AppCompatActivity {
                                         editor.commit();
 
 
-                                        Intent intent = new Intent(getApplicationContext(), TransparentActivityCTS.class);
+                                        Intent intent = new Intent(getApplicationContext(), DetaliiCTSMainActivity.class);
                                         setResult(100);
                                         startActivity(intent);
                                         finish();

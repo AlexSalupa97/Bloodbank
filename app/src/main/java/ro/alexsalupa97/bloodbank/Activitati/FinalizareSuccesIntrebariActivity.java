@@ -13,9 +13,11 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.Volley;
+
 import ro.alexsalupa97.bloodbank.Clase.CTS;
 import ro.alexsalupa97.bloodbank.R;
 import ro.alexsalupa97.bloodbank.Utile.Utile;
+
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
@@ -28,8 +30,6 @@ import java.util.List;
 
 public class FinalizareSuccesIntrebariActivity extends AppCompatActivity {
 
-    Gson gsonCTS;
-    List<CTS> CTSlist;
 
     Button btnCentreRecoltare;
 
@@ -42,56 +42,11 @@ public class FinalizareSuccesIntrebariActivity extends AppCompatActivity {
         btnCentreRecoltare.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-//                btnCentreRecoltare.setEnabled(false);
+//
 
-                String url = Utile.URL + "domain.cts";
+                Intent intent = new Intent(getApplicationContext(), ListaCentreActivity.class);
+                startActivity(intent);
 
-                final RequestQueue requestQueue = Volley.newRequestQueue(FinalizareSuccesIntrebariActivity.this);
-
-
-                if (Utile.preluareStareAnalize(getApplicationContext()).equals("ok")) {
-                    JsonArrayRequest objectRequest = new JsonArrayRequest(
-                            Request.Method.GET,
-                            url,
-                            null,
-                            new Response.Listener<JSONArray>() {
-
-                                @Override
-                                public void onResponse(JSONArray response) {
-                                    GsonBuilder gsonBuilder = new GsonBuilder();
-                                    gsonBuilder.setDateFormat("M/d/yy hh:mm a");
-                                    gsonCTS = gsonBuilder.create();
-
-
-                                    CTSlist = Arrays.asList(gsonCTS.fromJson(response.toString(), CTS[].class));
-                                    Utile.CTS = new ArrayList<>();
-                                    Utile.orase = new HashSet<>();
-                                    for (CTS c : CTSlist) {
-                                        Utile.CTS.add(c);
-                                        Utile.orase.add(c.getOras());
-                                    }
-
-
-                                    Intent intent = new Intent(getApplicationContext(), ListaCentreActivity.class);
-                                    startActivity(intent);
-                                    finish();
-                                }
-
-
-                            },
-                            new Response.ErrorListener() {
-                                @Override
-                                public void onErrorResponse(VolleyError error) {
-                                    Log.d("RestResponse", error.toString());
-                                }
-                            }
-
-                    );
-
-                    requestQueue.add(objectRequest);
-
-
-                }
             }
         });
 

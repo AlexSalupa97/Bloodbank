@@ -49,7 +49,7 @@ import java.util.Set;
 public class Utile {
 
     public static String fisier = "SharedPreferences";
-    public static String URL = "http://eddc454e.ngrok.io/ProiectLicentaBloodbank/webresources/";
+    public static String URL = "http://de93f3fe.ngrok.io/ProiectLicentaBloodbank/webresources/";
 
     public static ArrayList<Intrebari> intrebari;
     public static ArrayList<Compatibilitati> compatibilitati;
@@ -379,7 +379,6 @@ public class Utile {
 
                         Utile.listaLimiteCTS = new ArrayList<>(Arrays.asList(gson.fromJson(response.toString(), LimiteCTS[].class)));
 
-                        int x = 1;
 
 
                     }

@@ -30,6 +30,8 @@ public class ListaCentreActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_lista_centre);
 
+        getSupportActionBar().setElevation(0);
+
         mapListaDistante=new HashMap<>();
         try {
             for (CTS cts : Utile.CTS) {

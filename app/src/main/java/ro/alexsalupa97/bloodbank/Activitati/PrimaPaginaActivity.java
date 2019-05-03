@@ -41,6 +41,7 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.Volley;
+
 import ro.alexsalupa97.bloodbank.Clase.CTS;
 import ro.alexsalupa97.bloodbank.Clase.Compatibilitati;
 import ro.alexsalupa97.bloodbank.Clase.Intrebari;
@@ -52,6 +53,7 @@ import ro.alexsalupa97.bloodbank.Notificari.NotificariBroadcast;
 import ro.alexsalupa97.bloodbank.Utile.CalculDistante;
 import ro.alexsalupa97.bloodbank.Utile.Utile;
 import ro.alexsalupa97.bloodbank.R;
+
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
@@ -78,7 +80,6 @@ public class PrimaPaginaActivity extends AppCompatActivity implements Navigation
     TextView tvNavDrawer;
 
     Button btnVreauSaDonez;
-    Button btnListaCTS;
     Button btnAlerte;
     Button btnNotificari;
     Button btnReceiveri;
@@ -94,7 +95,6 @@ public class PrimaPaginaActivity extends AppCompatActivity implements Navigation
     List<CTS> CTSlist;
 
     ProgressDialog pd;
-
 
 
     @Override
@@ -119,9 +119,7 @@ public class PrimaPaginaActivity extends AppCompatActivity implements Navigation
 
         statusCheck();
 
-        MapsCTSFragment.locatieCurenta= CalculDistante.getMyLocation(PrimaPaginaActivity.this);
-
-
+        MapsCTSFragment.locatieCurenta = CalculDistante.getMyLocation(PrimaPaginaActivity.this);
 
 
         sharedPreferences = getSharedPreferences(fisier, Context.MODE_PRIVATE);
@@ -175,6 +173,8 @@ public class PrimaPaginaActivity extends AppCompatActivity implements Navigation
         toggle.syncState();
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setElevation(0);
+        getSupportActionBar().setTitle("");
 
         View headerView = navigationView.getHeaderView(0);
         tvNavDrawer = (TextView) headerView.findViewById(R.id.nav_header_textView);
@@ -195,59 +195,6 @@ public class PrimaPaginaActivity extends AppCompatActivity implements Navigation
             }
         });
 
-        btnListaCTS = (Button) findViewById(R.id.btnListaCTS);
-        btnListaCTS.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                String url = Utile.URL + "domain.cts";
-
-                final RequestQueue requestQueue = Volley.newRequestQueue(PrimaPaginaActivity.this);
-
-
-//                if (Utile.preluareStareAnalize(getApplicationContext()).equals("ok")) {
-                    JsonArrayRequest objectRequest = new JsonArrayRequest(
-                            Request.Method.GET,
-                            url,
-                            null,
-                            new Response.Listener<JSONArray>() {
-
-                                @Override
-                                public void onResponse(JSONArray response) {
-                                    GsonBuilder gsonBuilder = new GsonBuilder();
-                                    gsonBuilder.setDateFormat("M/d/yy hh:mm a");
-                                    gsonCTS = gsonBuilder.create();
-
-
-                                    CTSlist = Arrays.asList(gsonCTS.fromJson(response.toString(), CTS[].class));
-                                    Utile.CTS = new ArrayList<>();
-                                    Utile.orase = new HashSet<>();
-                                    for (CTS c : CTSlist) {
-                                        Utile.CTS.add(c);
-                                        Utile.orase.add(c.getOras());
-                                    }
-
-
-                                    Intent intent = new Intent(getApplicationContext(), ListaCentreActivity.class);
-                                    startActivity(intent);
-                                }
-
-
-                            },
-                            new Response.ErrorListener() {
-                                @Override
-                                public void onErrorResponse(VolleyError error) {
-                                    Log.d("RestResponse", error.toString());
-                                }
-                            }
-
-                    );
-
-                    requestQueue.add(objectRequest);
-
-
-                }
-
-        });
 
         btnAlerte = (Button) findViewById(R.id.btnAlerte);
         btnAlerte.setOnClickListener(new View.OnClickListener() {
@@ -261,7 +208,9 @@ public class PrimaPaginaActivity extends AppCompatActivity implements Navigation
         });
 
 
-        btnNotificari = (Button) findViewById(R.id.btnNotificari);
+        btnNotificari = (Button)
+
+                findViewById(R.id.btnNotificari);
         btnNotificari.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -273,11 +222,11 @@ public class PrimaPaginaActivity extends AppCompatActivity implements Navigation
         });
 
         Button btnTest = (Button) findViewById(R.id.btnTest);
-//        btnTest.setVisibility(View.GONE);
+        btnTest.setVisibility(View.GONE);
         btnTest.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent=new Intent(getApplicationContext(),TestActivity.class);
+                Intent intent = new Intent(getApplicationContext(), TestActivity.class);
                 startActivity(intent);
 
 //                Intent twitterIntent = getShareIntent("twitter", "subject", "text: " + "https://play.google.com/store/apps/developer?id=AlexSalupa97");
@@ -292,7 +241,9 @@ public class PrimaPaginaActivity extends AppCompatActivity implements Navigation
             }
         });
 
-        btnReceiveri=(Button)findViewById(R.id.btnReceiveri);
+        btnReceiveri = (Button)
+
+                findViewById(R.id.btnReceiveri);
         btnReceiveri.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -324,7 +275,11 @@ public class PrimaPaginaActivity extends AppCompatActivity implements Navigation
         if (id == R.id.setari) {
             Intent intent = new Intent(getApplicationContext(), SetariActivity.class);
             startActivity(intent);
-        } else if (id == R.id.compatibilitati) {
+        }
+        else if (id == R.id.listaCentre) {
+            Intent intent = new Intent(getApplicationContext(), ListaCentreActivity.class);
+            startActivity(intent);
+        }else if (id == R.id.compatibilitati) {
             String url = Utile.URL + "domain.compatibilitati/" + Utile.preluareGrupaSanguina(getApplicationContext());
 
             final RequestQueue requestQueue = Volley.newRequestQueue(PrimaPaginaActivity.this);
@@ -511,53 +466,12 @@ public class PrimaPaginaActivity extends AppCompatActivity implements Navigation
                     })
                     .setNegativeButton("Nu", new DialogInterface.OnClickListener() {
                         public void onClick(final DialogInterface dialog, final int id) {
-                            String url = Utile.URL + "domain.cts";
-
-                            final RequestQueue requestQueue = Volley.newRequestQueue(PrimaPaginaActivity.this);
 
 
-                            if (Utile.preluareStareAnalize(getApplicationContext()).equals("ok")) {
-                                JsonArrayRequest objectRequest = new JsonArrayRequest(
-                                        Request.Method.GET,
-                                        url,
-                                        null,
-                                        new Response.Listener<JSONArray>() {
-
-                                            @Override
-                                            public void onResponse(JSONArray response) {
-                                                GsonBuilder gsonBuilder = new GsonBuilder();
-                                                gsonBuilder.setDateFormat("M/d/yy hh:mm a");
-                                                gsonCTS = gsonBuilder.create();
+                            Intent intent = new Intent(getApplicationContext(), ListaCentreActivity.class);
+                            startActivity(intent);
 
 
-                                                CTSlist = Arrays.asList(gsonCTS.fromJson(response.toString(), CTS[].class));
-                                                Utile.CTS = new ArrayList<>();
-                                                Utile.orase = new HashSet<>();
-                                                for (CTS c : CTSlist) {
-                                                    Utile.CTS.add(c);
-                                                    Utile.orase.add(c.getOras());
-                                                }
-
-
-                                                Intent intent = new Intent(getApplicationContext(), ListaCentreActivity.class);
-                                                startActivity(intent);
-                                            }
-
-
-                                        },
-                                        new Response.ErrorListener() {
-                                            @Override
-                                            public void onErrorResponse(VolleyError error) {
-                                                Log.d("RestResponse", error.toString());
-                                            }
-                                        }
-
-                                );
-
-                                requestQueue.add(objectRequest);
-
-
-                            }
                         }
                     });
             final AlertDialog alert = builder.create();
