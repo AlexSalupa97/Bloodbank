@@ -346,7 +346,6 @@ public class PrimaPaginaActivity extends AppCompatActivity implements Navigation
 
 
                             Intent intent = new Intent(getApplicationContext(), ProfilActivity.class);
-
                             startActivity(intent);
 
 

@@ -11,11 +11,13 @@ import android.util.Log;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.JsonArrayRequest;
+import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.RequestFuture;
 import com.android.volley.toolbox.Volley;
 import com.google.gson.Gson;
 
 import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
@@ -59,6 +61,11 @@ public class SplashScreenActivity extends AppCompatActivity {
                     requestQueue.add(request);
                     requestQueue.add(request1);
 
+
+
+                    requestQueue.add(request);
+                    requestQueue.add(request1);
+
                     JSONArray response=future.get();
                     JSONArray response1=future1.get();
 
@@ -82,10 +89,24 @@ public class SplashScreenActivity extends AppCompatActivity {
 
 
                     if (name.equals("")) {
+
                         Intent intent = new Intent(getApplicationContext(), AlegereLoginActivity.class);
                         startActivity(intent);
                         finish();
                     } else if (Utile.preluareTipUser(getApplicationContext()).equals("donator")) {
+
+                        RequestFuture<JSONObject> future2 = RequestFuture.newFuture();
+                        JsonObjectRequest request2 = new JsonObjectRequest(Request.Method.GET, Utile.URL + "domain.stareanalize/" + Utile.preluareEmail(getApplicationContext()), null, future2, future2);
+
+                        requestQueue.add(request2);
+
+                        JSONObject response2=future2.get();
+
+                        sharedPreferences = getSharedPreferences(fisier, Context.MODE_PRIVATE);
+                        SharedPreferences.Editor editor = sharedPreferences.edit();
+                        editor.putString("stareAnalize", response2.getString("stareanalize"));
+                        editor.commit();
+
                         Intent mainIntent = new Intent(getApplicationContext(), PrimaPaginaActivity.class);
                         startActivity(mainIntent);
                         finish();
@@ -101,6 +122,8 @@ public class SplashScreenActivity extends AppCompatActivity {
                 } catch (InterruptedException e) {
                     Log.e("SplashScreenActivity", e.getMessage());
                 } catch (ExecutionException e) {
+                    e.printStackTrace();
+                } catch (JSONException e) {
                     e.printStackTrace();
                 }
             }

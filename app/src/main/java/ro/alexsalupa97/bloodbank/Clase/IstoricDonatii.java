@@ -2,7 +2,7 @@ package ro.alexsalupa97.bloodbank.Clase;
 
 import com.google.gson.annotations.SerializedName;
 
-public class IstoricDonatii {
+public class IstoricDonatii implements Comparable{
 
     @SerializedName("cantitatedonatieml")
     private int cantitateDonataML;
@@ -56,5 +56,10 @@ public class IstoricDonatii {
 
     public void setIdIstoricDonatie(int idIstoricDonatie) {
         this.idIstoricDonatie = idIstoricDonatie;
+    }
+
+    @Override
+    public int compareTo(Object o) {
+        return -(this.getDataDonatie().compareTo(((IstoricDonatii)o).getDataDonatie()));
     }
 }
