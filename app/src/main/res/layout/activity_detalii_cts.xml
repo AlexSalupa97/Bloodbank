@@ -10,7 +10,8 @@
 
     <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="0dp"
+        android:layout_weight="10">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -22,7 +23,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
                 android:layout_weight="1"
-                android:background="#F44236"
+                android:background="@drawable/gradient_red_vertical"
                 android:orientation="vertical">
 
                 <TextView
@@ -43,14 +44,13 @@
                 android:layout_height="0dp"
                 android:layout_weight="3"
                 android:background="@android:color/white"
-                android:orientation="vertical">
+                android:orientation="vertical"
+                android:padding="4dp">
 
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="0dp"
-                    android:layout_marginLeft="4dp"
-                    android:layout_marginRight="4dp"
                     android:layout_marginBottom="4dp"
                     android:layout_weight="1"
                     android:background="#ececec"
@@ -60,8 +60,8 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="8dp"
-                        android:layout_marginTop="56dp"
-                        android:layout_marginBottom="24dp"
+                        android:layout_marginTop="32dp"
+                        android:layout_marginBottom="20dp"
                         android:text="  Detalii"
                         android:textSize="20sp"
                         android:textStyle="italic|bold" />
@@ -71,29 +71,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="8dp"
-                        android:text="  Adresa: " />
-
-                </LinearLayout>
-
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="0dp"
-                    android:layout_marginLeft="4dp"
-                    android:layout_marginRight="4dp"
-                    android:layout_weight="1"
-                    android:background="#ececec"
-                    android:orientation="vertical">
-
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginLeft="8dp"
-                        android:layout_marginTop="56dp"
-                        android:layout_marginBottom="24dp"
-                        android:text="  Contact"
-                        android:textSize="20sp"
-                        android:textStyle="italic|bold" />
+                        android:text="  Centru de transfuzie: " />
 
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -105,9 +83,9 @@
                             android:id="@+id/tvEmail"
                             android:layout_width="0dp"
                             android:layout_height="match_parent"
-                            android:gravity="center_vertical"
                             android:layout_marginLeft="8dp"
                             android:layout_weight="7"
+                            android:gravity="center|start"
                             android:text="  Mail: " />
 
 
@@ -131,10 +109,10 @@
                         <TextView
                             android:id="@+id/tvTelefon"
                             android:layout_width="0dp"
-                            android:gravity="center_vertical"
                             android:layout_height="match_parent"
                             android:layout_marginLeft="8dp"
                             android:layout_weight="7"
+                            android:gravity="center|start"
                             android:text="  Telefon: " />
 
 
@@ -148,28 +126,51 @@
 
                     </LinearLayout>
 
-
                 </LinearLayout>
 
+                <android.support.v4.widget.SwipeRefreshLayout
+                    android:id="@+id/swiperefreshRVSituatieSanguinaCTS"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="1.1">
+
+                    <android.support.v7.widget.RecyclerView
+                        android:id="@+id/rvSituatieSanguinaCTS"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:background="#ececec" />
+                </android.support.v4.widget.SwipeRefreshLayout>
+
+                <Button
+                    android:id="@+id/btnProgramare"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="0.4"
+                    android:text="Programare" />
 
             </LinearLayout>
-
-            <Button
-                android:id="@+id/btnProgramare"
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_weight="0.4"
-                android:text="Programare"/>
         </LinearLayout>
 
         <ImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:layout_marginTop="-168dp"
+            android:layout_marginTop="-160dp"
             android:background="@drawable/circle"
             android:src="@mipmap/ic_bloodbank_launcher_round" />
 
     </FrameLayout>
 
+
+
+
 </LinearLayout>
+
+
+
+
+
+
+
+
+

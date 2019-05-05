@@ -195,7 +195,7 @@ public class ProgramareActivity extends AppCompatActivity {
                                 if (response.length() == 0) {
                                     btnVerificareDisponibilitate.setVisibility(View.GONE);
                                     tvVerificareDisponibilitate.setVisibility(View.VISIBLE);
-                                    tvVerificareDisponibilitate.setBackgroundColor(Color.GREEN);
+                                    tvVerificareDisponibilitate.setBackgroundColor(Color.parseColor("#32CD32"));
                                     tvVerificareDisponibilitate.setText("Disponibil");
                                 } else {
                                     btnVerificareDisponibilitate.setVisibility(View.GONE);
