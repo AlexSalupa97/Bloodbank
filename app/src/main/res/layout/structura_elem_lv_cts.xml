@@ -22,6 +22,7 @@
         android:orientation="vertical">
 
         <TextView
+            android:textColor="@android:color/black"
             android:id="@+id/lvNumeCTS"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -51,10 +52,10 @@
 
             <TextView
                 android:id="@+id/lvAdresaCTS"
+                android:textColor="@android:color/black"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center|bottom"
-                android:text="Adresa CTS"
                 android:focusableInTouchMode="false"
                 android:clickable="false"
                 android:focusable="false"/>
@@ -84,8 +85,8 @@
                 android:id="@+id/lvTelefonCTS"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="0700000000"
                 android:focusableInTouchMode="false"
+                android:textColor="@android:color/black"
                 android:clickable="false"
                 android:focusable="false"/>
 

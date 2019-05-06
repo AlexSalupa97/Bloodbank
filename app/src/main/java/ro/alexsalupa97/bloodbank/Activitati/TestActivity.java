@@ -30,7 +30,7 @@ public class TestActivity extends AppCompatActivity {
         setContentView(R.layout.activity_test);
 
         tvBullet=(TextView)findViewById(R.id.tvBullet);
-        CharSequence bulletedList = BulletTextView.makeBulletList(100,"First line", "Second line", "Really long third line that will wrap and indent properly.");
+        CharSequence bulletedList = BulletTextView.makeBulletList(100,new String[]{"First line", "Second line", "Really long third line that will wrap and indent properly."});
         tvBullet.setText(bulletedList);
     }
 }

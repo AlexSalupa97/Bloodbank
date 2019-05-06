@@ -8,6 +8,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import ro.alexsalupa97.bloodbank.Adaptoare.AdaptorAlerteRV;
 import ro.alexsalupa97.bloodbank.Clase.CTS;
@@ -19,6 +20,7 @@ import ro.alexsalupa97.bloodbank.R;
 import ro.alexsalupa97.bloodbank.RecyclerViewOrizontal.ItemModelAlerte;
 import ro.alexsalupa97.bloodbank.RecyclerViewOrizontal.SectionModelAlerte;
 import ro.alexsalupa97.bloodbank.Utile.Utile;
+import ro.alexsalupa97.bloodbank.ViewCustom.BulletTextView;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -43,6 +45,8 @@ public class ListaAlerteInApropiereFragment extends Fragment {
     RecyclerView rvAlerteApropiere;
     ArrayList<SectionModelAlerte> sectiuni;
 
+    TextView tvAlerte;
+
     public ListaAlerteInApropiereFragment() {
         // Required empty public constructor
     }
@@ -59,11 +63,13 @@ public class ListaAlerteInApropiereFragment extends Fragment {
 
 //        lvAlerte=(ListView)rootView.findViewById(R.id.lvAlerte);
 
+        ArrayList<String> listaAlerte=new ArrayList<>();
 
         try {
             mapCantitatiDisponibilePerCTSPerGrupa = new HashMap<>(Utile.incarcareMapDisponibil());
             mapLimitePerCTSPerGrupa = new HashMap<>();
 
+            Collections.sort(Utile.CTS);
 
             for (CTS cts : Utile.CTS) {
                 Map<GrupeSanguine, Integer> mapIntermediar = new HashMap<>();
@@ -75,6 +81,7 @@ public class ListaAlerteInApropiereFragment extends Fragment {
 
             mapCantitatiPerCTS=new HashMap<>();
 
+
             for (CTS cts : mapCantitatiDisponibilePerCTSPerGrupa.keySet()) {
                 String deAfisat = "";
 
@@ -85,7 +92,7 @@ public class ListaAlerteInApropiereFragment extends Fragment {
                     Map<GrupeSanguine, Integer> mapLimite = mapLimitePerCTSPerGrupa.get(cts);
 
 
-                    deAfisat += "\n\n\t"+cts.getNumeCTS();
+//                    deAfisat += "\n\n\t"+cts.getNumeCTS();
 
                     for (Compatibilitati grupaSanguinaDonator : Utile.compatibilitati) {
                         if (Utile.preluareGrupaSanguina(getActivity()).equals(grupaSanguinaDonator.getGrupaSanguinaDonatoare().getGrupaSanguina()))
@@ -98,9 +105,9 @@ public class ListaAlerteInApropiereFragment extends Fragment {
                                 listaCantitatiCTS.add(cantitateCTSCurent);
 
                                 if (mapCantitatiDisponibile.get(grupaSanguinaDonator.getGrupaSanguinaReceiver()) < mapLimite.get(grupaSanguinaDonator.getGrupaSanguinaReceiver()))
-                                    deAfisat += "\n\t\t probleme cu " + grupaSanguinaDonator.getGrupaSanguinaReceiver().getGrupaSanguina() + " limita: " + mapLimite.get(grupaSanguinaDonator.getGrupaSanguinaReceiver()) + " disponibil: " + mapCantitatiDisponibile.get(grupaSanguinaDonator.getGrupaSanguinaReceiver());
-                                else
-                                    deAfisat+="\n\t\t nu sunt probleme cu " + grupaSanguinaDonator.getGrupaSanguinaReceiver().getGrupaSanguina() + " limita: " + mapLimite.get(grupaSanguinaDonator.getGrupaSanguinaReceiver()) + " disponibil: " + mapCantitatiDisponibile.get(grupaSanguinaDonator.getGrupaSanguinaReceiver());
+                                    listaAlerte.add(cts.getNumeCTS()+"\n\n\t\tprobleme cu " + grupaSanguinaDonator.getGrupaSanguinaReceiver().getGrupaSanguina() + "\n\t\tlimita: " + mapLimite.get(grupaSanguinaDonator.getGrupaSanguinaReceiver()) + "\n\t\tdisponibil: " + mapCantitatiDisponibile.get(grupaSanguinaDonator.getGrupaSanguinaReceiver())+"\n");
+//                                else
+//                                    deAfisat+="\n\t\t nu sunt probleme cu " + grupaSanguinaDonator.getGrupaSanguinaReceiver().getGrupaSanguina() + " limita: " + mapLimite.get(grupaSanguinaDonator.getGrupaSanguinaReceiver()) + " disponibil: " + mapCantitatiDisponibile.get(grupaSanguinaDonator.getGrupaSanguinaReceiver());
                             }
                             catch (Exception ex)
                             {
@@ -111,8 +118,14 @@ public class ListaAlerteInApropiereFragment extends Fragment {
                     mapCantitatiPerCTS.put(cts,listaCantitatiCTS);
                 }
 
-
             }
+
+            tvAlerte=(TextView)rootView.findViewById(R.id.tvAlerte);
+            Collections.sort(listaAlerte);
+            String[] stringList = new String[listaAlerte.size()];
+            stringList = listaAlerte.toArray(stringList);
+            CharSequence bulletedList = BulletTextView.makeBulletList(100,stringList);
+            tvAlerte.setText(bulletedList);
 
             sectiuni=new ArrayList<>();
             ArrayList<CTS> listaCTS=new ArrayList<>(mapCantitatiPerCTS.keySet());

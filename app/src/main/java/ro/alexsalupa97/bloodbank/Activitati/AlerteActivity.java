@@ -19,6 +19,8 @@ public class AlerteActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_alerte);
 
+        getSupportActionBar().setElevation(0);
+
         adaptor = new AdaptorFragmenteAlerte(getSupportFragmentManager());
         viewPager = (ViewPager) findViewById(R.id.vpAlerte);
         viewPager.setAdapter(adaptor);

@@ -58,6 +58,7 @@
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:textColor="@android:color/black"
                         android:layout_marginLeft="8dp"
                         android:layout_marginTop="32dp"
                         android:layout_marginBottom="20dp"
@@ -67,6 +68,7 @@
 
                     <TextView
                         android:id="@+id/tvAdresa"
+                        android:textColor="@android:color/black"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="8dp"
@@ -79,6 +81,7 @@
 
 
                         <TextView
+                            android:textColor="@android:color/black"
                             android:id="@+id/tvEmail"
                             android:layout_width="0dp"
                             android:layout_height="match_parent"
@@ -109,6 +112,7 @@
                             android:id="@+id/tvTelefon"
                             android:layout_width="0dp"
                             android:layout_height="match_parent"
+                            android:textColor="@android:color/black"
                             android:layout_marginLeft="8dp"
                             android:layout_weight="7"
                             android:gravity="center|start"

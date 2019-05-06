@@ -124,6 +124,7 @@ public class ProgramareActivity extends AppCompatActivity {
                 data = oraSelectata + dataSelectata;
                 tvVerificareDisponibilitate.setVisibility(View.GONE);
                 btnVerificareDisponibilitate.setVisibility(View.VISIBLE);
+                btnEfectuareProgramare.setVisibility(View.GONE);
                 Toast.makeText(getApplicationContext(), dataSelectata, Toast.LENGTH_SHORT).show();
             }
         });
@@ -166,6 +167,7 @@ public class ProgramareActivity extends AppCompatActivity {
                 oraSelectata = ora + minut;
                 data = oraSelectata + dataSelectata;
                 tvVerificareDisponibilitate.setVisibility(View.GONE);
+                btnEfectuareProgramare.setVisibility(View.GONE);
                 btnVerificareDisponibilitate.setVisibility(View.VISIBLE);
                 Toast.makeText(getApplicationContext(), oraSelectata, Toast.LENGTH_SHORT).show();
             }
@@ -196,11 +198,13 @@ public class ProgramareActivity extends AppCompatActivity {
                                 gson = gsonBuilder.create();
                                 if (response.length() == 0) {
                                     btnVerificareDisponibilitate.setVisibility(View.GONE);
+                                    btnEfectuareProgramare.setVisibility(View.VISIBLE);
                                     tvVerificareDisponibilitate.setVisibility(View.VISIBLE);
                                     tvVerificareDisponibilitate.setBackgroundColor(Color.parseColor("#32CD32"));
                                     tvVerificareDisponibilitate.setText("Disponibil");
                                 } else {
                                     btnVerificareDisponibilitate.setVisibility(View.GONE);
+                                    btnEfectuareProgramare.setVisibility(View.GONE);
                                     tvVerificareDisponibilitate.setVisibility(View.VISIBLE);
                                     tvVerificareDisponibilitate.setBackgroundColor(Color.RED);
                                     tvVerificareDisponibilitate.setTextColor(Color.WHITE);

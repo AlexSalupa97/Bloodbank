@@ -28,11 +28,16 @@
         android:id="@+id/btnVerificareDisponibilitate"
         android:layout_width="match_parent"
         android:layout_height="0dp"
+        style="?buttonBarButtonStyle"
+        android:drawableStart="@drawable/calendar_question"
+        android:paddingLeft="60dp"
+        android:paddingRight="60dp"
         android:layout_weight="0.3"
         android:text="Verifica disponibilitatea" />
 
     <Button
         android:id="@+id/tvVerificareDisponibilitate"
+        android:layout_marginTop="4dp"
         android:visibility="gone"
         android:layout_width="match_parent"
         android:layout_height="0dp"
@@ -42,8 +47,13 @@
     <Button
         android:id="@+id/btnEfectuareProgramare"
         android:layout_width="match_parent"
+        android:drawableStart="@drawable/calendar_check"
+        android:paddingLeft="60dp"
+        android:paddingRight="60dp"
+        android:visibility="gone"
         android:layout_height="0dp"
         android:layout_weight="0.3"
+        style="?buttonBarButtonStyle"
         android:text="Efectueaza programarea"/>
 
 </LinearLayout>

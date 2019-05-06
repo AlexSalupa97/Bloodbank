@@ -53,7 +53,7 @@ public class BulletTextView {
             CharSequence line = lines[i] + (i < lines.length-1 ? "\n" : "");
             Spannable spannable = new SpannableString(line);
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
-                spannable.setSpan(new BulletSpan(leadingMargin, Color.parseColor("#B10000"),24), 0, spannable.length(), Spanned.SPAN_INCLUSIVE_EXCLUSIVE);
+                spannable.setSpan(new BulletSpan(leadingMargin, Color.parseColor("#B10000"),16), 0, spannable.length(), Spanned.SPAN_INCLUSIVE_EXCLUSIVE);
             }
             else
                 spannable.setSpan(new BulletSpan(leadingMargin, Color.GRAY), 0, spannable.length(), Spanned.SPAN_INCLUSIVE_EXCLUSIVE);
