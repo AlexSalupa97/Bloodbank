@@ -21,49 +21,50 @@
             android:layout_marginTop="-60dp"
             android:src="@drawable/bloodbank_graffiti" />
 
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="8dp"
-            android:layout_marginRight="8dp"
-            android:text="Introduceti credentialele"
-            android:textAllCaps="true"
-            android:textColor="@android:color/white"
-            android:textSize="24dp"
-            android:textStyle="bold|italic" />
+        <!--<TextView-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_marginLeft="8dp"-->
+            <!--android:layout_marginRight="8dp"-->
+            <!--android:gravity="center"-->
+            <!--android:text="Introduceti credentialele"-->
+            <!--android:textAllCaps="true"-->
+            <!--android:textColor="@android:color/white"-->
+            <!--android:textSize="24dp"-->
+            <!--android:textStyle="bold|italic" />-->
 
         <EditText
             android:id="@+id/etUsername"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="8dp"
+            android:layout_marginLeft="48dp"
             android:layout_marginTop="8dp"
-            android:layout_marginRight="8dp"
+            android:layout_marginRight="48dp"
             android:hint="E-mail "
-            android:textCursorDrawable="@null"
             android:inputType="textEmailAddress"
             android:textColor="@android:color/white"
-            android:textColorHint="@android:color/white" />
+            android:textColorHint="@android:color/white"
+            android:textCursorDrawable="@null" />
 
         <EditText
             android:id="@+id/etPassword"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="8dp"
+            android:layout_marginLeft="48dp"
             android:layout_marginTop="8dp"
-            android:layout_marginRight="8dp"
-            android:textCursorDrawable="@null"
+            android:layout_marginRight="48dp"
             android:hint="Parola"
             android:inputType="textPassword"
             android:textColor="@android:color/white"
-            android:textColorHint="@android:color/white" />
+            android:textColorHint="@android:color/white"
+            android:textCursorDrawable="@null" />
 
 
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="8dp"
-            android:layout_marginTop="32dp"
+            android:layout_marginLeft="16dp"
+            android:layout_marginTop="48dp"
             android:layout_marginRight="8dp"
             android:text="Alegeti tipul contului"
             android:textAllCaps="true"
@@ -75,7 +76,9 @@
             android:id="@+id/spSignin"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="16dp" />
+            android:layout_marginTop="16dp"
+            android:layout_marginRight="48dp"
+            android:layout_marginLeft="48dp"/>
 
 
     </LinearLayout>
@@ -86,9 +89,9 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1.2"
-        android:background="#F44236"
         android:text="Sign in"
-        android:textColor="@android:color/white" />
+        android:background="@android:color/white"
+        android:textColor="@color/colorPrimaryDark" />
 
 
 </LinearLayout>

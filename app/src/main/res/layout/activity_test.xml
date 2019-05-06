@@ -7,17 +7,13 @@
     android:orientation="vertical"
     tools:context="ro.alexsalupa97.bloodbank.Activitati.TestActivity">
 
-    <ExpandableListView
-        android:id="@+id/lvExp"
-        android:visibility="gone"
-        android:layout_height="match_parent"
-        android:layout_width="match_parent"/>
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="48dp"
+        android:textSize="18sp"
+        android:textColor="@android:color/black"
+        android:id="@+id/tvBullet"/>
 
-    <TimePicker
-        android:id="@+id/tpProgramare"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:timePickerMode="spinner"
-        />
 
 </LinearLayout>
