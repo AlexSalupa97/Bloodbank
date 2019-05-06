@@ -1,5 +1,6 @@
 package ro.alexsalupa97.bloodbank.Activitati;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -74,6 +75,7 @@ public class ProgramareActivity extends AppCompatActivity {
 
     int idProgramare;
 
+    @SuppressLint("NewApi")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -140,7 +142,7 @@ public class ProgramareActivity extends AppCompatActivity {
         else
             ora = String.valueOf(calendar.get(Calendar.HOUR_OF_DAY));
 
-        if (getMinute() < 10)
+        if (calendar.get(Calendar.MINUTE) < 10)
             minut = "0" + getMinute();
         else
             minut = String.valueOf(getMinute());
@@ -242,24 +244,24 @@ public class ProgramareActivity extends AppCompatActivity {
 
                                 @Override
                                 public void onResponse(final String response) {
-                                    idProgramare=Integer.parseInt(response);
+                                    idProgramare = Integer.parseInt(response);
 
 
-                                    String url=Utile.URL+"domain.programari/";
+                                    String url = Utile.URL + "domain.programari/";
 
                                     final JSONObject jsonProgramare = new JSONObject();
-                                    final JSONObject jsonDonator=new JSONObject();
-                                    final JSONObject jsonCTS=new JSONObject();
-                                    final JSONObject jsonOrasDonator=new JSONObject();
-                                    final JSONObject jsonGrupaSanguina=new JSONObject();
-                                    final JSONObject jsonOras=new JSONObject();
+                                    final JSONObject jsonDonator = new JSONObject();
+                                    final JSONObject jsonCTS = new JSONObject();
+                                    final JSONObject jsonOrasDonator = new JSONObject();
+                                    final JSONObject jsonGrupaSanguina = new JSONObject();
+                                    final JSONObject jsonOras = new JSONObject();
 
                                     try {
-                                        jsonGrupaSanguina.put("idgrupasanguina",donator.getGrupaSanguina().getGrupaSanguina());
+                                        jsonGrupaSanguina.put("idgrupasanguina", donator.getGrupaSanguina().getGrupaSanguina());
 
-                                        jsonOrasDonator.put("idoras",donator.getOrasDonator().getIdOras());
-                                        jsonOrasDonator.put("judet",donator.getOrasDonator().getJudet());
-                                        jsonOrasDonator.put("numeoras",donator.getOrasDonator().getOras());
+                                        jsonOrasDonator.put("idoras", donator.getOrasDonator().getIdOras());
+                                        jsonOrasDonator.put("judet", donator.getOrasDonator().getJudet());
+                                        jsonOrasDonator.put("numeoras", donator.getOrasDonator().getOras());
 
                                         jsonDonator.put("emaildonator", donator.getEmailDonator());
                                         jsonDonator.put("iddonator", donator.getIdDonator());
@@ -268,24 +270,24 @@ public class ProgramareActivity extends AppCompatActivity {
                                         jsonDonator.put("numedonator", donator.getNumeDonator());
                                         jsonDonator.put("telefondonator", donator.getTelefonDonator());
 
-                                        jsonOras.put("idoras",ctsCurent.getOras().getIdOras());
-                                        jsonOras.put("judet",ctsCurent.getOras().getJudet());
-                                        jsonOras.put("numeoras",ctsCurent.getOras().getOras());
+                                        jsonOras.put("idoras", ctsCurent.getOras().getIdOras());
+                                        jsonOras.put("judet", ctsCurent.getOras().getJudet());
+                                        jsonOras.put("numeoras", ctsCurent.getOras().getOras());
 
-                                        jsonCTS.put("adresacts",ctsCurent.getAdresaCTS());
-                                        jsonCTS.put("coordonataxcts",ctsCurent.getCoordonataYCTS());
-                                        jsonCTS.put("coordonataycts",ctsCurent.getCoordonataYCTS());
-                                        jsonCTS.put("emailcts",ctsCurent.getEmailCTS());
-                                        jsonCTS.put("idcts",ctsCurent.getIdCTS());
-                                        jsonCTS.put("idoras",jsonOras);
-                                        jsonCTS.put("numects",ctsCurent.getNumeCTS());
-                                        jsonCTS.put("starects",ctsCurent.getStareCTS());
-                                        jsonCTS.put("telefoncts",ctsCurent.getTelefonCTS());
+                                        jsonCTS.put("adresacts", ctsCurent.getAdresaCTS());
+                                        jsonCTS.put("coordonataxcts", ctsCurent.getCoordonataYCTS());
+                                        jsonCTS.put("coordonataycts", ctsCurent.getCoordonataYCTS());
+                                        jsonCTS.put("emailcts", ctsCurent.getEmailCTS());
+                                        jsonCTS.put("idcts", ctsCurent.getIdCTS());
+                                        jsonCTS.put("idoras", jsonOras);
+                                        jsonCTS.put("numects", ctsCurent.getNumeCTS());
+                                        jsonCTS.put("starects", ctsCurent.getStareCTS());
+                                        jsonCTS.put("telefoncts", ctsCurent.getTelefonCTS());
 
                                         jsonProgramare.put("dataProgramare", data);
                                         jsonProgramare.put("idcts", jsonCTS);
                                         jsonProgramare.put("iddonator", jsonDonator);
-                                        jsonProgramare.put("idprogramare",idProgramare+1);
+                                        jsonProgramare.put("idprogramare", idProgramare + 1);
                                     } catch (JSONException e) {
 
                                     }
@@ -305,14 +307,14 @@ public class ProgramareActivity extends AppCompatActivity {
                                                 @Override
                                                 public void onErrorResponse(VolleyError error) {
 
-                                                    if(error.toString().contains("ServerError")) {
+                                                    if (error.toString().contains("ServerError")) {
                                                         Toast.makeText(getApplicationContext(), "Eroare de server", Toast.LENGTH_LONG).show();
                                                         Log.d("restresponse", error.toString());
                                                     }
 
 
                                                 }
-                                            }){
+                                            }) {
 
                                         @Override
                                         protected Response<JSONObject> parseNetworkResponse(NetworkResponse response) {
@@ -329,12 +331,10 @@ public class ProgramareActivity extends AppCompatActivity {
                                                             null,
                                                             HttpHeaderParser.parseCacheHeaders(response)
                                                     );
-                                                }
-                                                else {
+                                                } else {
                                                     return super.parseNetworkResponse(response);
                                                 }
-                                            }
-                                            catch (UnsupportedEncodingException e) {
+                                            } catch (UnsupportedEncodingException e) {
                                                 return Response.error(new ParseError(e));
                                             }
 
@@ -378,26 +378,28 @@ public class ProgramareActivity extends AppCompatActivity {
         int treceDeOra = 0;
         int numValues = 60 / INTERVAL;
         String[] displayedValues;
-//        Calendar calendar = Calendar.getInstance();
-//        if (calendar.get(Calendar.MINUTE) < 15)
-//            displayedValues = new String[]{"30", "45", "00", "15"};
-//        else if (calendar.get(Calendar.MINUTE) >= 15 && calendar.get(Calendar.MINUTE) < 30)
-//            displayedValues = new String[]{"45", "00", "15", "30"};
-//        else if (calendar.get(Calendar.MINUTE) >= 30 && calendar.get(Calendar.MINUTE) < 45)
-//            displayedValues = new String[]{"00", "15", "30", "45"};
-//        else {
-//            displayedValues = new String[]{"15", "30", "45", "00"};
-//            treceDeOra = 1;
-//        }
 
         displayedValues = new String[]{"00", "15", "30", "45"};
 
         View minute = tpProgramare.findViewById(Resources.getSystem().getIdentifier("minute", "id", "android"));
         if ((minute != null) && (minute instanceof NumberPicker)) {
             minutePicker = (NumberPicker) minute;
+            Calendar calendar=Calendar.getInstance();
+            if (calendar.get(Calendar.MINUTE) >= 45 && calendar.get(Calendar.MINUTE) <= 59)
+                minutePicker.setValue(0);
+            else if (calendar.get(Calendar.MINUTE) >= 30)
+                minutePicker.setValue(3);
+            else if (calendar.get(Calendar.MINUTE) >= 15)
+                minutePicker.setValue(2);
+            else if (calendar.get(Calendar.MINUTE) > 0)
+                minutePicker.setValue(1);
             minutePicker.setMinValue(0);
             minutePicker.setMaxValue(numValues - 1);
             minutePicker.setDisplayedValues(displayedValues);
+
+            if(minutePicker.getValue()==0)
+                tpProgramare.setCurrentHour(calendar.get(Calendar.HOUR_OF_DAY)+1);
+
         }
 
         return treceDeOra;
