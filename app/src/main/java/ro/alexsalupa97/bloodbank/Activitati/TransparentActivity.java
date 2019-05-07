@@ -19,9 +19,12 @@ import org.json.JSONArray;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashSet;
 import java.util.concurrent.ExecutionException;
 
+import ro.alexsalupa97.bloodbank.Clase.CTS;
 import ro.alexsalupa97.bloodbank.Clase.Compatibilitati;
+import ro.alexsalupa97.bloodbank.Clase.GrupeSanguine;
 import ro.alexsalupa97.bloodbank.Clase.IesiriCTS;
 import ro.alexsalupa97.bloodbank.Clase.IntrariCTS;
 import ro.alexsalupa97.bloodbank.Clase.LimiteCTS;
@@ -62,23 +65,36 @@ public class TransparentActivity extends AppCompatActivity {
                     JsonArrayRequest request2 = new JsonArrayRequest(Request.Method.GET, Utile.URL + "domain.limitects", null, future2, future2);
                     RequestFuture<JSONArray> future3 = RequestFuture.newFuture();
                     JsonArrayRequest request3 = new JsonArrayRequest(Request.Method.GET, Utile.URL + "domain.compatibilitati/" + Utile.preluareGrupaSanguina(getApplicationContext()), null, future3, future3);
+                    RequestFuture<JSONArray> future4 = RequestFuture.newFuture();
+                    JsonArrayRequest request4 = new JsonArrayRequest(Request.Method.GET, Utile.URL + "domain.cts", null, future4, future4);
+                    RequestFuture<JSONArray> future5 = RequestFuture.newFuture();
+                    JsonArrayRequest request5 = new JsonArrayRequest(Request.Method.GET, Utile.URL + "domain.grupesanguine", null, future5, future5);
 
 
                     requestQueue.add(request);
                     requestQueue.add(request1);
                     requestQueue.add(request2);
                     requestQueue.add(request3);
+                    requestQueue.add(request4);
+                    requestQueue.add(request5);
 
 
                     JSONArray response=future.get();
                     JSONArray response1=future1.get();
                     JSONArray response2=future2.get();
                     JSONArray response3=future3.get();
+                    JSONArray response4=future4.get();
+                    JSONArray response5=future5.get();
 
                     Utile.listaIntrariCTS = new ArrayList<>(Arrays.asList(gson.fromJson(response.toString(), IntrariCTS[].class)));
                     Utile.listaIesiriCTS = new ArrayList<>(Arrays.asList(gson.fromJson(response1.toString(), IesiriCTS[].class)));
                     Utile.listaLimiteCTS = new ArrayList<>(Arrays.asList(gson.fromJson(response2.toString(), LimiteCTS[].class)));
                     Utile.compatibilitati = new ArrayList<>(Arrays.asList(gson.fromJson(response3.toString(), Compatibilitati[].class)));
+                    Utile.CTS = new ArrayList<>(Arrays.asList(gson.fromJson(response4.toString(), CTS[].class)));
+                    Utile.orase = new HashSet<>();
+                    for (CTS cts : Utile.CTS)
+                        Utile.orase.add(cts.getOras());
+                    Utile.listaGrupeSanguine = new ArrayList<>(Arrays.asList(gson.fromJson(response5.toString(), GrupeSanguine[].class)));
 
 
 

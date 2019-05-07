@@ -107,7 +107,7 @@
         <activity
             android:name=".Activitati.PrimaPaginaActivity"
             android:label="Pagina Principala"
-            android:launchMode="singleTop" />
+            android:launchMode="singleTask" />
         <activity android:name=".Activitati.IntrebariActivity" />
         <activity
             android:name=".Activitati.ListaCentreActivity"

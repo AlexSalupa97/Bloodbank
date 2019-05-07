@@ -10,6 +10,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import ro.alexsalupa97.bloodbank.Adaptoare.AdaptorAlerteRV;
 import ro.alexsalupa97.bloodbank.Clase.CTS;

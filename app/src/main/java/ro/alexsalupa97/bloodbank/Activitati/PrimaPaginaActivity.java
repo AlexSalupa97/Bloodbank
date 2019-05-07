@@ -66,6 +66,7 @@ import ro.alexsalupa97.bloodbank.R;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.pkmmte.view.CircularImageView;
 
 
 import org.json.JSONArray;
@@ -93,7 +94,7 @@ public class PrimaPaginaActivity extends AppCompatActivity implements Navigation
     DrawerLayout drawerLayout;
     ActionBarDrawerToggle toggle;
     TextView tvNavDrawer;
-    ImageView ivNavDrawer;
+    CircularImageView ivNavDrawer;
 
     private final int COD=20;
 
@@ -199,7 +200,7 @@ public class PrimaPaginaActivity extends AppCompatActivity implements Navigation
 
         View headerView = navigationView.getHeaderView(0);
         tvNavDrawer = (TextView) headerView.findViewById(R.id.nav_header_textView);
-        ivNavDrawer = (ImageView) headerView.findViewById(R.id.nav_header_imageView);
+        ivNavDrawer = (CircularImageView) headerView.findViewById(R.id.nav_header_imageView);
 
         ivNavDrawer.setOnClickListener((View view)->{
 
@@ -734,12 +735,15 @@ public class PrimaPaginaActivity extends AppCompatActivity implements Navigation
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode,  Intent data) {
-        if (requestCode == 20) {
+        if (requestCode == 20&&data!=null) {
             try {
                 final Uri imageUri = data.getData();
                 final InputStream imageStream = getContentResolver().openInputStream(imageUri);
                 final Bitmap selectedImage = BitmapFactory.decodeStream(imageStream);
+
+
                 ivNavDrawer.setImageBitmap(selectedImage);
+
 
                 SharedPreferences myPrefrence = getSharedPreferences(fisier,Context.MODE_PRIVATE);
                 SharedPreferences.Editor editor = myPrefrence.edit();

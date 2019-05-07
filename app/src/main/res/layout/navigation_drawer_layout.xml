@@ -11,11 +11,13 @@
         android:layout_height="200dp"
         android:orientation="horizontal">
 
-        <ImageView
+        <com.pkmmte.view.CircularImageView
             android:id="@+id/nav_header_imageView"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_gravity="center"
+            android:layout_marginTop="40dp"
+            android:scaleType="fitCenter"
             android:layout_marginLeft="8dp"
             android:layout_marginRight="8dp"
             android:layout_weight="1.2"

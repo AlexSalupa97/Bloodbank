@@ -9,6 +9,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import ro.alexsalupa97.bloodbank.Adaptoare.AdaptorAlerteRV;
 import ro.alexsalupa97.bloodbank.Clase.CTS;
@@ -67,6 +68,7 @@ public class ListaAlerteInApropiereFragment extends Fragment {
 
         try {
             mapCantitatiDisponibilePerCTSPerGrupa = new HashMap<>(Utile.incarcareMapDisponibil());
+
             mapLimitePerCTSPerGrupa = new HashMap<>();
 
             Collections.sort(Utile.CTS);
@@ -153,9 +155,11 @@ public class ListaAlerteInApropiereFragment extends Fragment {
             rvAlerteApropiere.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false));
             rvAlerteApropiere.setAdapter(adapter);
 
-        } catch (Exception ex) {
 
+        } catch (Exception ex) {
         }
+
+
 
 
 
