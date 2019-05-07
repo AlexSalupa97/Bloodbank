@@ -1,8 +1,11 @@
 package ro.alexsalupa97.bloodbank.Activitati;
 
 import android.content.Intent;
+import android.graphics.Color;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -21,10 +24,39 @@ public class ListaReceiveriActivity extends AppCompatActivity {
     ArrayList<String> listaReceiveri;
     ArrayAdapter<String> adaptor;
 
+    SwipeRefreshLayout srlListaReceiveri;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_lista_receiveri);
+
+        srlListaReceiveri=(SwipeRefreshLayout)findViewById(R.id.srlListaReceiveri);
+        srlListaReceiveri.setColorSchemeColors(getResources().getColor(R.color.colorPrimary));
+
+        srlListaReceiveri.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                Thread t = new Thread() {
+                    @Override
+                    public void run() {
+                        try {
+                            sleep(1000);
+                            runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    srlListaReceiveri.setRefreshing(false);
+                                }
+                            });
+                        } catch (Exception e) {
+                            Log.e("SplashScreenActivity", e.getMessage());
+                        }
+                    }
+                };
+
+                t.start();
+            }
+        });
 
         listaReceiveri=new ArrayList<>();
         for(Receiveri receiver: Utile.listaReceiveri)

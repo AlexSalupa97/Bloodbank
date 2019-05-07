@@ -1,155 +1,157 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.v4.widget.SwipeRefreshLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/swiperefreshRVSituatieSanguinaCTS"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@android:color/white"
     android:orientation="vertical"
     tools:context="ro.alexsalupa97.bloodbank.Activitati.DetaliiCTSActivity">
 
-    <FrameLayout
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="10">
+        android:layout_height="match_parent"
+        android:orientation="vertical">
 
-        <LinearLayout
+
+        <FrameLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical">
-
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_weight="1"
-                android:background="@drawable/gradient_red_vertical"
-                android:orientation="vertical">
-
-                <TextView
-                    android:id="@+id/tvNumeCTS"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_marginTop="-40dp"
-                    android:gravity="center|center_vertical"
-                    android:textColor="@android:color/white"
-                    android:textSize="24sp"
-                    android:textStyle="bold" />
-
-            </LinearLayout>
-
+            android:layout_height="0dp"
+            android:layout_weight="10">
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_weight="3"
-                android:background="@android:color/white"
+                android:layout_height="match_parent"
                 android:orientation="vertical">
 
-                <android.support.v7.widget.CardView
+
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="0dp"
-                    android:layout_margin="4dp"
                     android:layout_weight="1"
-                    android:outlineSpotShadowColor="@color/colorPrimaryDark"
-                    app:cardCornerRadius="12dp"
-                    app:cardElevation="4dp">
+                    android:background="@drawable/gradient_red_vertical"
+                    android:orientation="vertical">
 
-                    <LinearLayout
+                    <TextView
+                        android:id="@+id/tvNumeCTS"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:layout_marginBottom="4dp"
-                        android:orientation="vertical">
+                        android:layout_marginTop="-40dp"
+                        android:gravity="center|center_vertical"
+                        android:textColor="@android:color/white"
+                        android:textSize="24sp"
+                        android:textStyle="bold" />
 
-                        <TextView
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_marginLeft="8dp"
-                            android:layout_marginTop="32dp"
-                            android:layout_marginBottom="20dp"
-                            android:text="  Detalii"
-                            android:textColor="@android:color/black"
-                            android:textSize="20sp"
-                            android:textStyle="italic|bold" />
-
-                        <TextView
-                            android:id="@+id/tvAdresa"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_marginLeft="8dp"
-                            android:text="  Centru de transfuzie: "
-                            android:textColor="@android:color/black" />
-
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:orientation="horizontal">
+                </LinearLayout>
 
 
-                            <TextView
-                                android:id="@+id/tvEmail"
-                                android:layout_width="0dp"
-                                android:layout_height="match_parent"
-                                android:layout_marginLeft="8dp"
-                                android:layout_weight="7"
-                                android:gravity="center|start"
-                                android:text="  Mail: "
-                                android:textColor="@android:color/black" />
-
-
-                            <Button
-                                android:id="@+id/btnEmail"
-                                android:layout_width="0dp"
-                                android:layout_height="wrap_content"
-                                android:layout_weight="3"
-                                android:text="email" />
-
-
-                        </LinearLayout>
-
-
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:orientation="horizontal">
-
-
-                            <TextView
-                                android:id="@+id/tvTelefon"
-                                android:layout_width="0dp"
-                                android:layout_height="match_parent"
-                                android:layout_marginLeft="8dp"
-                                android:layout_weight="7"
-                                android:gravity="center|start"
-                                android:text="  Telefon: "
-                                android:textColor="@android:color/black" />
-
-
-                            <Button
-                                android:id="@+id/btnTelefon"
-                                android:layout_width="0dp"
-                                android:layout_height="wrap_content"
-                                android:layout_weight="3"
-                                android:text="Apeleaza" />
-
-
-                        </LinearLayout>
-
-
-                    </LinearLayout>
-
-                </android.support.v7.widget.CardView>
-
-
-                <android.support.v4.widget.SwipeRefreshLayout
-                    android:id="@+id/swiperefreshRVSituatieSanguinaCTS"
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="0dp"
-                    android:layout_weight="1.1">
+                    android:layout_weight="3"
+                    android:background="@android:color/white"
+                    android:orientation="vertical">
+
+                    <android.support.v7.widget.CardView
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
+                        android:layout_margin="4dp"
+                        android:layout_weight="1"
+                        android:outlineSpotShadowColor="@color/colorPrimaryDark"
+                        app:cardCornerRadius="12dp"
+                        app:cardElevation="4dp">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_marginBottom="4dp"
+                            android:orientation="vertical">
+
+                            <TextView
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginLeft="8dp"
+                                android:layout_marginTop="32dp"
+                                android:layout_marginBottom="20dp"
+                                android:text="  Detalii"
+                                android:textColor="@android:color/black"
+                                android:textSize="20sp"
+                                android:textStyle="italic|bold" />
+
+                            <TextView
+                                android:id="@+id/tvAdresa"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginLeft="8dp"
+                                android:text="  Centru de transfuzie: "
+                                android:textColor="@android:color/black" />
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:orientation="horizontal">
+
+
+                                <TextView
+                                    android:id="@+id/tvEmail"
+                                    android:layout_width="0dp"
+                                    android:layout_height="match_parent"
+                                    android:layout_marginLeft="8dp"
+                                    android:layout_weight="7"
+                                    android:gravity="center|start"
+                                    android:text="  Mail: "
+                                    android:textColor="@android:color/black" />
+
+
+                                <Button
+                                    android:id="@+id/btnEmail"
+                                    android:layout_width="0dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_weight="3"
+                                    android:text="email" />
+
+
+                            </LinearLayout>
+
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:orientation="horizontal">
+
+
+                                <TextView
+                                    android:id="@+id/tvTelefon"
+                                    android:layout_width="0dp"
+                                    android:layout_height="match_parent"
+                                    android:layout_marginLeft="8dp"
+                                    android:layout_weight="7"
+                                    android:gravity="center|start"
+                                    android:text="  Telefon: "
+                                    android:textColor="@android:color/black" />
+
+
+                                <Button
+                                    android:id="@+id/btnTelefon"
+                                    android:layout_width="0dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_weight="3"
+                                    android:text="Apeleaza" />
+
+
+                            </LinearLayout>
+
+
+                        </LinearLayout>
+
+                    </android.support.v7.widget.CardView>
+
 
                     <LinearLayout
                         android:layout_width="match_parent"
-                        android:layout_height="match_parent"
+                        android:layout_height="0dp"
+                        android:layout_weight="1.1"
                         android:orientation="vertical">
 
                         <android.support.v7.widget.CardView
@@ -168,37 +170,39 @@
 
                         </android.support.v7.widget.CardView>
                     </LinearLayout>
-                </android.support.v4.widget.SwipeRefreshLayout>
 
-                <Button
-                    android:id="@+id/btnProgramare"
-                    android:layout_width="match_parent"
-                    android:layout_height="0dp"
-                    android:layout_weight="0.4"
-                    android:background="@android:color/white"
-                    android:drawableStart="@drawable/calendar_clock"
-                    android:paddingLeft="80dp"
-                    android:paddingRight="80dp"
-                    android:text="Programare"
-                    android:textColor="@color/colorPrimaryDark" />
+                    <Button
+                        android:id="@+id/btnProgramare"
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
+                        android:layout_weight="0.4"
+                        android:background="@android:color/white"
+                        android:drawableStart="@drawable/calendar_clock"
+                        android:paddingLeft="80dp"
+                        android:paddingRight="80dp"
+                        android:text="Programare"
+                        android:textColor="@color/colorPrimaryDark" />
+
+                </LinearLayout>
+
 
             </LinearLayout>
 
+            <ImageView
+                android:padding="4dp"
+                android:backgroundTint="#dcdcdc"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginTop="-160dp"
+                android:background="@drawable/circle"
+                android:src="@mipmap/ic_bloodbank_launcher_round" />
 
-        </LinearLayout>
-
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_marginTop="-160dp"
-            android:background="@drawable/circle"
-            android:src="@mipmap/ic_bloodbank_launcher_round" />
-
-    </FrameLayout>
+        </FrameLayout>
 
 
-</LinearLayout>
+    </LinearLayout>
+</android.support.v4.widget.SwipeRefreshLayout>
 
 
 

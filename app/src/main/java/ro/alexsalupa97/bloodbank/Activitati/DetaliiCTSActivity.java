@@ -10,6 +10,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -254,6 +255,31 @@ public class DetaliiCTSActivity extends AppCompatActivity {
             }
         });
         thread.start();
+
+        swiperefreshRVSituatieSanguinaCTS.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                Thread t = new Thread() {
+                    @Override
+                    public void run() {
+                        try {
+                            sleep(1000);
+                            runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    swiperefreshRVSituatieSanguinaCTS.setRefreshing(false);
+                                }
+                            });
+                        } catch (Exception e) {
+                            Log.e("SplashScreenActivity", e.getMessage());
+                        }
+                    }
+                };
+
+                t.start();
+
+            }
+        });
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);

@@ -188,7 +188,7 @@ public class DetaliiReceiverActivity extends AppCompatActivity {
                     @Override
                     public void run() {
                         try {
-
+                            sleep(1000);
                             runOnUiThread(new Runnable() {
                                 @Override
                                 public void run() {
