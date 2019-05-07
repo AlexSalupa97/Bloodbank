@@ -37,7 +37,7 @@ public class AdaptorLVCTS extends ArrayAdapter<CTS> {
         public TextView adresaCTS;
         public TextView telefonCTS;
         public Button btnApelare;
-        public ImageView ivLogoIcon;
+        public ImageView ivRecomandat;
         public CardView cvCTS;
     }
 
@@ -56,7 +56,7 @@ public class AdaptorLVCTS extends ArrayAdapter<CTS> {
             viewHolder.adresaCTS = (TextView) viewRefolosibil.findViewById(R.id.lvAdresaCTS);
             viewHolder.telefonCTS = (TextView) viewRefolosibil.findViewById(R.id.lvTelefonCTS);
             viewHolder.btnApelare = (Button) viewRefolosibil.findViewById(R.id.btnApelare);
-            viewHolder.ivLogoIcon = (ImageView) viewRefolosibil.findViewById(R.id.ivLogoIcon);
+            viewHolder.ivRecomandat = (ImageView) viewRefolosibil.findViewById(R.id.ivRecomandat);
             viewHolder.cvCTS=(CardView)viewRefolosibil.findViewById(R.id.cvCTS);
 
 
@@ -75,15 +75,16 @@ public class AdaptorLVCTS extends ArrayAdapter<CTS> {
             if (curent.getNumeCTS().equals(ListaCentreActivity.closestCTS.getNumeCTS())) {
 //            viewRefolosibil.setPadding(4,4,4,4);
 //            viewRefolosibil.setBackgroundColor(context.getResources().getColor(R.color.celalaltRosu));
-                holder.ivLogoIcon.setImageResource(R.drawable.recomandat);
-                holder.ivLogoIcon.setPadding(20, 0, 0, 0);
+                holder.ivRecomandat.setImageResource(R.drawable.recomandat);
+                holder.ivRecomandat.setPadding(20, 0, 0, 0);
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
                     holder.cvCTS.setOutlineSpotShadowColor(Color.parseColor("#B10000"));
                 }
             } else {
-                holder.ivLogoIcon.setImageResource(R.mipmap.ic_bloodbank_launcher_round);
-//            viewRefolosibil.setBackgroundColor(Color.WHITE);
-                holder.ivLogoIcon.setPadding(0, 0, 0, 0);
+//                holder.ivRecomandat.setImageResource(R.mipmap.ic_bloodbank_launcher_round);
+////            viewRefolosibil.setBackgroundColor(Color.WHITE);
+//                holder.ivRecomandat.setPadding(0, 0, 0, 0);
+                holder.ivRecomandat.setVisibility(View.GONE);
             }
         }catch (Exception ex){
 
