@@ -162,7 +162,6 @@ public class StatisticiSaptamanaleReceiverFragment extends Fragment {
         graph.setTitleTextSize(60);
         graph.addSeries(series);
 
-        getDateFromString(Utile.listaIstoricReceiver.get(0));
 
         series.setOnDataPointTapListener(new OnDataPointTapListener() {
             @Override

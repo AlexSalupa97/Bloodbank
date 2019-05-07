@@ -159,7 +159,6 @@ public class StatisticiLunareReceiverFragment extends Fragment {
         graph.addSeries(series);
 
 
-        getDateFromString(Utile.listaIstoricReceiver.get(0));
 
         series.setOnDataPointTapListener(new OnDataPointTapListener() {
             @Override
