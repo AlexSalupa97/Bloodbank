@@ -1,107 +1,121 @@
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginTop="8dp"
     android:minHeight="100dp"
-    android:orientation="horizontal">
+    android:orientation="vertical">
 
-    <ImageView
-        android:id="@+id/ivLogoIcon"
-        android:layout_width="0dp"
+    <android.support.v7.widget.CardView
+        android:id="@+id/cvCTS"
+        android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_weight="1"
-        android:src="@mipmap/ic_bloodbank_launcher_round" />
-
-    <LinearLayout
-        android:layout_width="0dp"
-        android:layout_height="match_parent"
-        android:layout_weight="3"
-        android:orientation="vertical">
-
-        <TextView
-            android:textColor="@android:color/black"
-            android:id="@+id/lvNumeCTS"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center|bottom"
-            android:layout_marginLeft="16dp"
-            android:layout_marginTop="16dp"
-            android:text="Nume CTS"
-            android:textSize="18sp"
-            android:textStyle="bold|italic"
-            android:focusableInTouchMode="false"
-            android:clickable="false"
-            android:focusable="false"/>
+        android:layout_margin="4dp"
+        android:outlineSpotShadowColor="#708090"
+        app:cardCornerRadius="12dp"
+        app:cardElevation="20dp">
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="16dp"
-            android:layout_marginTop="16dp"
+            android:layout_height="match_parent"
             android:orientation="horizontal">
 
-            <ImageView
-                android:id="@+id/lvLocationIcon"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:src="@drawable/ic_location" />
-
-
-            <TextView
-                android:id="@+id/lvAdresaCTS"
-                android:textColor="@android:color/black"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center|bottom"
-                android:focusableInTouchMode="false"
-                android:clickable="false"
-                android:focusable="false"/>
-        </LinearLayout>
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="0dp"
-        android:layout_height="match_parent"
-        android:layout_weight="2"
-        android:orientation="vertical">
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="8dp"
-            android:gravity="center_vertical"
-            android:minHeight="50dp">
 
             <ImageView
-                android:id="@+id/lvPhoneIcon"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:src="@drawable/ic_phone" />
+                android:id="@+id/ivLogoIcon"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:src="@mipmap/ic_bloodbank_launcher_round" />
 
-            <TextView
-                android:id="@+id/lvTelefonCTS"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:focusableInTouchMode="false"
-                android:textColor="@android:color/black"
-                android:clickable="false"
-                android:focusable="false"/>
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="3"
+                android:orientation="vertical">
 
+                <TextView
+                    android:id="@+id/lvNumeCTS"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center|bottom"
+                    android:layout_marginLeft="16dp"
+                    android:layout_marginTop="16dp"
+                    android:clickable="false"
+                    android:focusable="false"
+                    android:focusableInTouchMode="false"
+                    android:text="Nume CTS"
+                    android:textColor="@android:color/black"
+                    android:textSize="18sp"
+                    android:textStyle="bold|italic" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="16dp"
+                    android:layout_marginTop="16dp"
+                    android:orientation="horizontal">
+
+                    <ImageView
+                        android:id="@+id/lvLocationIcon"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:src="@drawable/ic_location" />
+
+
+                    <TextView
+                        android:id="@+id/lvAdresaCTS"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center|bottom"
+                        android:clickable="false"
+                        android:focusable="false"
+                        android:focusableInTouchMode="false"
+                        android:textColor="@android:color/black" />
+                </LinearLayout>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="2"
+                android:orientation="vertical">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="8dp"
+                    android:gravity="center_vertical"
+                    android:minHeight="50dp">
+
+                    <ImageView
+                        android:id="@+id/lvPhoneIcon"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:src="@drawable/ic_phone" />
+
+                    <TextView
+                        android:id="@+id/lvTelefonCTS"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:clickable="false"
+                        android:focusable="false"
+                        android:focusableInTouchMode="false"
+                        android:textColor="@android:color/black" />
+
+                </LinearLayout>
+
+                <Button
+                    android:id="@+id/btnApelare"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="12dp"
+                    android:layout_marginRight="12dp"
+                    android:gravity="end"
+                    android:minHeight="25dp"
+                    android:text="Apeleaza" />
+            </LinearLayout>
         </LinearLayout>
 
-        <Button
-            android:id="@+id/btnApelare"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="12dp"
-            android:layout_marginRight="12dp"
-            android:gravity="end"
-            android:minHeight="25dp"
-            android:text="Apeleaza"/>
-    </LinearLayout>
-
-
+    </android.support.v7.widget.CardView>
 </LinearLayout>

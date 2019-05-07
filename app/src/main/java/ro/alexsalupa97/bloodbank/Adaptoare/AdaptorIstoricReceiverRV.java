@@ -50,7 +50,7 @@ public class AdaptorIstoricReceiverRV extends RecyclerView.Adapter<AdaptorIstori
 
         AdaptorListaItemeSectiuneRV itemListDataAdapter = new AdaptorListaItemeSectiuneRV(context, itemeSectiune);
 
-        itemRowHolder.recycler_view_list.setBackgroundColor(Color.parseColor("#ececec"));
+//        itemRowHolder.recycler_view_list.setBackgroundColor(Color.parseColor("#ececec"));
         itemRowHolder.recycler_view_list.setHasFixedSize(true);
         itemRowHolder.recycler_view_list.setLayoutManager(new LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false));
         itemRowHolder.recycler_view_list.setAdapter(itemListDataAdapter);
@@ -85,14 +85,14 @@ public class AdaptorIstoricReceiverRV extends RecyclerView.Adapter<AdaptorIstori
             super(view);
 
             RelativeLayout rl=(RelativeLayout)view.findViewById(R.id.rl);
-            rl.setBackgroundColor(Color.parseColor("#ececec"));
+//            rl.setBackgroundColor(Color.parseColor("#ececec"));
 
             this.itemTitle = (TextView) view.findViewById(R.id.titluSectiune);
             this.recycler_view_list = (RecyclerView) view.findViewById(R.id.recycler_view_list);
             this.btnMore = (Button) view.findViewById(R.id.btnMaiMult);
 
             btnMore.setText("Statistici");
-            btnMore.setBackgroundColor(Color.parseColor("#ececec"));
+//            btnMore.setBackgroundColor(Color.parseColor("#ececec"));
 
 
 

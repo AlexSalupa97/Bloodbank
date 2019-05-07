@@ -2,7 +2,6 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#ececec"
     android:orientation="vertical"
     android:padding="5dp">
 
@@ -14,8 +13,7 @@
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_weight="1"
-            android:background="#ececec">
+            android:layout_weight="1">
 
 
             <TextView
@@ -42,7 +40,6 @@
             android:minHeight="140dp"
             android:layout_gravity="center_vertical"
             android:layout_weight="3"
-            android:background="#ececec"
             android:orientation="horizontal" />
 
     </LinearLayout>

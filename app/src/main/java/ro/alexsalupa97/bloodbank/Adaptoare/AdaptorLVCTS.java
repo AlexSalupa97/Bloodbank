@@ -4,6 +4,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.net.Uri;
+import android.os.Build;
+import android.support.v7.widget.CardView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -36,6 +38,7 @@ public class AdaptorLVCTS extends ArrayAdapter<CTS> {
         public TextView telefonCTS;
         public Button btnApelare;
         public ImageView ivLogoIcon;
+        public CardView cvCTS;
     }
 
     @Override
@@ -54,6 +57,7 @@ public class AdaptorLVCTS extends ArrayAdapter<CTS> {
             viewHolder.telefonCTS = (TextView) viewRefolosibil.findViewById(R.id.lvTelefonCTS);
             viewHolder.btnApelare = (Button) viewRefolosibil.findViewById(R.id.btnApelare);
             viewHolder.ivLogoIcon = (ImageView) viewRefolosibil.findViewById(R.id.ivLogoIcon);
+            viewHolder.cvCTS=(CardView)viewRefolosibil.findViewById(R.id.cvCTS);
 
 
             viewRefolosibil.setTag(viewHolder);
@@ -73,6 +77,9 @@ public class AdaptorLVCTS extends ArrayAdapter<CTS> {
 //            viewRefolosibil.setBackgroundColor(context.getResources().getColor(R.color.celalaltRosu));
                 holder.ivLogoIcon.setImageResource(R.drawable.recomandat);
                 holder.ivLogoIcon.setPadding(20, 0, 0, 0);
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
+                    holder.cvCTS.setOutlineSpotShadowColor(Color.parseColor("#B10000"));
+                }
             } else {
                 holder.ivLogoIcon.setImageResource(R.mipmap.ic_bloodbank_launcher_round);
 //            viewRefolosibil.setBackgroundColor(Color.WHITE);

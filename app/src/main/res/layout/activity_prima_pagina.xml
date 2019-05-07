@@ -36,6 +36,9 @@
 
         <Button
             android:id="@+id/btnAlerte"
+            android:paddingLeft="32dp"
+            android:paddingRight="20dp"
+            android:drawableStart="@drawable/message_alert_outline"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginLeft="54dp"
@@ -44,6 +47,22 @@
             android:background="@drawable/rounded_button"
             android:text="Alerte"
             android:textColor="@color/colorPrimaryDark" />
+
+
+        <Button
+            android:id="@+id/btnReceiveri"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="54dp"
+            android:layout_marginTop="20dp"
+            android:layout_marginRight="54dp"
+            android:paddingLeft="32dp"
+            android:paddingRight="20dp"
+            android:drawableStart="@drawable/account_group_outline"
+            android:background="@drawable/rounded_button"
+            android:text="Vezi lista receiverilor"
+            android:textColor="@color/colorPrimaryDark" />
+
 
         <Button
             android:id="@+id/btnNotificari"
@@ -55,18 +74,6 @@
             android:background="@drawable/rounded_button"
             android:text="Notificari"
             android:textColor="@color/colorPrimaryDark" />
-
-        <Button
-            android:id="@+id/btnReceiveri"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="54dp"
-            android:layout_marginTop="20dp"
-            android:layout_marginRight="54dp"
-            android:background="@drawable/rounded_button"
-            android:text="Vezi lista receiverilor"
-            android:textColor="@color/colorPrimaryDark" />
-
 
         <Button
             android:id="@+id/btnTest"
