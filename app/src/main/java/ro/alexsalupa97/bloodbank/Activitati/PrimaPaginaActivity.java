@@ -1,6 +1,7 @@
 package ro.alexsalupa97.bloodbank.Activitati;
 
 import android.Manifest;
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.AlarmManager;
 import android.app.Notification;
@@ -60,6 +61,7 @@ import ro.alexsalupa97.bloodbank.Fragmente.MapsCTSFragment;
 import ro.alexsalupa97.bloodbank.Notificari.ActionAlerteBroadcast;
 import ro.alexsalupa97.bloodbank.Notificari.ActionCentreBroadcast;
 import ro.alexsalupa97.bloodbank.Notificari.NotificariBroadcast;
+import ro.alexsalupa97.bloodbank.Notificari.NotifyingDailyService;
 import ro.alexsalupa97.bloodbank.Utile.CalculDistante;
 import ro.alexsalupa97.bloodbank.Utile.Utile;
 import ro.alexsalupa97.bloodbank.R;
@@ -118,12 +120,15 @@ public class PrimaPaginaActivity extends AppCompatActivity implements Navigation
 
     ProgressDialog pd;
 
+    private static Context context;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_prima_pagina);
 
+        context=getApplicationContext();
 
         if (ContextCompat.checkSelfPermission(getApplicationContext(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
 
@@ -140,6 +145,11 @@ public class PrimaPaginaActivity extends AppCompatActivity implements Navigation
         }
 
         statusCheck();
+
+        NotifyingDailyService mSensorService = new NotifyingDailyService();
+        Intent mServiceIntent = new Intent(getApplicationContext(), mSensorService.getClass());
+        startService(mServiceIntent);
+
 
         try {
             MapsCTSFragment.locatieCurenta = CalculDistante.getMyLocation(PrimaPaginaActivity.this);
@@ -528,8 +538,9 @@ public class PrimaPaginaActivity extends AppCompatActivity implements Navigation
         }
     }
 
-    private void triggerBasicNotification() {
-        Intent resultIntent = new Intent(getApplicationContext(), ActionAlerteBroadcast.class);
+    @SuppressLint("NewApi")
+    public static void triggerBasicNotification() {
+        Intent resultIntent = new Intent(context, ActionAlerteBroadcast.class);
         resultIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 
 //        Intent backIntent = new Intent(this, PrimaPaginaActivity.class);
@@ -541,18 +552,18 @@ public class PrimaPaginaActivity extends AppCompatActivity implements Navigation
 
 //        Intent listaAlerteActionIntent = new Intent(getApplicationContext(), ActionCentreBroadcast.class);
         PendingIntent listaAlerteActionPendingIntent =
-                PendingIntent.getBroadcast(this, 0, resultIntent, 0);
+                PendingIntent.getBroadcast(context, 0, resultIntent, 0);
 
 
-        Intent listaCentreActionIntent = new Intent(getApplicationContext(), ActionCentreBroadcast.class);
+        Intent listaCentreActionIntent = new Intent(context, ActionCentreBroadcast.class);
         PendingIntent listaCentreActionPendingIntent =
-                PendingIntent.getBroadcast(this, 0, listaCentreActionIntent, 0);
+                PendingIntent.getBroadcast(context, 0, listaCentreActionIntent, 0);
 
 
-        NotificationCompat.Builder mBuilder =
-                new NotificationCompat.Builder(getApplicationContext(), "test")
+         NotificationCompat.Builder mBuilder =
+                new NotificationCompat.Builder(context, "test")
                         .setSmallIcon(R.drawable.blood)
-                        .setColor(getResources().getColor(R.color.colorPrimary))
+                        .setColor(context.getColor(R.color.colorPrimary))
                         .setContentTitle("Alerta de sange")
                         .setContentText("Vezi situatia actuala")
                         .setChannelId("test")
@@ -567,7 +578,7 @@ public class PrimaPaginaActivity extends AppCompatActivity implements Navigation
 
         NotificationManager mNotificationManager =
 
-                (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+                (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
 
 
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {

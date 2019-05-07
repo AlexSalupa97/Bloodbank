@@ -7,6 +7,8 @@
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
+
 
     <application
         android:allowBackup="false"
@@ -64,6 +66,19 @@
         <receiver android:name=".Notificari.NotificariBroadcast" />
         <receiver android:name=".Notificari.ActionCentreBroadcast" />
         <receiver android:name=".Notificari.ActionAlerteBroadcast" />
+
+        <receiver android:name=".Notificari.BootCompletedReceiver"
+            android:enabled="true">
+            <intent-filter>
+                <action android:name="android.intent.action.BOOT_COMPLETED" />
+                <action android:name="android.intent.action.QUICKBOOT_POWERON" />
+                <action android:name="RestartService"/>
+            </intent-filter>
+        </receiver>
+
+        <service android:name=".Notificari.NotifyingDailyService"
+            android:enabled="true">
+        </service>
 
         <provider
             android:name="com.facebook.FacebookContentProvider"
