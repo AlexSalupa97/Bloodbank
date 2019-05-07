@@ -16,6 +16,10 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
+    compileOptions {
+        sourceCompatibility = '1.8'
+        targetCompatibility = '1.8'
+    }
 }
 
 dependencies {
@@ -40,5 +44,6 @@ dependencies {
     implementation 'com.facebook.android:facebook-share:[4,5)'
     implementation 'com.jjoe64:graphview:4.2.2'
     implementation 'net.danlew:android.joda:2.10.1.2'
+    implementation 'com.makeramen:roundedimageview:2.3.0'
 
 }

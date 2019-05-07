@@ -1,6 +1,7 @@
 package ro.alexsalupa97.bloodbank.Activitati;
 
 import android.Manifest;
+import android.app.Activity;
 import android.app.AlarmManager;
 import android.app.Notification;
 import android.app.NotificationChannel;
@@ -13,11 +14,17 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.location.LocationManager;
+import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
+import android.os.Environment;
 import android.os.SystemClock;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.NotificationCompat;
@@ -28,12 +35,15 @@ import android.support.v4.widget.ViewDragHelper;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Base64;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -57,8 +67,13 @@ import ro.alexsalupa97.bloodbank.R;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
+
 import org.json.JSONArray;
 
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.InputStream;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -78,6 +93,9 @@ public class PrimaPaginaActivity extends AppCompatActivity implements Navigation
     DrawerLayout drawerLayout;
     ActionBarDrawerToggle toggle;
     TextView tvNavDrawer;
+    ImageView ivNavDrawer;
+
+    private final int COD=20;
 
     Button btnVreauSaDonez;
     Button btnAlerte;
@@ -90,6 +108,9 @@ public class PrimaPaginaActivity extends AppCompatActivity implements Navigation
     List<Intrebari> intrebariList;
     List<Compatibilitati> compatibilitatiList;
     List<IstoricDonatii> istoricDonatiiList;
+
+    Uri imageUri;
+    Bitmap bitmap;
 
     Gson gsonCTS;
     List<CTS> CTSlist;
@@ -178,6 +199,24 @@ public class PrimaPaginaActivity extends AppCompatActivity implements Navigation
 
         View headerView = navigationView.getHeaderView(0);
         tvNavDrawer = (TextView) headerView.findViewById(R.id.nav_header_textView);
+        ivNavDrawer = (ImageView) headerView.findViewById(R.id.nav_header_imageView);
+
+        ivNavDrawer.setOnClickListener((View view)->{
+
+            Intent photoPickerIntent = new Intent(Intent.ACTION_PICK);
+            photoPickerIntent.setType("image/*");
+            startActivityForResult(photoPickerIntent, 20);
+        });
+
+        SharedPreferences myPrefrence = getSharedPreferences(fisier,Context.MODE_PRIVATE);
+        String imageS = myPrefrence.getString("imagePreferance", "");
+        Bitmap imageB;
+        if(!imageS.equals("")) {
+            imageB = decodeToBase64(imageS);
+            ivNavDrawer.setImageBitmap(imageB);
+
+        }
+
 
         String nume = Utile.preluareUsername(getApplicationContext());
 
@@ -275,11 +314,10 @@ public class PrimaPaginaActivity extends AppCompatActivity implements Navigation
         if (id == R.id.setari) {
             Intent intent = new Intent(getApplicationContext(), SetariActivity.class);
             startActivity(intent);
-        }
-        else if (id == R.id.listaCentre) {
+        } else if (id == R.id.listaCentre) {
             Intent intent = new Intent(getApplicationContext(), ListaCentreActivity.class);
             startActivity(intent);
-        }else if (id == R.id.compatibilitati) {
+        } else if (id == R.id.compatibilitati) {
             String url = Utile.URL + "domain.compatibilitati/" + Utile.preluareGrupaSanguina(getApplicationContext());
 
             final RequestQueue requestQueue = Volley.newRequestQueue(PrimaPaginaActivity.this);
@@ -364,6 +402,7 @@ public class PrimaPaginaActivity extends AppCompatActivity implements Navigation
         } else {
             SharedPreferences.Editor editor = sharedPreferences.edit();
             editor.putString("login_name", "");
+            editor.putString("imagePreferance","");
             editor.putString("tip_user", "");
             editor.commit();
 
@@ -692,4 +731,43 @@ public class PrimaPaginaActivity extends AppCompatActivity implements Navigation
 //
 //        }
 //    };
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode,  Intent data) {
+        if (requestCode == 20) {
+            try {
+                final Uri imageUri = data.getData();
+                final InputStream imageStream = getContentResolver().openInputStream(imageUri);
+                final Bitmap selectedImage = BitmapFactory.decodeStream(imageStream);
+                ivNavDrawer.setImageBitmap(selectedImage);
+
+                SharedPreferences myPrefrence = getSharedPreferences(fisier,Context.MODE_PRIVATE);
+                SharedPreferences.Editor editor = myPrefrence.edit();
+                editor.putString("imagePreferance", encodeToBase64(selectedImage));
+
+                editor.commit();
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();
+                Toast.makeText(PrimaPaginaActivity.this, "Something went wrong", Toast.LENGTH_LONG).show();
+            }
+
+        }
+    }
+
+    public static String encodeToBase64(Bitmap image) {
+        Bitmap immage = image;
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        immage.compress(Bitmap.CompressFormat.PNG, 100, baos);
+        byte[] b = baos.toByteArray();
+        String imageEncoded = Base64.encodeToString(b, Base64.DEFAULT);
+
+        Log.d("Image Log:", imageEncoded);
+        return imageEncoded;
+    }
+
+    public static Bitmap decodeToBase64(String input) {
+        byte[] decodedByte = Base64.decode(input, 0);
+        return BitmapFactory.decodeByteArray(decodedByte, 0, decodedByte.length);
+    }
+
 }

@@ -267,7 +267,6 @@ public class SigninActivity extends AppCompatActivity {
 
 
                                         Intent intent = new Intent(getApplicationContext(), DetaliiCTSMainActivity.class);
-                                        setResult(100);
                                         startActivity(intent);
                                         finish();
 
