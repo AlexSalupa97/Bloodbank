@@ -96,7 +96,7 @@ public class PrimaPaginaActivity extends AppCompatActivity implements Navigation
     TextView tvNavDrawer;
     CircularImageView ivNavDrawer;
 
-    private final int COD=20;
+    private final int COD = 20;
 
     Button btnVreauSaDonez;
     Button btnAlerte;
@@ -141,7 +141,11 @@ public class PrimaPaginaActivity extends AppCompatActivity implements Navigation
 
         statusCheck();
 
-        MapsCTSFragment.locatieCurenta = CalculDistante.getMyLocation(PrimaPaginaActivity.this);
+        try {
+            MapsCTSFragment.locatieCurenta = CalculDistante.getMyLocation(PrimaPaginaActivity.this);
+        } catch (Exception ex) {
+
+        }
 
 
         sharedPreferences = getSharedPreferences(fisier, Context.MODE_PRIVATE);
@@ -202,17 +206,17 @@ public class PrimaPaginaActivity extends AppCompatActivity implements Navigation
         tvNavDrawer = (TextView) headerView.findViewById(R.id.nav_header_textView);
         ivNavDrawer = (CircularImageView) headerView.findViewById(R.id.nav_header_imageView);
 
-        ivNavDrawer.setOnClickListener((View view)->{
+        ivNavDrawer.setOnClickListener((View view) -> {
 
             Intent photoPickerIntent = new Intent(Intent.ACTION_PICK);
             photoPickerIntent.setType("image/*");
             startActivityForResult(photoPickerIntent, 20);
         });
 
-        SharedPreferences myPrefrence = getSharedPreferences(fisier,Context.MODE_PRIVATE);
+        SharedPreferences myPrefrence = getSharedPreferences(fisier, Context.MODE_PRIVATE);
         String imageS = myPrefrence.getString("imagePreferance", "");
         Bitmap imageB;
-        if(!imageS.equals("")) {
+        if (!imageS.equals("")) {
             imageB = decodeToBase64(imageS);
             ivNavDrawer.setImageBitmap(imageB);
 
@@ -403,7 +407,7 @@ public class PrimaPaginaActivity extends AppCompatActivity implements Navigation
         } else {
             SharedPreferences.Editor editor = sharedPreferences.edit();
             editor.putString("login_name", "");
-            editor.putString("imagePreferance","");
+            editor.putString("imagePreferance", "");
             editor.putString("tip_user", "");
             editor.commit();
 
@@ -734,8 +738,8 @@ public class PrimaPaginaActivity extends AppCompatActivity implements Navigation
 //    };
 
     @Override
-    protected void onActivityResult(int requestCode, int resultCode,  Intent data) {
-        if (requestCode == 20&&data!=null) {
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == 20 && data != null) {
             try {
                 final Uri imageUri = data.getData();
                 final InputStream imageStream = getContentResolver().openInputStream(imageUri);
@@ -745,7 +749,7 @@ public class PrimaPaginaActivity extends AppCompatActivity implements Navigation
                 ivNavDrawer.setImageBitmap(selectedImage);
 
 
-                SharedPreferences myPrefrence = getSharedPreferences(fisier,Context.MODE_PRIVATE);
+                SharedPreferences myPrefrence = getSharedPreferences(fisier, Context.MODE_PRIVATE);
                 SharedPreferences.Editor editor = myPrefrence.edit();
                 editor.putString("imagePreferance", encodeToBase64(selectedImage));
 
