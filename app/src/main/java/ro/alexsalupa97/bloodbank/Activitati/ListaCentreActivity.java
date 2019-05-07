@@ -41,7 +41,12 @@ public class ListaCentreActivity extends AppCompatActivity {
 
         }
 
-        MapsCTSFragment.locatieCurenta = CalculDistante.getMyLocation(ListaCentreActivity.this);
+        try {
+            MapsCTSFragment.locatieCurenta = CalculDistante.getMyLocation(ListaCentreActivity.this);
+        }
+        catch (Exception ex){
+
+        }
 
         double minDistance=Double.MAX_VALUE;
         for(CTS cts:mapListaDistante.keySet())
