@@ -8,6 +8,7 @@ import android.support.v7.preference.ListPreference;
 import android.support.v7.preference.Preference;
 import android.support.v7.preference.PreferenceFragmentCompat;
 
+import ro.alexsalupa97.bloodbank.Clase.GrupeSanguine;
 import ro.alexsalupa97.bloodbank.Clase.Orase;
 import ro.alexsalupa97.bloodbank.R;
 import ro.alexsalupa97.bloodbank.Utile.Utile;
@@ -19,6 +20,7 @@ import java.util.Arrays;
 public class SetariActivity extends AppCompatActivity {
 
     static ListPreference listPreferenceLocatie;
+    static ListPreference listPreferenceGrupaSanguina;
 
     String fisier = "SharedPreferences";
     static SharedPreferences.Editor editor;
@@ -87,6 +89,39 @@ public class SetariActivity extends AppCompatActivity {
             });
 
 
+            listPreferenceGrupaSanguina=(ListPreference)findPreference("grupaSanguina");
+
+            listPreferenceGrupaSanguina.setSummary(Utile.preluareGrupaSanguina(getActivity()));
+            listPreferenceGrupaSanguina.setDefaultValue(Utile.preluareGrupaSanguina(getActivity()));
+
+            ArrayList<String> listaGrupe=new ArrayList<>();
+            try {
+                for (GrupeSanguine grupeSanguine : Utile.listaGrupeSanguine)
+                    listaGrupe.add(grupeSanguine.getGrupaSanguina());
+            }
+            catch (Exception ex)
+            {
+
+            }
+
+
+            CharSequence[] listaGrupeCS=new CharSequence[listaGrupe.size()];
+            listaGrupeCS=listaGrupe.toArray(listaGrupeCS);
+            Arrays.sort(listaGrupeCS);
+
+            listPreferenceGrupaSanguina.setEntries(listaGrupeCS);
+            listPreferenceGrupaSanguina.setEntryValues(listaGrupeCS);
+
+            listPreferenceGrupaSanguina.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
+                @Override
+                public boolean onPreferenceChange(Preference preference, Object o) {
+                    listPreferenceGrupaSanguina.setSummary(o.toString());
+                    editor.putString("grupaSanguina",o.toString());
+                    editor.commit();
+                    listPreferenceGrupaSanguina.setDefaultValue(Utile.preluareGrupaSanguina(getActivity()));
+                    return true;
+                }
+            });
 
 
         }

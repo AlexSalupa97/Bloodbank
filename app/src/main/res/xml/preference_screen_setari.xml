@@ -2,7 +2,7 @@
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <PreferenceCategory android:title="General">
+    <PreferenceCategory android:title="Vizualizare date">
 
         <ListPreference
             android:icon="@drawable/ic_location"
@@ -10,23 +10,15 @@
             app:key="locatieCurenta"
             app:title="Alegeti locatia temporara curenta" />
 
-        <SwitchPreference
+        <ListPreference
             android:icon="@drawable/blood_red"
-            android:defaultValue="false"
-            android:summary="Test"
-            app:key="test1"
-            app:title="test" />
+            app:key="grupaSanguina"
+            app:title="Alegeti o alta grupa sanguina" />
 
-        <SwitchPreference
-            android:icon="@drawable/blood_red"
-            android:defaultValue="false"
-            android:summary="Test"
-            app:key="test2"
-            app:title="test" />
 
     </PreferenceCategory>
 
-    <PreferenceCategory android:title="Mai putin general">
+    <PreferenceCategory android:title="General">
 
         <SwitchPreference
             android:icon="@drawable/blood_red"
