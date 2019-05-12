@@ -2,6 +2,7 @@ package ro.alexsalupa97.bloodbank.Activitati;
 
 import android.Manifest;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
@@ -11,6 +12,7 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.content.CursorLoader;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -26,13 +28,18 @@ import com.itextpdf.text.pdf.PdfReader;
 import com.itextpdf.text.pdf.parser.PdfTextExtractor;
 import com.shockwave.pdfium.PdfDocument;
 
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.StringReader;
 import java.nio.file.Path;
 import java.util.List;
 
+import ro.alexsalupa97.bloodbank.Clase.Donatori;
 import ro.alexsalupa97.bloodbank.R;
 import ro.alexsalupa97.bloodbank.Utile.RealPath;
+import ro.alexsalupa97.bloodbank.Utile.Utile;
 
 public class ActualizareStareAnalizeActivity extends AppCompatActivity {
 
@@ -43,6 +50,8 @@ public class ActualizareStareAnalizeActivity extends AppCompatActivity {
     int pagina=0;
 
     String parsedText="";
+    String emailDonator="";
+    String stareAnalize="";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -68,6 +77,52 @@ public class ActualizareStareAnalizeActivity extends AppCompatActivity {
         });
 
         btnActualizare=(Button)findViewById(R.id.btnActualizare);
+        btnActualizare.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                StringReader input = new StringReader(parsedText);
+                BufferedReader lineReader= new BufferedReader (input);
+                String line;
+
+                while(true) {
+                    try {
+                        if ((line = lineReader.readLine()) == null) break;
+                        else
+                        {
+                            if(line.contains("EmailDonator")){
+                                int indexStart=line.lastIndexOf(":");
+                                emailDonator=line.substring(indexStart+1);
+                            }
+                            if(line.contains("Stare")){
+                                int indexStart=line.lastIndexOf(":");
+                                stareAnalize=line.substring(indexStart+1);
+                            }
+                        }
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+
+                }
+                Donatori donatori= Utile.preluareDonator(getApplicationContext());
+                final AlertDialog.Builder builder = new AlertDialog.Builder(ActualizareStareAnalizeActivity.this);
+                builder.setMessage("Verificati validitatea datelor preluate din fisierul PDF: \nEmail: "+emailDonator+"\nStare analize: "+stareAnalize)
+                        .setCancelable(true)
+                        .setNeutralButton("Cancel", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                dialog.cancel();
+                            }
+                        })
+                        .setPositiveButton("Confirm", new DialogInterface.OnClickListener() {
+                            public void onClick(final DialogInterface dialog, final int id) {
+
+                            }
+                        });
+                final AlertDialog alert = builder.create();
+                alert.show();
+
+            }
+        });
 
 
         pdfStareAnalize=(PDFView)findViewById(R.id.pdfStareAnalize);
@@ -95,13 +150,15 @@ public class ActualizareStareAnalizeActivity extends AppCompatActivity {
                 for (int i = 0; i <n ; i++) {
                     parsedText   = parsedText + PdfTextExtractor.getTextFromPage(reader, i+1).trim()+"\n";
                 }
-                System.out.println(parsedText);
                 reader.close();
             } catch (Exception e) {
                 System.out.println(e);
             }
 
-            Toast.makeText(getApplicationContext(),parsedText,Toast.LENGTH_SHORT).show();
+
+
+
+
 
 
 
