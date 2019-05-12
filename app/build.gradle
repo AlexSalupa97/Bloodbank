@@ -45,5 +45,7 @@ dependencies {
     implementation 'com.jjoe64:graphview:4.2.2'
     implementation 'net.danlew:android.joda:2.10.1.2'
     implementation 'com.pkmmte.view:circularimageview:1.1'
+    implementation 'com.github.barteksc:android-pdf-viewer:2.8.2'
+    implementation 'com.itextpdf:itextg:5.5.10'
 
 }

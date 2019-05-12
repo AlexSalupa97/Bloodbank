@@ -1,6 +1,7 @@
 package ro.alexsalupa97.bloodbank.Activitati;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -21,6 +22,7 @@ public class SetariActivity extends AppCompatActivity {
 
     static ListPreference listPreferenceLocatie;
     static ListPreference listPreferenceGrupaSanguina;
+    static Preference preferenceStareAnalize;
 
     String fisier = "SharedPreferences";
     static SharedPreferences.Editor editor;
@@ -120,6 +122,16 @@ public class SetariActivity extends AppCompatActivity {
                     editor.commit();
                     listPreferenceGrupaSanguina.setDefaultValue(Utile.preluareGrupaSanguina(getActivity()));
                     return true;
+                }
+            });
+
+
+            preferenceStareAnalize=(Preference)findPreference("stareAnalize");
+            preferenceStareAnalize.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
+                @Override
+                public boolean onPreferenceClick(Preference preference) {
+                    startActivity(new Intent(getContext(),ActualizareStareAnalizeActivity.class));
+                    return false;
                 }
             });
 

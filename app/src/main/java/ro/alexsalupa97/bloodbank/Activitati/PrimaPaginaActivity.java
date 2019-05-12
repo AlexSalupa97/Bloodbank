@@ -272,8 +272,6 @@ public class PrimaPaginaActivity extends AppCompatActivity implements Navigation
         btnTest.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(getApplicationContext(), TestActivity.class);
-                startActivity(intent);
 
 //                Intent twitterIntent = getShareIntent("twitter", "subject", "text: " + "https://play.google.com/store/apps/developer?id=AlexSalupa97");
 //                if (twitterIntent != null)

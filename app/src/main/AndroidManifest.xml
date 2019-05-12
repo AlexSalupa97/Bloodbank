@@ -6,9 +6,8 @@
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
-
 
     <application
         android:allowBackup="false"
@@ -19,9 +18,13 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:replace="android:allowBackup">
-        <activity android:name=".Activitati.StatisticiCTSActivity"
+        <activity android:name=".Activitati.ActualizareStareAnalizeActivity"
             android:screenOrientation="portrait"
-            android:label="Statistici"></activity>
+            android:label=""></activity>
+        <activity
+            android:name=".Activitati.StatisticiCTSActivity"
+            android:label="Statistici"
+            android:screenOrientation="portrait" />
         <activity android:name=".Activitati.TransparentActivityCTS" />
         <activity
             android:name=".Activitati.DetaliiCTSMainActivity"
@@ -52,8 +55,9 @@
             android:label="Lista receiverilor"
             android:screenOrientation="portrait" />
         <activity android:name=".Activitati.TestActivity" />
-        <activity android:name=".Activitati.SetariActivity"
-            android:label="Setari"/>
+        <activity
+            android:name=".Activitati.SetariActivity"
+            android:label="Setari" />
         <activity
             android:name=".Activitati.TransparentActivity"
             android:screenOrientation="portrait"
@@ -66,19 +70,19 @@
         <receiver android:name=".Notificari.NotificariBroadcast" />
         <receiver android:name=".Notificari.ActionCentreBroadcast" />
         <receiver android:name=".Notificari.ActionAlerteBroadcast" />
-
-        <receiver android:name=".Notificari.BootCompletedReceiver"
+        <receiver
+            android:name=".Notificari.BootCompletedReceiver"
             android:enabled="true">
             <intent-filter>
                 <action android:name="android.intent.action.BOOT_COMPLETED" />
                 <action android:name="android.intent.action.QUICKBOOT_POWERON" />
-                <action android:name="RestartService"/>
+                <action android:name="RestartService" />
             </intent-filter>
         </receiver>
 
-        <service android:name=".Notificari.NotifyingDailyService"
-            android:enabled="true">
-        </service>
+        <service
+            android:name=".Notificari.NotifyingDailyService"
+            android:enabled="true"></service>
 
         <provider
             android:name="com.facebook.FacebookContentProvider"
