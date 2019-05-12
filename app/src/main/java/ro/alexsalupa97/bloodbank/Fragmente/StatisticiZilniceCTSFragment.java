@@ -107,7 +107,7 @@ public class StatisticiZilniceCTSFragment extends Fragment {
                 boolean sameDay = cal1.get(Calendar.DAY_OF_YEAR) == cal2.get(Calendar.DAY_OF_YEAR) &&
                         cal1.get(Calendar.YEAR) == cal2.get(Calendar.YEAR);
                 if (sameDay && i == cal1.get(Calendar.HOUR_OF_DAY)) {
-                    listaCantitatiIesitePerOre[cal1.get(Calendar.HOUR_OF_DAY)] += listaCantitatiIesitePerOre[cal1.get(Calendar.HOUR_OF_DAY)] + iesireCTS.getCantitateIesitaML();
+                    listaCantitatiIesitePerOre[cal1.get(Calendar.HOUR_OF_DAY)] += iesireCTS.getCantitateIesitaML();
                 }
             }
             series1.appendData(new DataPoint(i, listaCantitatiIesitePerOre[i]), false, listaCantitatiIesitePerOre.length);

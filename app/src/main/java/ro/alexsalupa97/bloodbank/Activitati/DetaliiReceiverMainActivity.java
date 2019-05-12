@@ -210,7 +210,7 @@ public class DetaliiReceiverMainActivity extends AppCompatActivity implements Na
 
                     rvIstoricReceiver.setHasFixedSize(true);
 
-                    final AdaptorIstoricReceiverRV adaptor = new AdaptorIstoricReceiverRV(DetaliiReceiverMainActivity.this, sectiuni);
+                    final AdaptorIstoricReceiverRV adaptor = new AdaptorIstoricReceiverRV(DetaliiReceiverMainActivity.this, sectiuni,true);
 
 
                     runOnUiThread(new Runnable() {
@@ -277,7 +277,7 @@ public class DetaliiReceiverMainActivity extends AppCompatActivity implements Na
 
                             rvIstoricReceiver.setHasFixedSize(true);
 
-                            final AdaptorIstoricReceiverRV adaptor = new AdaptorIstoricReceiverRV(DetaliiReceiverMainActivity.this, sectiuni);
+                            final AdaptorIstoricReceiverRV adaptor = new AdaptorIstoricReceiverRV(DetaliiReceiverMainActivity.this, sectiuni,true);
 
 
                             runOnUiThread(new Runnable() {

@@ -82,7 +82,7 @@ public class StatisticiZilniceReceiverFragment extends Fragment {
                 boolean sameDay = cal1.get(Calendar.DAY_OF_YEAR) == cal2.get(Calendar.DAY_OF_YEAR) &&
                         cal1.get(Calendar.YEAR) == cal2.get(Calendar.YEAR);
                 if (sameDay && i == cal1.get(Calendar.HOUR_OF_DAY)) {
-                    listaCantitatiPerOre[cal1.get(Calendar.HOUR_OF_DAY)] += listaCantitatiPerOre[cal1.get(Calendar.HOUR_OF_DAY)] + istoricReceiver.getCantitatePrimitaML();
+                    listaCantitatiPerOre[cal1.get(Calendar.HOUR_OF_DAY)] +=  istoricReceiver.getCantitatePrimitaML();
                 }
             }
             series.appendData(new DataPoint(i, listaCantitatiPerOre[i]), false, listaCantitatiPerOre.length);

@@ -63,7 +63,6 @@ public class SignupDonatorFragment extends Fragment {
     Spinner spGrupaSanguina;
     Button btnSignup;
 
-    int idDonator;
 
     ArrayAdapter<String> adaptorSpOrase;
     ArrayAdapter<String> adaptorSpGrupeSanguine;
@@ -139,129 +138,104 @@ public class SignupDonatorFragment extends Fragment {
                 }
                 donator.setNumeDonator(etNume.getText().toString() + " " + etPrenume.getText().toString());
 
-                String url = Utile.URL + "domain.donatori/count";
+                String url = Utile.URL + "domain.donatori/";
 
                 final RequestQueue requestQueue = Volley.newRequestQueue(getActivity());
 
+                final JSONObject jsonDonator = new JSONObject();
+                final JSONObject jsonOras = new JSONObject();
+                final JSONObject jsonGrupaSanguina = new JSONObject();
+                try {
 
-                StringRequest objectRequest = new StringRequest(
-                        Request.Method.GET,
-                        url,
-                        new Response.Listener<String>() {
+                    jsonGrupaSanguina.put("idgrupasanguina", donator.getGrupaSanguina().getGrupaSanguina());
 
+                    jsonOras.put("idoras", donator.getOrasDonator().getIdOras());
+                    jsonOras.put("judet", donator.getOrasDonator().getJudet());
+                    jsonOras.put("numeoras", donator.getOrasDonator().getOras());
+
+                    jsonDonator.put("emaildonator", donator.getEmailDonator());
+                    jsonDonator.put("iddonator", "");
+                    jsonDonator.put("idgrupasanguina", jsonGrupaSanguina);
+                    jsonDonator.put("idoras", jsonOras);
+                    jsonDonator.put("numedonator", donator.getNumeDonator());
+                    jsonDonator.put("telefondonator", donator.getTelefonDonator());
+
+                } catch (JSONException e) {
+
+                    e.printStackTrace();
+                }
+
+
+                JsonObjectRequest jsonObjReq = new JsonObjectRequest(Request.Method.POST,
+                        url, jsonDonator,
+                        new Response.Listener<JSONObject>() {
                             @Override
-                            public void onResponse(final String response) {
-                                idDonator=Integer.parseInt(response);
+                            public void onResponse(JSONObject response) {
 
-                                final JSONObject jsonDonator = new JSONObject();
-                                final JSONObject jsonOras=new JSONObject();
-                                final JSONObject jsonGrupaSanguina=new JSONObject();
-                                try {
+                                SharedPreferences sharedPreferences = getActivity().getSharedPreferences(fisier, Context.MODE_PRIVATE);
+                                SharedPreferences.Editor editor = sharedPreferences.edit();
 
-                                    jsonGrupaSanguina.put("idgrupasanguina",donator.getGrupaSanguina().getGrupaSanguina());
+                                editor.putString("login_name", donator.getNumeDonator());
+                                editor.putString("tip_user", "donator");
+                                editor.putString("grupaSanguina", donator.getGrupaSanguina().getGrupaSanguina());
+                                editor.putString("stareAnalize", "neefectuate");
+                                editor.putString("orasUser", donator.getOrasDonator().getOras());
+                                editor.putString("judetUser", donator.getOrasDonator().getJudet());
+                                editor.putString("email", donator.getEmailDonator());
+                                editor.putString("telefon", donator.getTelefonDonator());
 
-                                    jsonOras.put("idoras",donator.getOrasDonator().getIdOras());
-                                    jsonOras.put("judet",donator.getOrasDonator().getJudet());
-                                    jsonOras.put("numeoras",donator.getOrasDonator().getOras());
+                                editor.commit();
 
-                                    jsonDonator.put("emaildonator", donator.getEmailDonator());
-                                    jsonDonator.put("iddonator", idDonator+1);
-                                    jsonDonator.put("idgrupasanguina", jsonGrupaSanguina);
-                                    jsonDonator.put("idoras", jsonOras);
-                                    jsonDonator.put("numedonator", donator.getNumeDonator());
-                                    jsonDonator.put("telefondonator", donator.getTelefonDonator());
+                                Toast.makeText(getActivity(), "Inregistrare facuta cu succes", Toast.LENGTH_LONG).show();
 
-                                } catch (JSONException e) {
-
-                                    e.printStackTrace();
-                                }
-
-                                String url=Utile.URL+"domain.donatori/";
-
-                                JsonObjectRequest jsonObjReq = new JsonObjectRequest(Request.Method.POST,
-                                        url, jsonDonator,
-                                        new Response.Listener<JSONObject>() {
-                                            @Override
-                                            public void onResponse(JSONObject response) {
-
-                                                SharedPreferences sharedPreferences = getActivity().getSharedPreferences(fisier, Context.MODE_PRIVATE);
-                                                SharedPreferences.Editor editor = sharedPreferences.edit();
-
-                                                editor.putString("login_name", donator.getNumeDonator());
-                                                editor.putString("tip_user", "donator");
-                                                editor.putString("grupaSanguina", donator.getGrupaSanguina().getGrupaSanguina());
-                                                editor.putString("stareAnalize", "neefectuate");
-                                                editor.putString("orasUser", donator.getOrasDonator().getOras());
-                                                editor.putString("judetUser", donator.getOrasDonator().getJudet());
-                                                editor.putString("email", donator.getEmailDonator());
-                                                editor.putString("telefon", donator.getTelefonDonator());
-
-                                                editor.commit();
-
-                                                Toast.makeText(getActivity(), "Inregistrare facuta cu succes", Toast.LENGTH_LONG).show();
-
-                                                Intent intent=new Intent(getActivity(), PrimaPaginaActivity.class);
-                                                startActivity(intent);
-                                                getActivity().finish();
-                                            }
-                                        },
-                                        new Response.ErrorListener() {
-                                            @Override
-                                            public void onErrorResponse(VolleyError error) {
-
-                                                if(error.toString().contains("ServerError")) {
-                                                    Toast.makeText(getActivity(), "Eroare de server", Toast.LENGTH_LONG).show();
-                                                    Log.d("restresponse", error.toString());
-                                                }
-
-
-                                            }
-                                        }){
-
-                                    @Override
-                                    protected Response<JSONObject> parseNetworkResponse(NetworkResponse response) {
-
-
-                                        try {
-                                            String json = new String(
-                                                    response.data,
-                                                    "UTF-8"
-                                            );
-
-                                            if (json.length() == 0) {
-                                                return Response.success(
-                                                        null,
-                                                        HttpHeaderParser.parseCacheHeaders(response)
-                                                );
-                                            }
-                                            else {
-                                                return super.parseNetworkResponse(response);
-                                            }
-                                        }
-                                        catch (UnsupportedEncodingException e) {
-                                            return Response.error(new ParseError(e));
-                                        }
-
-
-                                    }
-                                };
-                                requestQueue.add(jsonObjReq);
-
+                                Intent intent = new Intent(getActivity(), PrimaPaginaActivity.class);
+                                startActivity(intent);
+                                getActivity().finish();
                             }
-
                         },
                         new Response.ErrorListener() {
                             @Override
                             public void onErrorResponse(VolleyError error) {
-                                Log.d("RestResponse", error.toString());
+
+                                if (error.toString().contains("ServerError")) {
+                                    Toast.makeText(getActivity(), "Eroare de server", Toast.LENGTH_LONG).show();
+                                    Log.d("restresponse", error.toString());
+                                }
+
+
                             }
+                        }) {
+
+                    @Override
+                    protected Response<JSONObject> parseNetworkResponse(NetworkResponse response) {
+
+
+                        try {
+                            String json = new String(
+                                    response.data,
+                                    "UTF-8"
+                            );
+
+                            if (json.length() == 0) {
+                                return Response.success(
+                                        null,
+                                        HttpHeaderParser.parseCacheHeaders(response)
+                                );
+                            } else {
+                                return super.parseNetworkResponse(response);
+                            }
+                        } catch (UnsupportedEncodingException e) {
+                            return Response.error(new ParseError(e));
                         }
 
-                );
 
-                requestQueue.add(objectRequest);
+                    }
+                };
+                requestQueue.add(jsonObjReq);
 
             }
+
+
         });
 
         return rootView;

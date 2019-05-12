@@ -24,10 +24,12 @@ public class AdaptorIstoricReceiverRV extends RecyclerView.Adapter<AdaptorIstori
 
     private ArrayList<SectionModelIstoric> listaSectiuni;
     private Context context;
+    private Boolean isReceiver;
 
-    public AdaptorIstoricReceiverRV(Context context, ArrayList<SectionModelIstoric> listaSectiuni) {
+    public AdaptorIstoricReceiverRV(Context context, ArrayList<SectionModelIstoric> listaSectiuni, Boolean isReceiver) {
         this.listaSectiuni = listaSectiuni;
         this.context = context;
+        this.isReceiver=isReceiver;
     }
 
     @Override
@@ -55,6 +57,8 @@ public class AdaptorIstoricReceiverRV extends RecyclerView.Adapter<AdaptorIstori
         itemRowHolder.recycler_view_list.setLayoutManager(new LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false));
         itemRowHolder.recycler_view_list.setAdapter(itemListDataAdapter);
 
+        if(!isReceiver)
+            itemRowHolder.btnMore.setVisibility(View.INVISIBLE);
 
         itemRowHolder.btnMore.setOnClickListener(new View.OnClickListener() {
             @Override
