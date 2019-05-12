@@ -322,7 +322,10 @@ public class PrimaPaginaActivity extends AppCompatActivity implements Navigation
         } else if (id == R.id.listaCentre) {
             Intent intent = new Intent(getApplicationContext(), ListaCentreActivity.class);
             startActivity(intent);
-        } else if (id == R.id.compatibilitati) {
+        }else if(id==R.id.stareAnalize){
+            startActivity(new Intent(getApplicationContext(),ActualizareStareAnalizeActivity.class));
+        }
+        else if (id == R.id.compatibilitati) {
             String url = Utile.URL + "domain.compatibilitati/" + Utile.preluareGrupaSanguina(getApplicationContext());
 
             final RequestQueue requestQueue = Volley.newRequestQueue(PrimaPaginaActivity.this);

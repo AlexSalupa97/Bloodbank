@@ -22,7 +22,6 @@ public class SetariActivity extends AppCompatActivity {
 
     static ListPreference listPreferenceLocatie;
     static ListPreference listPreferenceGrupaSanguina;
-    static Preference preferenceStareAnalize;
 
     String fisier = "SharedPreferences";
     static SharedPreferences.Editor editor;
@@ -125,15 +124,6 @@ public class SetariActivity extends AppCompatActivity {
                 }
             });
 
-
-            preferenceStareAnalize=(Preference)findPreference("stareAnalize");
-            preferenceStareAnalize.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
-                @Override
-                public boolean onPreferenceClick(Preference preference) {
-                    startActivity(new Intent(getContext(),ActualizareStareAnalizeActivity.class));
-                    return false;
-                }
-            });
 
 
         }

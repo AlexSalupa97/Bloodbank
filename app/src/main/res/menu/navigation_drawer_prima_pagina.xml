@@ -8,6 +8,11 @@
             android:id="@+id/profil"
             android:icon="@drawable/ic_person"
             android:title="Profilul meu"/>
+
+        <item
+            android:id="@+id/stareAnalize"
+            android:icon="@drawable/account_edit"
+            android:title="Actualizati starea analizelor dvs."/>
     </group>
 
     <group

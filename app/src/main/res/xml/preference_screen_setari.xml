@@ -15,11 +15,6 @@
             app:key="grupaSanguina"
             app:title="Alegeti o alta grupa sanguina" />
 
-        <Preference
-            android:title="Actualizati starea analizelor dvs."
-            android:key="stareAnalize"
-            android:icon="@drawable/account_edit"/>
-
     </PreferenceCategory>
 
     <PreferenceCategory android:title="General">

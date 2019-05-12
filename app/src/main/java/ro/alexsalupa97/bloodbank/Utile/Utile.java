@@ -121,6 +121,22 @@ public class Utile {
         return dePreluat;
     }
 
+    public static String preluareIDAnalize(Context context) {
+        String dePreluat;
+        SharedPreferences sharedPreferences = context.getSharedPreferences(fisier, Context.MODE_PRIVATE);
+        String defaultName = "N/A";
+        dePreluat = sharedPreferences.getString("idanalize", defaultName);
+        return dePreluat;
+    }
+
+    public static String preluareDataAnalize(Context context) {
+        String dePreluat;
+        SharedPreferences sharedPreferences = context.getSharedPreferences(fisier, Context.MODE_PRIVATE);
+        String defaultName = "N/A";
+        dePreluat = sharedPreferences.getString("dataanalize", defaultName);
+        return dePreluat;
+    }
+
     public static String preluareCTS(Context context) {
         String dePreluat;
         SharedPreferences sharedPreferences = context.getSharedPreferences(fisier, Context.MODE_PRIVATE);

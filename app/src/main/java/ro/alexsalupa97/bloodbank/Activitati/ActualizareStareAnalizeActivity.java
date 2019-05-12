@@ -4,6 +4,7 @@ import android.Manifest;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.net.Uri;
@@ -20,6 +21,15 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
 
+import com.android.volley.NetworkResponse;
+import com.android.volley.ParseError;
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.HttpHeaderParser;
+import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.Volley;
 import com.github.barteksc.pdfviewer.PDFView;
 import com.github.barteksc.pdfviewer.listener.OnLoadCompleteListener;
 import com.github.barteksc.pdfviewer.listener.OnPageChangeListener;
@@ -28,11 +38,15 @@ import com.itextpdf.text.pdf.PdfReader;
 import com.itextpdf.text.pdf.parser.PdfTextExtractor;
 import com.shockwave.pdfium.PdfDocument;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.StringReader;
+import java.io.UnsupportedEncodingException;
 import java.nio.file.Path;
 import java.util.List;
 
@@ -47,11 +61,15 @@ public class ActualizareStareAnalizeActivity extends AppCompatActivity {
     Button btnPDF;
     Button btnActualizare;
 
-    int pagina=0;
+    int pagina = 0;
 
-    String parsedText="";
-    String emailDonator="";
-    String stareAnalize="";
+    String parsedText = "";
+    String emailDonator = "";
+    String stareAnalize = "";
+
+    String fisier = "SharedPreferences";
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -64,7 +82,7 @@ public class ActualizareStareAnalizeActivity extends AppCompatActivity {
                     x);
         }
 
-        btnPDF=(Button)findViewById(R.id.btnPDF);
+        btnPDF = (Button) findViewById(R.id.btnPDF);
         btnPDF.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -76,26 +94,25 @@ public class ActualizareStareAnalizeActivity extends AppCompatActivity {
             }
         });
 
-        btnActualizare=(Button)findViewById(R.id.btnActualizare);
+        btnActualizare = (Button) findViewById(R.id.btnActualizare);
         btnActualizare.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 StringReader input = new StringReader(parsedText);
-                BufferedReader lineReader= new BufferedReader (input);
+                BufferedReader lineReader = new BufferedReader(input);
                 String line;
 
-                while(true) {
+                while (true) {
                     try {
                         if ((line = lineReader.readLine()) == null) break;
-                        else
-                        {
-                            if(line.contains("EmailDonator")){
-                                int indexStart=line.lastIndexOf(":");
-                                emailDonator=line.substring(indexStart+1);
+                        else {
+                            if (line.contains("EmailDonator")) {
+                                int indexStart = line.lastIndexOf(":");
+                                emailDonator = line.substring(indexStart + 1);
                             }
-                            if(line.contains("Stare")){
-                                int indexStart=line.lastIndexOf(":");
-                                stareAnalize=line.substring(indexStart+1);
+                            if (line.contains("Stare")) {
+                                int indexStart = line.lastIndexOf(":");
+                                stareAnalize = line.substring(indexStart + 1);
                             }
                         }
                     } catch (IOException e) {
@@ -103,9 +120,9 @@ public class ActualizareStareAnalizeActivity extends AppCompatActivity {
                     }
 
                 }
-                Donatori donatori= Utile.preluareDonator(getApplicationContext());
+                Donatori donator = Utile.preluareDonator(getApplicationContext());
                 final AlertDialog.Builder builder = new AlertDialog.Builder(ActualizareStareAnalizeActivity.this);
-                builder.setMessage("Verificati validitatea datelor preluate din fisierul PDF: \nEmail: "+emailDonator+"\nStare analize: "+stareAnalize)
+                builder.setMessage("Verificati validitatea datelor preluate din fisierul PDF: \nEmail: " + emailDonator + "\nStare analize: " + stareAnalize)
                         .setCancelable(true)
                         .setNeutralButton("Cancel", new DialogInterface.OnClickListener() {
                             @Override
@@ -116,16 +133,115 @@ public class ActualizareStareAnalizeActivity extends AppCompatActivity {
                         .setPositiveButton("Confirm", new DialogInterface.OnClickListener() {
                             public void onClick(final DialogInterface dialog, final int id) {
 
-                            }
-                        });
-                final AlertDialog alert = builder.create();
-                alert.show();
+                                    String url = Utile.URL + "domain.stareanalize/" + Utile.preluareIDAnalize(getApplicationContext());
 
+                                    final RequestQueue requestQueue = Volley.newRequestQueue(getApplicationContext());
+
+                                    final JSONObject jsonDonator = new JSONObject();
+                                    final JSONObject jsonOras = new JSONObject();
+                                    final JSONObject jsonGrupaSanguina = new JSONObject();
+                                    final JSONObject jsonStareAnalize=new JSONObject();
+
+                                    try {
+
+                                        jsonGrupaSanguina.put("idgrupasanguina", donator.getGrupaSanguina().getGrupaSanguina());
+
+                                        jsonOras.put("idoras", donator.getOrasDonator().getIdOras());
+                                        jsonOras.put("judet", donator.getOrasDonator().getJudet());
+                                        jsonOras.put("numeoras", donator.getOrasDonator().getOras());
+
+                                        jsonDonator.put("emaildonator", donator.getEmailDonator());
+                                        jsonDonator.put("iddonator", donator.getIdDonator());
+                                        jsonDonator.put("idgrupasanguina", jsonGrupaSanguina);
+                                        jsonDonator.put("idoras", jsonOras);
+                                        jsonDonator.put("numedonator", donator.getNumeDonator());
+                                        jsonDonator.put("telefondonator", donator.getTelefonDonator());
+
+                                        jsonStareAnalize.put("dataefectuareanaliza",Utile.preluareDataAnalize(getApplicationContext()));
+                                        jsonStareAnalize.put("iddonator",jsonDonator);
+                                        jsonStareAnalize.put("idstareanaliza",Utile.preluareIDAnalize(getApplicationContext()));
+                                        jsonStareAnalize.put("stareanalize",stareAnalize);
+
+                                    } catch (JSONException e) {
+
+                                        e.printStackTrace();
+                                    }
+
+
+                                    JsonObjectRequest jsonObjReq = new JsonObjectRequest(Request.Method.PUT,
+                                            url, jsonStareAnalize,
+                                            new Response.Listener<JSONObject>() {
+                                                @Override
+                                                public void onResponse(JSONObject response) {
+
+                                                    SharedPreferences sharedPreferences = getApplicationContext().getSharedPreferences(fisier, Context.MODE_PRIVATE);
+                                                    SharedPreferences.Editor editor = sharedPreferences.edit();
+
+                                                    editor.putString("stareAnalize", stareAnalize);
+
+                                                    editor.commit();
+
+                                                    Toast.makeText(getApplicationContext(), "Actualizare facuta cu succes", Toast.LENGTH_LONG).show();
+
+                                                }
+                                            },
+                                            new Response.ErrorListener() {
+                                                @Override
+                                                public void onErrorResponse(VolleyError error) {
+
+                                                    if (error.toString().contains("ServerError")) {
+                                                        Toast.makeText(getApplicationContext(), "Eroare de server", Toast.LENGTH_LONG).show();
+                                                        Log.d("restresponse", error.toString());
+                                                        System.out.println(error.toString());
+                                                    }
+
+
+                                                }
+                                            }) {
+
+                                        @Override
+                                        protected Response<JSONObject> parseNetworkResponse(NetworkResponse response) {
+
+
+                                            try {
+                                                String json = new String(
+                                                        response.data,
+                                                        "UTF-8"
+                                                );
+
+                                                if (json.length() == 0) {
+                                                    return Response.success(
+                                                            null,
+                                                            HttpHeaderParser.parseCacheHeaders(response)
+                                                    );
+                                                } else {
+                                                    return super.parseNetworkResponse(response);
+                                                }
+                                            } catch (UnsupportedEncodingException e) {
+                                                return Response.error(new ParseError(e));
+                                            }
+
+
+                                        }
+                                    };
+                                    requestQueue.add(jsonObjReq);
+
+                                }
+
+                        });
+                if (donator.getEmailDonator().equals(emailDonator)) {
+                    final AlertDialog alert = builder.create();
+                    alert.show();
+                }
+                else
+                    Toast.makeText(getApplicationContext(),"Fisierul selectat este necorespunzator",Toast.LENGTH_SHORT).show();
             }
+
+
         });
 
 
-        pdfStareAnalize=(PDFView)findViewById(R.id.pdfStareAnalize);
+        pdfStareAnalize = (PDFView) findViewById(R.id.pdfStareAnalize);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
 
@@ -140,26 +256,20 @@ public class ActualizareStareAnalizeActivity extends AppCompatActivity {
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if(requestCode==30&&data!=null){
+        if (requestCode == 30 && data != null) {
 
             try {
-                parsedText="";
-                String path= RealPath.getRealPath(getApplicationContext(),data.getData());
+                parsedText = "";
+                String path = RealPath.getRealPath(getApplicationContext(), data.getData());
                 PdfReader reader = new PdfReader(path);
                 int n = reader.getNumberOfPages();
-                for (int i = 0; i <n ; i++) {
-                    parsedText   = parsedText + PdfTextExtractor.getTextFromPage(reader, i+1).trim()+"\n";
+                for (int i = 0; i < n; i++) {
+                    parsedText = parsedText + PdfTextExtractor.getTextFromPage(reader, i + 1).trim() + "\n";
                 }
                 reader.close();
             } catch (Exception e) {
                 System.out.println(e);
             }
-
-
-
-
-
-
 
 
             pdfStareAnalize.fromUri(data.getData())

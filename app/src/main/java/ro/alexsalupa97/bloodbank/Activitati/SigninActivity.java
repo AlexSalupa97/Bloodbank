@@ -102,6 +102,8 @@ public class SigninActivity extends AppCompatActivity {
                                     String DBOras = null;
                                     String DBJudet = null;
                                     String DBTelefon = null;
+                                    String DBIDStareAnalize=null;
+                                    String DBDataAnalize=null;
                                     try {
                                         JSONObject jsonDonator = response.getJSONObject("iddonator");
                                         JSONObject jsonGrupaSanguina = jsonDonator.getJSONObject("idgrupasanguina");
@@ -113,6 +115,8 @@ public class SigninActivity extends AppCompatActivity {
                                         DBStareAnalize = response.getString("stareanalize");
                                         DBJudet = jsonOras.getString("judet");
                                         DBOras = jsonOras.getString("numeoras");
+                                        DBIDStareAnalize=response.getString("idstareanaliza");
+                                        DBDataAnalize=response.getString("dataefectuareanaliza");
 
 
                                         if (DBUsername.equals(etUsername.getText().toString())) {
@@ -130,6 +134,8 @@ public class SigninActivity extends AppCompatActivity {
                                             editor.putString("email", DBUsername);
                                             editor.putString("telefon", DBTelefon);
                                             editor.putString("donator", jsonDonator.toString());
+                                            editor.putString("idanalize",DBIDStareAnalize);
+                                            editor.putString("dataanalize",DBDataAnalize);
 
                                             editor.commit();
 
