@@ -1,6 +1,10 @@
 package ro.alexsalupa97.bloodbank.Utile;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.app.job.JobInfo;
+import android.app.job.JobScheduler;
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -13,7 +17,6 @@ import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonArrayRequest;
-import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 
@@ -29,6 +32,7 @@ import ro.alexsalupa97.bloodbank.Clase.IstoricReceiver;
 import ro.alexsalupa97.bloodbank.Clase.LimiteCTS;
 import ro.alexsalupa97.bloodbank.Clase.Orase;
 import ro.alexsalupa97.bloodbank.Clase.Receiveri;
+import ro.alexsalupa97.bloodbank.Notificari.NotifyingDailyService;
 import ro.alexsalupa97.bloodbank.R;
 
 
@@ -36,11 +40,9 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
 import org.json.JSONArray;
-import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
@@ -49,7 +51,8 @@ import java.util.Set;
 public class Utile {
 
     public static String fisier = "SharedPreferences";
-    public static String URL = "http://a99f72ea.ngrok.io/ProiectLicentaBloodbank/webresources/";
+    //    public static String URL = "http://192.168.43.154:8080/ProiectLicentaBloodbank/webresources/";  // hotspot
+    public static String URL = "http://192.168.1.149:8080/ProiectLicentaBloodbank/webresources/";  // alexapn
 
     public static ArrayList<Intrebari> intrebari;
     public static ArrayList<Compatibilitati> compatibilitati;
@@ -378,7 +381,6 @@ public class Utile {
                         gson = gsonBuilder.create();
 
                         Utile.listaLimiteCTS = new ArrayList<>(Arrays.asList(gson.fromJson(response.toString(), LimiteCTS[].class)));
-
 
 
                     }

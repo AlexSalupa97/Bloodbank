@@ -73,7 +73,6 @@ public class ProgramareActivity extends AppCompatActivity {
 
     static Gson gson;
 
-    int idProgramare;
 
     @SuppressLint("NewApi")
     @Override
@@ -91,12 +90,12 @@ public class ProgramareActivity extends AppCompatActivity {
         Calendar calendar = Calendar.getInstance();
         dpProgramare.setMinDate(calendar.getTimeInMillis());
 
-
         calendar.setTimeInMillis(System.currentTimeMillis());
+
         if (calendar.get(Calendar.MONTH) < 10)
-            luna = "0" + calendar.get(Calendar.MONTH);
+            luna = "0" + (1+calendar.get(Calendar.MONTH));
         else
-            luna = String.valueOf(calendar.get(Calendar.MONTH));
+            luna = String.valueOf(1+calendar.get(Calendar.MONTH));
 
         if (calendar.get(Calendar.DAY_OF_MONTH) < 10)
             zi = "0" + calendar.get(Calendar.DAY_OF_MONTH);
@@ -139,11 +138,11 @@ public class ProgramareActivity extends AppCompatActivity {
 
 
         if (calendar.get(Calendar.HOUR_OF_DAY) < 10)
-            ora = "0" + calendar.get(Calendar.HOUR_OF_DAY);
+            ora = "0" + (1+calendar.get(Calendar.HOUR_OF_DAY));
         else
-            ora = String.valueOf(calendar.get(Calendar.HOUR_OF_DAY));
+            ora = String.valueOf(1+calendar.get(Calendar.HOUR_OF_DAY));
 
-        if (calendar.get(Calendar.MINUTE) < 10)
+        if (getMinute() < 10)
             minut = "0" + getMinute();
         else
             minut = String.valueOf(getMinute());
@@ -238,139 +237,119 @@ public class ProgramareActivity extends AppCompatActivity {
             public void onClick(View v) {
                 if (tvVerificareDisponibilitate.getVisibility() == View.VISIBLE) {
 
-                    String url = Utile.URL + "domain.programari/count";
+                    String url = Utile.URL + "domain.programari";
                     final RequestQueue requestQueue = Volley.newRequestQueue(ProgramareActivity.this);
 
-                    StringRequest objectRequest = new StringRequest(
-                            Request.Method.GET,
-                            url,
-                            new Response.Listener<String>() {
+                    final JSONObject jsonProgramare = new JSONObject();
+                    final JSONObject jsonDonator = new JSONObject();
+                    final JSONObject jsonCTS = new JSONObject();
+                    final JSONObject jsonOrasDonator = new JSONObject();
+                    final JSONObject jsonGrupaSanguina = new JSONObject();
+                    final JSONObject jsonOras = new JSONObject();
 
+                    try {
+                        jsonGrupaSanguina.put("idgrupasanguina", donator.getGrupaSanguina().getGrupaSanguina());
+
+                        jsonOrasDonator.put("idoras", donator.getOrasDonator().getIdOras());
+                        jsonOrasDonator.put("judet", donator.getOrasDonator().getJudet());
+                        jsonOrasDonator.put("numeoras", donator.getOrasDonator().getOras());
+
+                        jsonDonator.put("emaildonator", donator.getEmailDonator());
+                        jsonDonator.put("iddonator", donator.getIdDonator());
+                        jsonDonator.put("idgrupasanguina", jsonGrupaSanguina);
+                        jsonDonator.put("idoras", jsonOrasDonator);
+                        jsonDonator.put("numedonator", donator.getNumeDonator());
+                        jsonDonator.put("telefondonator", donator.getTelefonDonator());
+
+                        jsonOras.put("idoras", ctsCurent.getOras().getIdOras());
+                        jsonOras.put("judet", ctsCurent.getOras().getJudet());
+                        jsonOras.put("numeoras", ctsCurent.getOras().getOras());
+
+                        jsonCTS.put("adresacts", ctsCurent.getAdresaCTS());
+                        jsonCTS.put("coordonataxcts", ctsCurent.getCoordonataYCTS());
+                        jsonCTS.put("coordonataycts", ctsCurent.getCoordonataYCTS());
+                        jsonCTS.put("emailcts", ctsCurent.getEmailCTS());
+                        jsonCTS.put("idcts", ctsCurent.getIdCTS());
+                        jsonCTS.put("idoras", jsonOras);
+                        jsonCTS.put("numects", ctsCurent.getNumeCTS());
+                        jsonCTS.put("starects", ctsCurent.getStareCTS());
+                        jsonCTS.put("telefoncts", ctsCurent.getTelefonCTS());
+
+                        jsonProgramare.put("dataProgramare", data);
+                        jsonProgramare.put("idcts", jsonCTS);
+                        jsonProgramare.put("iddonator", jsonDonator);
+                        jsonProgramare.put("idprogramare", "");
+                    } catch (JSONException e) {
+
+                    }
+
+
+                    JsonObjectRequest jsonObjReq = new JsonObjectRequest(Request.Method.POST,
+                            url, jsonProgramare,
+                            new Response.Listener<JSONObject>() {
                                 @Override
-                                public void onResponse(final String response) {
-                                    idProgramare = Integer.parseInt(response);
+                                public void onResponse(JSONObject response) {
 
 
-                                    String url = Utile.URL + "domain.programari/";
-
-                                    final JSONObject jsonProgramare = new JSONObject();
-                                    final JSONObject jsonDonator = new JSONObject();
-                                    final JSONObject jsonCTS = new JSONObject();
-                                    final JSONObject jsonOrasDonator = new JSONObject();
-                                    final JSONObject jsonGrupaSanguina = new JSONObject();
-                                    final JSONObject jsonOras = new JSONObject();
-
-                                    try {
-                                        jsonGrupaSanguina.put("idgrupasanguina", donator.getGrupaSanguina().getGrupaSanguina());
-
-                                        jsonOrasDonator.put("idoras", donator.getOrasDonator().getIdOras());
-                                        jsonOrasDonator.put("judet", donator.getOrasDonator().getJudet());
-                                        jsonOrasDonator.put("numeoras", donator.getOrasDonator().getOras());
-
-                                        jsonDonator.put("emaildonator", donator.getEmailDonator());
-                                        jsonDonator.put("iddonator", donator.getIdDonator());
-                                        jsonDonator.put("idgrupasanguina", jsonGrupaSanguina);
-                                        jsonDonator.put("idoras", jsonOrasDonator);
-                                        jsonDonator.put("numedonator", donator.getNumeDonator());
-                                        jsonDonator.put("telefondonator", donator.getTelefonDonator());
-
-                                        jsonOras.put("idoras", ctsCurent.getOras().getIdOras());
-                                        jsonOras.put("judet", ctsCurent.getOras().getJudet());
-                                        jsonOras.put("numeoras", ctsCurent.getOras().getOras());
-
-                                        jsonCTS.put("adresacts", ctsCurent.getAdresaCTS());
-                                        jsonCTS.put("coordonataxcts", ctsCurent.getCoordonataYCTS());
-                                        jsonCTS.put("coordonataycts", ctsCurent.getCoordonataYCTS());
-                                        jsonCTS.put("emailcts", ctsCurent.getEmailCTS());
-                                        jsonCTS.put("idcts", ctsCurent.getIdCTS());
-                                        jsonCTS.put("idoras", jsonOras);
-                                        jsonCTS.put("numects", ctsCurent.getNumeCTS());
-                                        jsonCTS.put("starects", ctsCurent.getStareCTS());
-                                        jsonCTS.put("telefoncts", ctsCurent.getTelefonCTS());
-
-                                        jsonProgramare.put("dataProgramare", data);
-                                        jsonProgramare.put("idcts", jsonCTS);
-                                        jsonProgramare.put("iddonator", jsonDonator);
-                                        jsonProgramare.put("idprogramare", idProgramare + 1);
-                                    } catch (JSONException e) {
-
-                                    }
-
-                                    JsonObjectRequest jsonObjReq = new JsonObjectRequest(Request.Method.POST,
-                                            url, jsonProgramare,
-                                            new Response.Listener<JSONObject>() {
-                                                @Override
-                                                public void onResponse(JSONObject response) {
-
-
-                                                    Toast.makeText(getApplicationContext(), "Programare facuta cu succes", Toast.LENGTH_LONG).show();
-
-                                                }
-                                            },
-                                            new Response.ErrorListener() {
-                                                @Override
-                                                public void onErrorResponse(VolleyError error) {
-
-                                                    if (error.toString().contains("ServerError")) {
-                                                        Toast.makeText(getApplicationContext(), "Eroare de server", Toast.LENGTH_LONG).show();
-                                                        Log.d("restresponse", error.toString());
-                                                    }
-
-
-                                                }
-                                            }) {
-
-                                        @Override
-                                        protected Response<JSONObject> parseNetworkResponse(NetworkResponse response) {
-
-
-                                            try {
-                                                String json = new String(
-                                                        response.data,
-                                                        "UTF-8"
-                                                );
-
-                                                if (json.length() == 0) {
-                                                    return Response.success(
-                                                            null,
-                                                            HttpHeaderParser.parseCacheHeaders(response)
-                                                    );
-                                                } else {
-                                                    return super.parseNetworkResponse(response);
-                                                }
-                                            } catch (UnsupportedEncodingException e) {
-                                                return Response.error(new ParseError(e));
-                                            }
-
-
-                                        }
-                                    };
-                                    requestQueue.add(jsonObjReq);
+                                    Toast.makeText(getApplicationContext(), "Programare facuta cu succes", Toast.LENGTH_LONG).show();
 
                                 }
-
                             },
                             new Response.ErrorListener() {
                                 @Override
                                 public void onErrorResponse(VolleyError error) {
-                                    Log.d("RestResponse", error.toString());
+
+                                    if (error.toString().contains("ServerError")) {
+                                        Toast.makeText(getApplicationContext(), "Eroare de server", Toast.LENGTH_LONG).show();
+                                        Log.d("restresponse", error.toString());
+                                    }
+
+
                                 }
+                            }) {
+
+                        @Override
+                        protected Response<JSONObject> parseNetworkResponse(NetworkResponse response) {
+
+
+                            try {
+                                String json = new String(
+                                        response.data,
+                                        "UTF-8"
+                                );
+
+                                if (json.length() == 0) {
+                                    return Response.success(
+                                            null,
+                                            HttpHeaderParser.parseCacheHeaders(response)
+                                    );
+                                } else {
+                                    return super.parseNetworkResponse(response);
+                                }
+                            } catch (UnsupportedEncodingException e) {
+                                return Response.error(new ParseError(e));
                             }
 
-                    );
 
-                    requestQueue.add(objectRequest);
+                        }
+                    };
 
-
+                    requestQueue.add(jsonObjReq);
                 }
 
 
-            }
-        });
+        }
+    });
 
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setDisplayShowHomeEnabled(true);
-    }
+    getSupportActionBar().
+
+    setDisplayHomeAsUpEnabled(true);
+
+    getSupportActionBar().
+
+    setDisplayShowHomeEnabled(true);
+
+}
 
     @Override
     public boolean onSupportNavigateUp() {
@@ -388,7 +367,7 @@ public class ProgramareActivity extends AppCompatActivity {
         View minute = tpProgramare.findViewById(Resources.getSystem().getIdentifier("minute", "id", "android"));
         if ((minute != null) && (minute instanceof NumberPicker)) {
             minutePicker = (NumberPicker) minute;
-            Calendar calendar=Calendar.getInstance();
+            Calendar calendar = Calendar.getInstance();
             if (calendar.get(Calendar.MINUTE) >= 45 && calendar.get(Calendar.MINUTE) <= 59)
                 minutePicker.setValue(0);
             else if (calendar.get(Calendar.MINUTE) >= 30)
@@ -401,8 +380,8 @@ public class ProgramareActivity extends AppCompatActivity {
             minutePicker.setMaxValue(numValues - 1);
             minutePicker.setDisplayedValues(displayedValues);
 
-            if(minutePicker.getValue()==0)
-                tpProgramare.setCurrentHour(calendar.get(Calendar.HOUR_OF_DAY)+1);
+            if (minutePicker.getValue() == 0)
+                tpProgramare.setCurrentHour(calendar.get(Calendar.HOUR_OF_DAY) + 1);
 
         }
 

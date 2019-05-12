@@ -33,7 +33,7 @@ public class NotifyingDailyService extends Service {
         };
 
         handler.postDelayed(runnable, 5000);
-        return super.onStartCommand(pIntent, flags, startId);
+        return START_NOT_STICKY;
     }
 
     @Override

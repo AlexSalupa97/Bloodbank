@@ -165,7 +165,6 @@ public class ProfilActivity extends AppCompatActivity {
 
                             Utile.listaIstoricDonatii = new ArrayList<>(Arrays.asList(gson.fromJson(response1.toString(), IstoricDonatii[].class)));
 
-
                             runOnUiThread(new Runnable() {
                                 @Override
                                 public void run() {

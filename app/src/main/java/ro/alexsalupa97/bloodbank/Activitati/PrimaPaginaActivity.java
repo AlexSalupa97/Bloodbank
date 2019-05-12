@@ -2,7 +2,6 @@ package ro.alexsalupa97.bloodbank.Activitati;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
-import android.app.Activity;
 import android.app.AlarmManager;
 import android.app.Notification;
 import android.app.NotificationChannel;
@@ -20,12 +19,9 @@ import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.location.LocationManager;
 import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
-import android.os.Environment;
 import android.os.SystemClock;
 import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.NotificationCompat;
@@ -42,7 +38,6 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
-import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -74,15 +69,12 @@ import com.pkmmte.view.CircularImageView;
 import org.json.JSONArray;
 
 import java.io.ByteArrayOutputStream;
-import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
-import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 
 import static java.lang.Thread.sleep;
@@ -146,9 +138,9 @@ public class PrimaPaginaActivity extends AppCompatActivity implements Navigation
 
         statusCheck();
 
-        NotifyingDailyService mSensorService = new NotifyingDailyService();
-        Intent mServiceIntent = new Intent(getApplicationContext(), mSensorService.getClass());
-        startService(mServiceIntent);
+//        NotifyingDailyService mSensorService = new NotifyingDailyService();
+//        Intent mServiceIntent = new Intent(getApplicationContext(), mSensorService.getClass());
+//        startService(mServiceIntent);
 
 
         try {
