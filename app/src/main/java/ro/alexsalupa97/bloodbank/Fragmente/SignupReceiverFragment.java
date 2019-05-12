@@ -62,8 +62,6 @@ public class SignupReceiverFragment extends Fragment {
     Spinner spGrupaSanguina;
     Button btnSignup;
 
-    int idReceiver;
-
     ArrayAdapter<String> adaptorSpCTS;
     ArrayAdapter<String> adaptorSpGrupeSanguine;
 
@@ -138,147 +136,120 @@ public class SignupReceiverFragment extends Fragment {
                 }
                 receiver.setNumeReceiver(etNume.getText().toString() + " " + etPrenume.getText().toString());
 
-                String url = Utile.URL + "domain.receiveri/count";
+                String url = Utile.URL + "domain.receiveri";
 
                 final RequestQueue requestQueue = Volley.newRequestQueue(getActivity());
 
+                final JSONObject jsonReceiver = new JSONObject();
+                final JSONObject jsonCTS = new JSONObject();
+                final JSONObject jsonGrupaSanguina = new JSONObject();
+                final JSONObject jsonOras = new JSONObject();
 
-                StringRequest objectRequest = new StringRequest(
-                        Request.Method.GET,
-                        url,
-                        new Response.Listener<String>() {
+                try {
 
+                    jsonGrupaSanguina.put("idgrupasanguina", receiver.getGrupaSanguina().getGrupaSanguina());
+
+                    jsonOras.put("idoras", receiver.getCts().getOras().getIdOras());
+                    jsonOras.put("judet", receiver.getCts().getOras().getJudet());
+                    jsonOras.put("numeoras", receiver.getCts().getOras().getOras());
+
+
+                    jsonCTS.put("adresacts", receiver.getCts().getAdresaCTS());
+                    jsonCTS.put("coordonataxcts", receiver.getCts().getCoordonataYCTS());
+                    jsonCTS.put("coordonataycts", receiver.getCts().getCoordonataYCTS());
+                    jsonCTS.put("emailcts", receiver.getCts().getEmailCTS());
+                    jsonCTS.put("idcts", receiver.getCts().getIdCTS());
+                    jsonCTS.put("idoras", jsonOras);
+                    jsonCTS.put("numects", receiver.getCts().getNumeCTS());
+                    jsonCTS.put("starects", receiver.getCts().getStareCTS());
+                    jsonCTS.put("telefoncts", receiver.getCts().getTelefonCTS());
+
+
+                    jsonReceiver.put("emailreceiver", receiver.getEmailReceiver());
+                    jsonReceiver.put("idcts", jsonCTS);
+                    jsonReceiver.put("idgrupasanguina", jsonGrupaSanguina);
+                    jsonReceiver.put("idreceiver", "");
+                    jsonReceiver.put("numereceiver", receiver.getNumeReceiver());
+                    jsonReceiver.put("telefonreceiver", receiver.getTelefonReceiver());
+
+                } catch (JSONException e) {
+
+                    e.printStackTrace();
+                }
+
+
+                JsonObjectRequest jsonObjReq = new JsonObjectRequest(Request.Method.POST,
+                        url, jsonReceiver,
+                        new Response.Listener<JSONObject>() {
                             @Override
-                            public void onResponse(final String response) {
-                                idReceiver=Integer.parseInt(response);
+                            public void onResponse(JSONObject response) {
 
-                                final JSONObject jsonReceiver = new JSONObject();
-                                final JSONObject jsonCTS=new JSONObject();
-                                final JSONObject jsonGrupaSanguina=new JSONObject();
-                                final JSONObject jsonOras=new JSONObject();
+                                SharedPreferences sharedPreferences = getActivity().getSharedPreferences(fisier, Context.MODE_PRIVATE);
+                                SharedPreferences.Editor editor = sharedPreferences.edit();
 
-                                try {
+                                editor.putString("login_name", receiver.getNumeReceiver());
+                                editor.putString("tip_user", "receiver");
+                                editor.putString("grupaSanguina", receiver.getGrupaSanguina().getGrupaSanguina());
+                                editor.putString("cts", receiver.getCts().getNumeCTS());
+                                editor.putString("email", receiver.getEmailReceiver());
+                                editor.putString("telefon", receiver.getTelefonReceiver());
+                                editor.putString("id", String.valueOf(receiver.getIdReceiver()));
 
-                                    jsonGrupaSanguina.put("idgrupasanguina",receiver.getGrupaSanguina().getGrupaSanguina());
+                                editor.commit();
 
-                                    jsonOras.put("idoras",receiver.getCts().getOras().getIdOras());
-                                    jsonOras.put("judet",receiver.getCts().getOras().getJudet());
-                                    jsonOras.put("numeoras",receiver.getCts().getOras().getOras());
+                                Toast.makeText(getActivity(), "Inregistrare facuta cu succes", Toast.LENGTH_LONG).show();
 
-
-                                    jsonCTS.put("adresacts",receiver.getCts().getAdresaCTS());
-                                    jsonCTS.put("coordonataxcts",receiver.getCts().getCoordonataYCTS());
-                                    jsonCTS.put("coordonataycts",receiver.getCts().getCoordonataYCTS());
-                                    jsonCTS.put("emailcts",receiver.getCts().getEmailCTS());
-                                    jsonCTS.put("idcts",receiver.getCts().getIdCTS());
-                                    jsonCTS.put("idoras",jsonOras);
-                                    jsonCTS.put("numects",receiver.getCts().getNumeCTS());
-                                    jsonCTS.put("starects",receiver.getCts().getStareCTS());
-                                    jsonCTS.put("telefoncts",receiver.getCts().getTelefonCTS());
-
-
-                                    jsonReceiver.put("emailreceiver", receiver.getEmailReceiver());
-                                    jsonReceiver.put("idcts", jsonCTS);
-                                    jsonReceiver.put("idgrupasanguina", jsonGrupaSanguina);
-                                    jsonReceiver.put("idreceiver", idReceiver+1);
-                                    jsonReceiver.put("numereceiver", receiver.getNumeReceiver());
-                                    jsonReceiver.put("telefonreceiver", receiver.getTelefonReceiver());
-
-                                } catch (JSONException e) {
-
-                                    e.printStackTrace();
-                                }
-
-                                String url=Utile.URL+"domain.receiveri/";
-
-                                JsonObjectRequest jsonObjReq = new JsonObjectRequest(Request.Method.POST,
-                                        url, jsonReceiver,
-                                        new Response.Listener<JSONObject>() {
-                                            @Override
-                                            public void onResponse(JSONObject response) {
-
-                                                SharedPreferences sharedPreferences = getActivity().getSharedPreferences(fisier, Context.MODE_PRIVATE);
-                                                SharedPreferences.Editor editor = sharedPreferences.edit();
-
-                                                editor.putString("login_name", receiver.getNumeReceiver());
-                                                editor.putString("tip_user", "receiver");
-                                                editor.putString("grupaSanguina", receiver.getGrupaSanguina().getGrupaSanguina());
-                                                editor.putString("cts", receiver.getCts().getNumeCTS());
-                                                editor.putString("email", receiver.getEmailReceiver());
-                                                editor.putString("telefon", receiver.getTelefonReceiver());
-                                                editor.putString("id",String.valueOf(receiver.getIdReceiver()));
-
-                                                editor.commit();
-
-                                                Toast.makeText(getActivity(), "Inregistrare facuta cu succes", Toast.LENGTH_LONG).show();
-
-                                                Intent intent=new Intent(getActivity(), DetaliiReceiverMainActivity.class);
-                                                intent.putExtra("receiver",receiver);
-                                                startActivity(intent);
-                                                getActivity().finish();
-                                            }
-                                        },
-                                        new Response.ErrorListener() {
-                                            @Override
-                                            public void onErrorResponse(VolleyError error) {
-
-                                                if(error.toString().contains("ServerError")) {
-                                                    Toast.makeText(getActivity(), "Eroare de server", Toast.LENGTH_LONG).show();
-                                                    Log.d("restresponse", error.toString());
-                                                }
-
-
-                                            }
-                                        }){
-
-                                    @Override
-                                    protected Response<JSONObject> parseNetworkResponse(NetworkResponse response) {
-
-
-                                        try {
-                                            String json = new String(
-                                                    response.data,
-                                                    "UTF-8"
-                                            );
-
-                                            if (json.length() == 0) {
-                                                return Response.success(
-                                                        null,
-                                                        HttpHeaderParser.parseCacheHeaders(response)
-                                                );
-                                            }
-                                            else {
-                                                return super.parseNetworkResponse(response);
-                                            }
-                                        }
-                                        catch (UnsupportedEncodingException e) {
-                                            return Response.error(new ParseError(e));
-                                        }
-
-
-                                    }
-                                };
-                                requestQueue.add(jsonObjReq);
-
+                                Intent intent = new Intent(getActivity(), DetaliiReceiverMainActivity.class);
+                                intent.putExtra("receiver", receiver);
+                                startActivity(intent);
+                                getActivity().finish();
                             }
-
                         },
                         new Response.ErrorListener() {
                             @Override
                             public void onErrorResponse(VolleyError error) {
-                                Log.d("restresponse", error.toString());
+
+                                if (error.toString().contains("ServerError")) {
+                                    Toast.makeText(getActivity(), "Eroare de server", Toast.LENGTH_LONG).show();
+                                    Log.d("restresponse", error.toString());
+                                }
+
+
                             }
+                        }) {
+
+                    @Override
+                    protected Response<JSONObject> parseNetworkResponse(NetworkResponse response) {
+
+
+                        try {
+                            String json = new String(
+                                    response.data,
+                                    "UTF-8"
+                            );
+
+                            if (json.length() == 0) {
+                                return Response.success(
+                                        null,
+                                        HttpHeaderParser.parseCacheHeaders(response)
+                                );
+                            } else {
+                                return super.parseNetworkResponse(response);
+                            }
+                        } catch (UnsupportedEncodingException e) {
+                            return Response.error(new ParseError(e));
                         }
 
-                );
 
-                requestQueue.add(objectRequest);
+                    }
+                };
+                requestQueue.add(jsonObjReq);
 
             }
-        });
+    });
 
 
         return rootView;
-    }
+}
 
 }

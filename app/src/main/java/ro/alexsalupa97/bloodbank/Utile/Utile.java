@@ -129,13 +129,13 @@ public class Utile {
         return dePreluat;
     }
 
-    public static String preluareIDReceiver(Context context) {
-        String dePreluat;
-        SharedPreferences sharedPreferences = context.getSharedPreferences(fisier, Context.MODE_PRIVATE);
-        String defaultName = "N/A";
-        dePreluat = sharedPreferences.getString("id", defaultName);
-        return dePreluat;
-    }
+//    public static String preluareIDReceiver(Context context) {
+//        String dePreluat;
+//        SharedPreferences sharedPreferences = context.getSharedPreferences(fisier, Context.MODE_PRIVATE);
+//        String defaultName = "N/A";
+//        dePreluat = sharedPreferences.getString("id", defaultName);
+//        return dePreluat;
+//    }
 
     public static String preluareGrupaSanguina(Context context) {
         String dePreluat;

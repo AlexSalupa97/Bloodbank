@@ -174,7 +174,7 @@ public class DetaliiReceiverMainActivity extends AppCompatActivity implements Na
                     });
                     RequestQueue requestQueue = Volley.newRequestQueue(DetaliiReceiverMainActivity.this);
                     RequestFuture<JSONArray> future1 = RequestFuture.newFuture();
-                    JsonArrayRequest request1 = new JsonArrayRequest(Request.Method.GET, Utile.URL + "domain.istoricreceiveri/receiver/" + Utile.preluareIDReceiver(getApplicationContext()), null, future1, future1);
+                    JsonArrayRequest request1 = new JsonArrayRequest(Request.Method.GET, Utile.URL + "domain.istoricreceiveri/receiver/" + Utile.preluareEmail(getApplicationContext()), null, future1, future1);
                     RequestFuture<JSONArray> future3 = RequestFuture.newFuture();
                     JsonArrayRequest request3 = new JsonArrayRequest(Request.Method.GET, Utile.URL + "domain.grupesanguine", null, future3, future3);
 
@@ -239,14 +239,57 @@ public class DetaliiReceiverMainActivity extends AppCompatActivity implements Na
                     public void run() {
                         try {
 
+                            RequestQueue requestQueue = Volley.newRequestQueue(DetaliiReceiverMainActivity.this);
+                            RequestFuture<JSONArray> future1 = RequestFuture.newFuture();
+                            JsonArrayRequest request1 = new JsonArrayRequest(Request.Method.GET, Utile.URL + "domain.istoricreceiveri/receiver/" + Utile.preluareEmail(getApplicationContext()), null, future1, future1);
+                            RequestFuture<JSONArray> future3 = RequestFuture.newFuture();
+                            JsonArrayRequest request3 = new JsonArrayRequest(Request.Method.GET, Utile.URL + "domain.grupesanguine", null, future3, future3);
+
+                            requestQueue.add(request1);
+                            requestQueue.add(request3);
+
+                            JSONArray response1 = future1.get();
+                            JSONArray response3 = future3.get();
+
+                            gson = new Gson();
+
+
+                            Utile.listaGrupeSanguine = new ArrayList<>(Arrays.asList(gson.fromJson(response3.toString(), GrupeSanguine[].class)));
+                            Utile.listaIstoricReceiver = new ArrayList<>(Arrays.asList(gson.fromJson(response1.toString(), IstoricReceiver[].class)));
+
+                            sectiuni = new ArrayList<>();
+
+                            SectionModelIstoric dm = new SectionModelIstoric();
+
+                            dm.setTitlu("Donatii primite");
+
+                            ArrayList<ItemModelIstoric> itemeInSectiune = new ArrayList<ItemModelIstoric>();
+                            for (IstoricReceiver id : Utile.listaIstoricReceiver) {
+                                int index = id.getDataPrimire().indexOf("T");
+                                String substring = id.getDataPrimire().substring(0, index);
+                                itemeInSectiune.add(new ItemModelIstoric(substring, id.getCantitatePrimitaML() + "ml"));
+                            }
+
+                            Collections.sort(itemeInSectiune);
+                            dm.setItemeInSectiune(itemeInSectiune);
+
+                            sectiuni.add(dm);
+
+                            rvIstoricReceiver.setHasFixedSize(true);
+
+                            final AdaptorIstoricReceiverRV adaptor = new AdaptorIstoricReceiverRV(DetaliiReceiverMainActivity.this, sectiuni);
+
+
                             runOnUiThread(new Runnable() {
                                 @Override
                                 public void run() {
+                                    rvIstoricReceiver.setLayoutManager(new LinearLayoutManager(getApplicationContext(), LinearLayoutManager.VERTICAL, false));
+                                    rvIstoricReceiver.setAdapter(adaptor);
                                     swiperefreshRVSituatieSanguinaReceiver.setRefreshing(false);
                                 }
                             });
                         } catch (Exception e) {
-                            Log.e("SplashScreenActivity", e.getMessage());
+
                         }
                     }
                 };
