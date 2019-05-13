@@ -263,10 +263,110 @@ public class DetaliiCTSActivity extends AppCompatActivity {
                     @Override
                     public void run() {
                         try {
-                            sleep(1000);
+                            RequestQueue requestQueue = Volley.newRequestQueue(DetaliiCTSActivity.this);
+                            RequestFuture<JSONArray> future = RequestFuture.newFuture();
+                            JsonArrayRequest request = new JsonArrayRequest(Request.Method.GET, Utile.URL + "domain.limitects/cts/" + ctsCurent.getEmailCTS(), null, future, future);
+                            RequestFuture<JSONArray> future1 = RequestFuture.newFuture();
+                            JsonArrayRequest request1 = new JsonArrayRequest(Request.Method.GET, Utile.URL + "domain.istoricintraricts/cts/" + ctsCurent.getEmailCTS(), null, future1, future1);
+                            RequestFuture<JSONArray> future2 = RequestFuture.newFuture();
+                            JsonArrayRequest request2 = new JsonArrayRequest(Request.Method.GET, Utile.URL + "domain.istoriciesiricts/cts/" + ctsCurent.getEmailCTS(), null, future2, future2);
+                            RequestFuture<JSONArray> future3 = RequestFuture.newFuture();
+                            JsonArrayRequest request3 = new JsonArrayRequest(Request.Method.GET, Utile.URL + "domain.grupesanguine", null, future3, future3);
+
+                            requestQueue.add(request);
+                            requestQueue.add(request1);
+                            requestQueue.add(request2);
+                            requestQueue.add(request3);
+
+                            JSONArray response = future.get();
+                            JSONArray response1 = future1.get();
+                            JSONArray response2 = future2.get();
+                            JSONArray response3 = future3.get();
+
+                            gson=new Gson();
+
+                            Utile.listaLimiteCTS = new ArrayList<>(Arrays.asList(gson.fromJson(response.toString(), LimiteCTS[].class)));
+                            Utile.listaIntrariCTS = new ArrayList<>(Arrays.asList(gson.fromJson(response1.toString(), IntrariCTS[].class)));
+                            Utile.listaIesiriCTS = new ArrayList<>(Arrays.asList(gson.fromJson(response2.toString(), IesiriCTS[].class)));
+                            Utile.listaGrupeSanguine = new ArrayList<>(Arrays.asList(gson.fromJson(response3.toString(), GrupeSanguine[].class)));
+
+                            mapCantitatiDisponibilePerCTSPerGrupa = new HashMap<>(Utile.incarcareMapDisponibil_particular(ctsCurent));
+
+                            mapLimitePerCTSPerGrupa = new HashMap<>();
+
+
+                            Map<GrupeSanguine, Integer> mapIntermediar = new HashMap<>();
+                            try {
+                                for (LimiteCTS limite : Utile.listaLimiteCTS)
+                                    mapIntermediar.put(limite.getGrupaSanguina(), limite.getLimitaML());
+                            } catch (Exception ex) {
+
+                            }
+                            mapLimitePerCTSPerGrupa.put(ctsCurent, mapIntermediar);
+
+
+                            mapCantitatiPerCTS = new HashMap<>();
+
+                            for (CTS cts : mapCantitatiDisponibilePerCTSPerGrupa.keySet()) {
+                                String deAfisat = "\n\n";
+
+
+                                Map<GrupeSanguine, Integer> mapCantitatiDisponibile = mapCantitatiDisponibilePerCTSPerGrupa.get(cts);
+                                Map<GrupeSanguine, Integer> mapLimite = mapLimitePerCTSPerGrupa.get(cts);
+
+
+                                deAfisat += "\t" + cts.getNumeCTS();
+
+                                listaCantitatiCTS = new ArrayList<>();
+
+                                for (GrupeSanguine grupeSanguine : Utile.listaGrupeSanguine) {
+
+                                    try {
+                                        CantitatiCTS cantitateCTSCurent = new CantitatiCTS();
+                                        cantitateCTSCurent.setCts(cts);
+                                        cantitateCTSCurent.setGrupaSanguina(grupeSanguine);
+                                        cantitateCTSCurent.setCantitateDisponibilaML(mapCantitatiDisponibile.get(grupeSanguine));
+                                        cantitateCTSCurent.setCantitateLimitaML(mapLimite.get(grupeSanguine));
+                                        listaCantitatiCTS.add(cantitateCTSCurent);
+                                    } catch (Exception ex) {
+
+                                    }
+
+                                }
+
+                                mapCantitatiPerCTS.put(cts, listaCantitatiCTS);
+                            }
+
+                            sectiuni = new ArrayList<>();
+
+                            ArrayList<CTS> listaCTS = new ArrayList<>(mapCantitatiPerCTS.keySet());
+                            Collections.sort(listaCTS);
+
+
+                            for (CTS cts : listaCTS) {
+                                SectionModelAlerte dm = new SectionModelAlerte();
+
+                                dm.setTitlu("Situatia cantitatilor de sange");
+
+                                ArrayList<ItemModelAlerte> itemeInSectiune = new ArrayList<>();
+                                for (CantitatiCTS cantitatiCTS : mapCantitatiPerCTS.get(cts)) {
+                                    itemeInSectiune.add(new ItemModelAlerte(cantitatiCTS));
+                                }
+
+                                dm.setItemeInSectiune(itemeInSectiune);
+
+                                sectiuni.add(dm);
+                            }
+
+
+                            rvAlerte.setHasFixedSize(true);
+
+                            adapter = new AdaptorAlerteCTSRV(getApplicationContext(), sectiuni);
                             runOnUiThread(new Runnable() {
                                 @Override
                                 public void run() {
+                                    rvAlerte.setLayoutManager(new LinearLayoutManager(getApplicationContext(), LinearLayoutManager.VERTICAL, false));
+                                    rvAlerte.setAdapter(adapter);
                                     swiperefreshRVSituatieSanguinaCTS.setRefreshing(false);
                                 }
                             });

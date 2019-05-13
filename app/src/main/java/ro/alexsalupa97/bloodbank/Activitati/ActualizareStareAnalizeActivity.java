@@ -86,7 +86,6 @@ public class ActualizareStareAnalizeActivity extends AppCompatActivity {
         btnPDF.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
                 btnActualizare.setVisibility(View.GONE);
                 Intent intent = new Intent(Intent.ACTION_OPEN_DOCUMENT);
                 intent.setType("application/pdf");
@@ -291,6 +290,9 @@ public class ActualizareStareAnalizeActivity extends AppCompatActivity {
                     })
 
                     .load();
+
+            emailDonator="";
+            stareAnalize="";
             btnActualizare.setVisibility(View.VISIBLE);
         }
 
