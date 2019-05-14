@@ -25,12 +25,14 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonArrayRequest;
+import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.RequestFuture;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
@@ -41,6 +43,7 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
 import org.json.JSONArray;
+import org.json.JSONObject;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
@@ -95,6 +98,7 @@ public class DetaliiReceiverMainActivity extends AppCompatActivity implements Na
 
     SwipeRefreshLayout swiperefreshRVSituatieSanguinaReceiver;
 
+    Receiveri receiver;
     Gson gson;
 
     @Override
@@ -136,25 +140,84 @@ public class DetaliiReceiverMainActivity extends AppCompatActivity implements Na
 
         tvNavDrawer.setText(nume);
 
-
-        Receiveri receiver;
         receiver = getIntent().getParcelableExtra("receiver");
 
         if (receiver == null) {
-            receiver = new Receiveri();
-            receiver.setNumeReceiver(Utile.preluareUsername(getApplicationContext()));
-            receiver.setTelefonReceiver(Utile.preluareTelefon(getApplicationContext()));
-            receiver.setEmailReceiver(Utile.preluareEmail(getApplicationContext()));
-            try {
-                for (CTS cts : Utile.CTS)
-                    if (cts.getNumeCTS().equals((Utile.preluareCTS(getApplicationContext()))))
-                        receiver.setCts(cts);
+            if (Utile.preluareID(getApplicationContext()).equals("")) {
+                Thread t = new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+                        try {
 
-                for (GrupeSanguine grupeSanguine : Utile.listaGrupeSanguine)
-                    if (grupeSanguine.getGrupaSanguina().equals((Utile.preluareGrupaSanguina(getApplicationContext()))))
-                        receiver.setGrupaSanguina(grupeSanguine);
-            } catch (Exception ex) {
+                            gson = new Gson();
 
+                            RequestQueue requestQueue = Volley.newRequestQueue(DetaliiReceiverMainActivity.this);
+                            RequestFuture<JSONObject> future = RequestFuture.newFuture();
+                            JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, Utile.URL + "domain.receiveri/email/" + Utile.preluareEmail(getApplicationContext()), null, future, future);
+                            requestQueue.add(request);
+                            JSONObject response1 = future.get();
+                            receiver = gson.fromJson(response1.toString(), Receiveri.class);
+                            SharedPreferences.Editor editor = sharedPreferences.edit();
+                            editor.putString("id", String.valueOf(receiver.getIdReceiver()));
+                            editor.commit();
+                            final Receiveri receiverFinal = receiver;
+
+                            runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    Toast.makeText(getApplicationContext(),String.valueOf(receiver.getIdReceiver()),Toast.LENGTH_SHORT).show();
+                                    fbShareBtn = (ShareButton) findViewById(R.id.fbShareBtn);
+                                    ShareLinkContent content = new ShareLinkContent.Builder()
+                                            .setQuote("Doneaza pentru " + receiverFinal.getNumeReceiver())
+                                            .setContentUrl(Uri.parse("https://play.google.com/store/apps/developer?id=AlexSalupa97"))
+                                            .build();
+
+                                    fbShareBtn.setShareContent(content);
+
+
+                                    twitterShareBtn = (LinearLayout) findViewById(R.id.twitterShareBtn);
+                                    twitterShareBtn.setOnClickListener(new View.OnClickListener() {
+                                        @Override
+                                        public void onClick(View v) {
+                                            Intent twitterIntent = getShareIntent("twitter", "subject", "Doneaza pentru " + receiverFinal.getNumeReceiver() + "\nhttps://play.google.com/store/apps/developer?id=AlexSalupa97");
+                                            if (twitterIntent != null)
+                                                startActivity(twitterIntent);
+
+                                        }
+                                    });
+                                }
+                            });
+
+                        } catch (InterruptedException e) {
+                            System.out.println(e.toString());
+                        } catch (ExecutionException e) {
+                            System.out.println(e.toString());
+                        }
+
+
+                    }
+                }) ;
+
+
+
+
+                t.start();
+            } else {
+                receiver = new Receiveri();
+                receiver.setNumeReceiver(Utile.preluareUsername(getApplicationContext()));
+                receiver.setTelefonReceiver(Utile.preluareTelefon(getApplicationContext()));
+                receiver.setEmailReceiver(Utile.preluareEmail(getApplicationContext()));
+                try {
+                    for (CTS cts : Utile.CTS)
+                        if (cts.getNumeCTS().equals((Utile.preluareCTS(getApplicationContext()))))
+                            receiver.setCts(cts);
+
+                    for (GrupeSanguine grupeSanguine : Utile.listaGrupeSanguine)
+                        if (grupeSanguine.getGrupaSanguina().equals((Utile.preluareGrupaSanguina(getApplicationContext()))))
+                            receiver.setGrupaSanguina(grupeSanguine);
+                } catch (Exception ex) {
+
+                }
             }
 
         }
@@ -302,27 +365,31 @@ public class DetaliiReceiverMainActivity extends AppCompatActivity implements Na
             }
         });
 
-        final Receiveri receiverFinal = receiver;
+        try {
+            final Receiveri receiverFinal = receiver;
 
-        fbShareBtn = (ShareButton) findViewById(R.id.fbShareBtn);
-        ShareLinkContent content = new ShareLinkContent.Builder()
-                .setQuote("Doneaza pentru " + receiverFinal.getNumeReceiver())
-                .setContentUrl(Uri.parse("https://play.google.com/store/apps/developer?id=AlexSalupa97"))
-                .build();
+            fbShareBtn = (ShareButton) findViewById(R.id.fbShareBtn);
+            ShareLinkContent content = new ShareLinkContent.Builder()
+                    .setQuote("Doneaza pentru " + receiverFinal.getNumeReceiver())
+                    .setContentUrl(Uri.parse("https://play.google.com/store/apps/developer?id=AlexSalupa97"))
+                    .build();
 
-        fbShareBtn.setShareContent(content);
+            fbShareBtn.setShareContent(content);
 
 
-        twitterShareBtn = (LinearLayout) findViewById(R.id.twitterShareBtn);
-        twitterShareBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent twitterIntent = getShareIntent("twitter", "subject", "Doneaza pentru " + receiverFinal.getNumeReceiver() + "\nhttps://play.google.com/store/apps/developer?id=AlexSalupa97");
-                if (twitterIntent != null)
-                    startActivity(twitterIntent);
+            twitterShareBtn = (LinearLayout) findViewById(R.id.twitterShareBtn);
+            twitterShareBtn.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent twitterIntent = getShareIntent("twitter", "subject", "Doneaza pentru " + receiverFinal.getNumeReceiver() + "\nhttps://play.google.com/store/apps/developer?id=AlexSalupa97");
+                    if (twitterIntent != null)
+                        startActivity(twitterIntent);
 
-            }
-        });
+                }
+            });
+        }catch (Exception ex){
+
+        }
     }
 
 
@@ -381,7 +448,7 @@ public class DetaliiReceiverMainActivity extends AppCompatActivity implements Na
                     .setPositiveButton("OK", new DialogInterface.OnClickListener() {
                         public void onClick(final DialogInterface dialog, final int id) {
 
-                            String url=Utile.URL+"domain.receiveri/"+Utile.preluareID(getApplicationContext());
+                            String url = Utile.URL + "domain.receiveri/" + Utile.preluareID(getApplicationContext());
                             RequestQueue requestQueue = Volley.newRequestQueue(DetaliiReceiverMainActivity.this);
                             StringRequest deleteRequest = new StringRequest(Request.Method.DELETE, url,
                                     new Response.Listener<String>() {
@@ -403,6 +470,7 @@ public class DetaliiReceiverMainActivity extends AppCompatActivity implements Na
                             SharedPreferences.Editor editor = sharedPreferences.edit();
                             editor.putString("login_name", "");
                             editor.putString("tip_user", "");
+                            editor.putString("id", "");
                             editor.commit();
 
                             Intent intentLogin = new Intent(getApplicationContext(), AlegereLoginActivity.class);
@@ -461,6 +529,7 @@ public class DetaliiReceiverMainActivity extends AppCompatActivity implements Na
             SharedPreferences.Editor editor = sharedPreferences.edit();
             editor.putString("login_name", "");
             editor.putString("tip_user", "");
+            editor.putString("id", "");
             editor.commit();
 
             Intent intentLogin = new Intent(getApplicationContext(), AlegereLoginActivity.class);

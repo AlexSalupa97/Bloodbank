@@ -193,14 +193,14 @@ public class SignupReceiverFragment extends Fragment {
                                 editor.putString("cts", receiver.getCts().getNumeCTS());
                                 editor.putString("email", receiver.getEmailReceiver());
                                 editor.putString("telefon", receiver.getTelefonReceiver());
-                                editor.putString("id", String.valueOf(receiver.getIdReceiver()));
+                                editor.putString("id", "");
 
                                 editor.commit();
 
                                 Toast.makeText(getActivity(), "Inregistrare facuta cu succes", Toast.LENGTH_LONG).show();
 
                                 Intent intent = new Intent(getActivity(), DetaliiReceiverMainActivity.class);
-                                intent.putExtra("receiver", receiver);
+//                                intent.putExtra("receiver", receiver);
                                 startActivity(intent);
                                 getActivity().finish();
                             }

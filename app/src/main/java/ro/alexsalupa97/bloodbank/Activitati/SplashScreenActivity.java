@@ -68,10 +68,6 @@ public class SplashScreenActivity extends AppCompatActivity {
                         requestQueue.add(request);
                         requestQueue.add(request1);
 
-
-                        requestQueue.add(request);
-                        requestQueue.add(request1);
-
                         JSONArray response = future.get();
                         JSONArray response1 = future1.get();
 
@@ -179,10 +175,6 @@ public class SplashScreenActivity extends AppCompatActivity {
                         JsonArrayRequest request = new JsonArrayRequest(Request.Method.GET, Utile.URL + "domain.cts", null, future, future);
                         RequestFuture<JSONArray> future1 = RequestFuture.newFuture();
                         JsonArrayRequest request1 = new JsonArrayRequest(Request.Method.GET, Utile.URL + "domain.grupesanguine", null, future1, future1);
-
-                        requestQueue.add(request);
-                        requestQueue.add(request1);
-
 
                         requestQueue.add(request);
                         requestQueue.add(request1);
