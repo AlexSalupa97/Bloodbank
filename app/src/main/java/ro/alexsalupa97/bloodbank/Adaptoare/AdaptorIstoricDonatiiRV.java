@@ -48,6 +48,8 @@ public class AdaptorIstoricDonatiiRV extends RecyclerView.Adapter<AdaptorIstoric
         itemRowHolder.recycler_view_list.setLayoutManager(new LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false));
         itemRowHolder.recycler_view_list.setAdapter(itemListDataAdapter);
 
+        itemRowHolder.btnMore.setVisibility(View.INVISIBLE);
+
 
         itemRowHolder.btnMore.setOnClickListener(new View.OnClickListener() {
             @Override

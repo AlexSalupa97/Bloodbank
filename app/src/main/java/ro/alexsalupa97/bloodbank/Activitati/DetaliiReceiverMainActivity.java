@@ -1,6 +1,7 @@
 package ro.alexsalupa97.bloodbank.Activitati;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.ResolveInfo;
@@ -12,6 +13,7 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v4.widget.ViewDragHelper;
 import android.support.v7.app.ActionBarDrawerToggle;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -30,6 +32,7 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.RequestFuture;
+import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 
 import com.facebook.share.model.ShareLinkContent;
@@ -158,7 +161,7 @@ public class DetaliiReceiverMainActivity extends AppCompatActivity implements Na
 
         rvIstoricReceiver = (RecyclerView) findViewById(R.id.rvIstoricReceiver);
 
-        swiperefreshRVSituatieSanguinaReceiver=(SwipeRefreshLayout)findViewById(R.id.swiperefreshRVSituatieSanguinaReceiver);
+        swiperefreshRVSituatieSanguinaReceiver = (SwipeRefreshLayout) findViewById(R.id.swiperefreshRVSituatieSanguinaReceiver);
         swiperefreshRVSituatieSanguinaReceiver.setColorSchemeColors(getResources().getColor(R.color.colorPrimary));
 
 
@@ -210,7 +213,7 @@ public class DetaliiReceiverMainActivity extends AppCompatActivity implements Na
 
                     rvIstoricReceiver.setHasFixedSize(true);
 
-                    final AdaptorIstoricReceiverRV adaptor = new AdaptorIstoricReceiverRV(DetaliiReceiverMainActivity.this, sectiuni,true);
+                    final AdaptorIstoricReceiverRV adaptor = new AdaptorIstoricReceiverRV(DetaliiReceiverMainActivity.this, sectiuni, true);
 
 
                     runOnUiThread(new Runnable() {
@@ -277,7 +280,7 @@ public class DetaliiReceiverMainActivity extends AppCompatActivity implements Na
 
                             rvIstoricReceiver.setHasFixedSize(true);
 
-                            final AdaptorIstoricReceiverRV adaptor = new AdaptorIstoricReceiverRV(DetaliiReceiverMainActivity.this, sectiuni,true);
+                            final AdaptorIstoricReceiverRV adaptor = new AdaptorIstoricReceiverRV(DetaliiReceiverMainActivity.this, sectiuni, true);
 
 
                             runOnUiThread(new Runnable() {
@@ -365,6 +368,51 @@ public class DetaliiReceiverMainActivity extends AppCompatActivity implements Na
         if (id == R.id.setari) {
             Intent intent = new Intent(getApplicationContext(), SetariActivity.class);
             startActivity(intent);
+        } else if (id == R.id.stergereCont) {
+            final AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            builder.setMessage("Sunteti sigur ca doriti dezactivarea contului dvs.?")
+                    .setCancelable(true)
+                    .setNeutralButton("Cancel", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            dialog.dismiss();
+                        }
+                    })
+                    .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                        public void onClick(final DialogInterface dialog, final int id) {
+
+                            String url=Utile.URL+"domain.receiveri/"+Utile.preluareID(getApplicationContext());
+                            RequestQueue requestQueue = Volley.newRequestQueue(DetaliiReceiverMainActivity.this);
+                            StringRequest deleteRequest = new StringRequest(Request.Method.DELETE, url,
+                                    new Response.Listener<String>() {
+                                        @Override
+                                        public void onResponse(String response) {
+                                            // response
+                                            Log.d("Response", response);
+                                        }
+                                    },
+                                    new Response.ErrorListener() {
+                                        @Override
+                                        public void onErrorResponse(VolleyError error) {
+
+                                        }
+                                    }
+                            );
+                            requestQueue.add(deleteRequest);
+
+                            SharedPreferences.Editor editor = sharedPreferences.edit();
+                            editor.putString("login_name", "");
+                            editor.putString("tip_user", "");
+                            editor.commit();
+
+                            Intent intentLogin = new Intent(getApplicationContext(), AlegereLoginActivity.class);
+                            startActivity(intentLogin);
+                            finish();
+
+                        }
+                    });
+            final AlertDialog alert = builder.create();
+            alert.show();
         } else if (id == R.id.compatibilitati) {
             if (Utile.compatibilitati == null) {
                 String url = Utile.URL + "domain.compatibilitati/" + Utile.preluareGrupaSanguina(getApplicationContext());

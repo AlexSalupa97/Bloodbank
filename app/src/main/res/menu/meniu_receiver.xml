@@ -15,9 +15,9 @@
         android:id="@+id/menu_bot"
         android:checkableBehavior="none">
         <item
-            android:id="@+id/setari"
-            android:icon="@drawable/ic_settings"
-            android:title="Setari"/>
+            android:id="@+id/stergereCont"
+            android:icon="@drawable/eraser"
+            android:title="Dezactivare cont"/>
         <item
             android:id="@+id/logout"
             android:icon="@drawable/ic_power_settings"

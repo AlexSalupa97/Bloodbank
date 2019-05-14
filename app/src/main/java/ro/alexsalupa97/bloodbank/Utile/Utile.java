@@ -145,6 +145,14 @@ public class Utile {
         return dePreluat;
     }
 
+    public static String preluareID(Context context) {
+        Gson gson = new Gson();
+        SharedPreferences sharedPreferences = context.getSharedPreferences(fisier, Context.MODE_PRIVATE);
+        String defaultName = "N/A";
+        String dePreluat = sharedPreferences.getString("id", defaultName);
+        return dePreluat;
+    }
+
 //    public static String preluareIDReceiver(Context context) {
 //        String dePreluat;
 //        SharedPreferences sharedPreferences = context.getSharedPreferences(fisier, Context.MODE_PRIVATE);
@@ -721,6 +729,7 @@ public class Utile {
 
         requestQueue.add(objectRequest);
     }
+
 
 
 }

@@ -12,7 +12,7 @@
         <item
             android:id="@+id/stareAnalize"
             android:icon="@drawable/account_edit"
-            android:title="Actualizati starea analizelor dvs."/>
+            android:title="Actualizati starea analizelor"/>
     </group>
 
     <group
