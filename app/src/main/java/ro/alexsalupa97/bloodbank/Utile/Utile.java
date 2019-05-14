@@ -70,6 +70,7 @@ public class Utile {
     public static int idReceiver;
 
     public static boolean firstTimeReceiver;
+    public static boolean firstTimeDonator=false;
 
     static Gson gson;
 

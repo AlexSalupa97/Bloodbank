@@ -38,6 +38,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -46,12 +47,16 @@ import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonArrayRequest;
+import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.RequestFuture;
 import com.android.volley.toolbox.Volley;
 
 import ro.alexsalupa97.bloodbank.Clase.CTS;
 import ro.alexsalupa97.bloodbank.Clase.Compatibilitati;
+import ro.alexsalupa97.bloodbank.Clase.Donatori;
 import ro.alexsalupa97.bloodbank.Clase.Intrebari;
 import ro.alexsalupa97.bloodbank.Clase.IstoricDonatii;
+import ro.alexsalupa97.bloodbank.Clase.Receiveri;
 import ro.alexsalupa97.bloodbank.Fragmente.MapsCTSFragment;
 import ro.alexsalupa97.bloodbank.Notificari.ActionAlerteBroadcast;
 import ro.alexsalupa97.bloodbank.Notificari.ActionCentreBroadcast;
@@ -61,12 +66,16 @@ import ro.alexsalupa97.bloodbank.Utile.CalculDistante;
 import ro.alexsalupa97.bloodbank.Utile.Utile;
 import ro.alexsalupa97.bloodbank.R;
 
+import com.facebook.share.model.ShareLinkContent;
+import com.facebook.share.widget.ShareButton;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.pkmmte.view.CircularImageView;
 
 
 import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.io.ByteArrayOutputStream;
 import java.io.FileNotFoundException;
@@ -76,6 +85,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.List;
+import java.util.concurrent.ExecutionException;
 
 import static java.lang.Thread.sleep;
 
@@ -100,6 +110,7 @@ public class PrimaPaginaActivity extends AppCompatActivity implements Navigation
     Gson gsonIntrebari;
     Gson gsonCompatibilitati;
     Gson gsonIstoricDonatii;
+    Gson gson;
     List<Intrebari> intrebariList;
     List<Compatibilitati> compatibilitatiList;
     List<IstoricDonatii> istoricDonatiiList;
@@ -141,6 +152,36 @@ public class PrimaPaginaActivity extends AppCompatActivity implements Navigation
 //        NotifyingDailyService mSensorService = new NotifyingDailyService();
 //        Intent mServiceIntent = new Intent(getApplicationContext(), mSensorService.getClass());
 //        startService(mServiceIntent);
+
+
+        if(Utile.firstTimeDonator){
+            Thread t = new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    try {
+
+                        gson = new Gson();
+
+                        RequestQueue requestQueue = Volley.newRequestQueue(PrimaPaginaActivity.this);
+                        RequestFuture<JSONObject> future = RequestFuture.newFuture();
+                        JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, Utile.URL + "domain.stareanalize/" + Utile.preluareEmail(getApplicationContext()), null, future, future);
+                        requestQueue.add(request);
+                        JSONObject response1 = future.get();
+                        String idStareAnalize = response1.getString("idstareanaliza");
+                        String dataStareAnaliza = response1.getString("dataefectuareanaliza");
+                        JSONObject jsonDonator=response1.getJSONObject("iddonator");
+                        SharedPreferences.Editor editor = sharedPreferences.edit();
+                        editor.putString("donator",jsonDonator.toString());
+                        editor.putString("dataanalize", dataStareAnaliza);
+                        editor.putString("idanalize", idStareAnalize);
+                        editor.commit();
+                    } catch (Exception e) {
+
+                    }
+                }
+            });
+            t.start();
+        }
 
 
         try {
