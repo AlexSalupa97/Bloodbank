@@ -11,6 +11,7 @@ import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -49,8 +50,8 @@ public class DetaliiReceiverActivity extends AppCompatActivity {
     RecyclerView rvIstoricReceiver;
     ArrayList<SectionModelIstoric> sectiuni;
 
-    Button btnEmail;
-    Button btnTelefon;
+    ImageButton btnEmail;
+    ImageButton btnTelefon;
     TextView tvNumeReceiver;
     TextView tvAdresa;
     TextView tvEmail;
@@ -69,6 +70,7 @@ public class DetaliiReceiverActivity extends AppCompatActivity {
         receiver=getIntent().getParcelableExtra("receiver");
 
         getSupportActionBar().setElevation(0);
+        getSupportActionBar().setTitle("");
 
         tvNumeReceiver = (TextView) findViewById(R.id.tvNumeReceiver);
         tvAdresa = (TextView) findViewById(R.id.tvAdresa);
@@ -78,11 +80,11 @@ public class DetaliiReceiverActivity extends AppCompatActivity {
         tvNumeReceiver.setText(receiver.getNumeReceiver());
         tvEmail.setText(tvEmail.getText() + " " + receiver.getEmailReceiver());
         tvTelefon.setText(tvTelefon.getText() + " " + receiver.getTelefonReceiver());
-        tvAdresa.setText(tvAdresa.getText() + " " + receiver.getCts().getAdresaCTS());
+        tvAdresa.setText(tvAdresa.getText() + " " + receiver.getCts().getAdresaCTS()+" ("+receiver.getCts().getNumeCTS()+")");
 
         rvIstoricReceiver = (RecyclerView) findViewById(R.id.rvIstoricReceiver);
 
-        btnEmail=(Button)findViewById(R.id.btnEmail);
+        btnEmail=(ImageButton)findViewById(R.id.btnEmail);
 
         btnEmail.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -97,7 +99,7 @@ public class DetaliiReceiverActivity extends AppCompatActivity {
             }
         });
 
-        btnTelefon=(Button)findViewById(R.id.btnTelefon);
+        btnTelefon=(ImageButton)findViewById(R.id.btnTelefon);
 
         btnTelefon.setOnClickListener(new View.OnClickListener() {
             @Override

@@ -13,6 +13,7 @@ import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.TextView;
 
 import com.android.volley.Request;
@@ -46,8 +47,8 @@ import ro.alexsalupa97.bloodbank.Utile.Utile;
 public class DetaliiCTSActivity extends AppCompatActivity {
 
     CTS ctsCurent;
-    Button btnEmail;
-    Button btnTelefon;
+    ImageButton btnEmail;
+    ImageButton btnTelefon;
     TextView tvNumeCTS;
     TextView tvAdresa;
     TextView tvEmail;
@@ -91,7 +92,7 @@ public class DetaliiCTSActivity extends AppCompatActivity {
         tvEmail.setText(tvEmail.getText()+ctsCurent.getEmailCTS());
         tvTelefon.setText(tvTelefon.getText()+ctsCurent.getTelefonCTS());
 
-        btnEmail=(Button)findViewById(R.id.btnEmail);
+        btnEmail=(ImageButton)findViewById(R.id.btnEmail);
 
         btnEmail.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -106,7 +107,7 @@ public class DetaliiCTSActivity extends AppCompatActivity {
             }
         });
 
-        btnTelefon=(Button)findViewById(R.id.btnTelefon);
+        btnTelefon=(ImageButton)findViewById(R.id.btnTelefon);
 
         btnTelefon.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -121,9 +122,15 @@ public class DetaliiCTSActivity extends AppCompatActivity {
         btnProgramare.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent=new Intent(getApplicationContext(),ProgramareActivity.class);
-                intent.putExtra("cts",ctsCurent);
-                startActivity(intent);
+                if(Utile.preluareStareAnalize(getApplicationContext()).equals("!ok")) {
+                    Intent intent = new Intent(getApplicationContext(), AnalizeNotOkActivity.class);
+                    startActivity(intent);
+
+                }else {
+                    Intent intent = new Intent(getApplicationContext(), ProgramareActivity.class);
+                    intent.putExtra("cts", ctsCurent);
+                    startActivity(intent);
+                }
             }
         });
 

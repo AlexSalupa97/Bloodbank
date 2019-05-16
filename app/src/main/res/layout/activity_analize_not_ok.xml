@@ -31,7 +31,7 @@
         android:layout_marginLeft="8dp"
         android:gravity="center_vertical"
         android:layout_marginRight="8dp"
-        android:text="Starea actuala a analizelor dvs. nu va permite sa efectuati o donatie.\n\nIn cazul in care dipuneti de fisierul PDF corespunzator analizelor, il puteti incarca in sectiunea corespunzatoare din pagina principala.\n\nTotusi, puteti contribui activ la raspandirea aplicatiei prin distribuirea acesteia pe Facebook sau Twitter."/>
+        android:text="Starea actuala a analizelor dvs. nu va permite sa efectuati o donatie.\n\nIn cazul in care dispuneti de fisierul PDF sau de codul QR corespunzator analizelor, il puteti incarca in sectiunea corespunzatoare din pagina principala.\n\nTotusi, puteti contribui activ la raspandirea aplicatiei prin distribuirea acesteia pe Facebook sau Twitter."/>
 
     <LinearLayout
         android:layout_width="match_parent"

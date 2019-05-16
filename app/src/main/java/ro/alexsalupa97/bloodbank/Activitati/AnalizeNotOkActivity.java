@@ -9,6 +9,8 @@ import android.view.View;
 import android.widget.LinearLayout;
 
 import ro.alexsalupa97.bloodbank.R;
+import ro.alexsalupa97.bloodbank.Utile.Utile;
+
 import com.facebook.share.model.ShareLinkContent;
 import com.facebook.share.widget.ShareButton;
 
@@ -23,11 +25,10 @@ public class AnalizeNotOkActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_analize_not_ok);
-
         fbShareBtn = (ShareButton) findViewById(R.id.fbShareBtn);
 
         ShareLinkContent content = new ShareLinkContent.Builder()
-                .setQuote("test")
+                .setQuote("mesaj generic facebook de la "+ Utile.preluareUsername(getApplicationContext())+" din Bloodbank")
                 .setContentUrl(Uri.parse("https://play.google.com/store/apps/developer?id=AlexSalupa97"))
                 .build();
 
@@ -38,12 +39,13 @@ public class AnalizeNotOkActivity extends AppCompatActivity {
         twitterShareBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent twitterIntent = getShareIntent("twitter", "subject", "text: " + "https://play.google.com/store/apps/developer?id=AlexSalupa97");
+                Intent twitterIntent = getShareIntent("twitter", "subject", "mesaj generic twitter de la "+ Utile.preluareUsername(getApplicationContext())+" din Bloodbank" + "\nhttps://play.google.com/store/apps/developer?id=AlexSalupa97");
                 if (twitterIntent != null)
                     startActivity(twitterIntent);
 
             }
         });
+
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
     }

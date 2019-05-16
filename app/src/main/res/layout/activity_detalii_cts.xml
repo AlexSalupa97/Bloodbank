@@ -74,6 +74,7 @@
                                 android:layout_marginLeft="8dp"
                                 android:layout_marginTop="32dp"
                                 android:layout_marginBottom="20dp"
+                                android:visibility="invisible"
                                 android:text="  Detalii"
                                 android:textColor="@android:color/black"
                                 android:textSize="20sp"
@@ -84,12 +85,15 @@
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:layout_marginLeft="8dp"
-                                android:text="  Centru de transfuzie: "
+                                android:gravity="center"
+                                android:text=""
                                 android:textColor="@android:color/black" />
 
                             <LinearLayout
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
+                                android:minHeight="40dp"
+                                android:layout_marginTop="12dp"
                                 android:orientation="horizontal">
 
 
@@ -99,17 +103,21 @@
                                     android:layout_height="match_parent"
                                     android:layout_marginLeft="8dp"
                                     android:layout_weight="7"
-                                    android:gravity="center|start"
-                                    android:text="  Mail: "
+                                    android:gravity="center"
+                                    android:text=""
                                     android:textColor="@android:color/black" />
 
 
-                                <Button
+                                <ImageButton
                                     android:id="@+id/btnEmail"
                                     android:layout_width="0dp"
+                                    android:background="@drawable/rounded_button"
                                     android:layout_height="wrap_content"
+                                    android:layout_gravity="center|end"
                                     android:layout_weight="3"
-                                    android:text="email" />
+                                    android:layout_marginLeft="20dp"
+                                    android:layout_marginRight="20dp"
+                                    android:src="@drawable/email_red" />
 
 
                             </LinearLayout>
@@ -118,6 +126,7 @@
                             <LinearLayout
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
+                                android:minHeight="40dp"
                                 android:orientation="horizontal">
 
 
@@ -127,17 +136,21 @@
                                     android:layout_height="match_parent"
                                     android:layout_marginLeft="8dp"
                                     android:layout_weight="7"
-                                    android:gravity="center|start"
-                                    android:text="  Telefon: "
+                                    android:gravity="center"
+                                    android:text=""
                                     android:textColor="@android:color/black" />
 
 
-                                <Button
+                                <ImageButton
                                     android:id="@+id/btnTelefon"
                                     android:layout_width="0dp"
+                                    android:background="@drawable/rounded_button"
                                     android:layout_height="wrap_content"
                                     android:layout_weight="3"
-                                    android:text="Apeleaza" />
+                                    android:layout_gravity="center|end"
+                                    android:layout_marginLeft="20dp"
+                                    android:layout_marginRight="20dp"
+                                    android:src="@drawable/phone_red" />
 
 
                             </LinearLayout>
