@@ -9,7 +9,9 @@ import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.net.Uri;
 import android.provider.MediaStore;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.content.CursorLoader;
@@ -60,6 +62,7 @@ public class ActualizareStareAnalizeActivity extends AppCompatActivity {
     PDFView pdfStareAnalize;
     Button btnPDF;
     Button btnActualizare;
+    FloatingActionButton btnQR;
 
     int pagina = 0;
 
@@ -239,6 +242,23 @@ public class ActualizareStareAnalizeActivity extends AppCompatActivity {
 
         });
 
+        btnQR=(FloatingActionButton)findViewById(R.id.btnQR);
+        btnQR.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (ContextCompat.checkSelfPermission(getApplicationContext(), Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
+
+                    int x = 3;
+                    ActivityCompat.requestPermissions(ActualizareStareAnalizeActivity.this, new String[]{Manifest.permission.CAMERA},
+                            x);
+
+                }
+                else
+                    startActivity(new Intent(getApplicationContext(),QRActivity.class));
+
+            }
+        });
+
 
         pdfStareAnalize = (PDFView) findViewById(R.id.pdfStareAnalize);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -307,5 +327,10 @@ public class ActualizareStareAnalizeActivity extends AppCompatActivity {
         }
     }
 
-
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        if(requestCode==3&&grantResults.length>0 && grantResults[0]==PackageManager.PERMISSION_GRANTED){
+            startActivity(new Intent(getApplicationContext(),QRActivity.class));
+        }
+    }
 }

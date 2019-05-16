@@ -5,20 +5,33 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
+    android:background="@drawable/shadow"
     tools:context="ro.alexsalupa97.bloodbank.Activitati.AnalizeNotOkActivity">
 
-    <TextView
-
+    <View
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="10"
+        android:layout_weight="1.2"
+        android:visibility="invisible"/>
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="3"
+        android:src="@drawable/close_circle_outline"
+        android:layout_gravity="bottom"/>
+    <TextView
+        android:textColor="@android:color/black"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="5.8"
         android:textAlignment="center"
         android:textSize="18sp"
-        android:textStyle="bold|italic"
+        android:textStyle="bold"
         android:layout_marginLeft="8dp"
         android:gravity="center_vertical"
         android:layout_marginRight="8dp"
-        android:text="Nu poti dona (Optiuni de distribuire pe social media a aplicatiei, etc etc)"/>
+        android:text="Starea actuala a analizelor dvs. nu va permite sa efectuati o donatie.\n\nIn cazul in care dipuneti de fisierul PDF corespunzator analizelor, il puteti incarca in sectiunea corespunzatoare din pagina principala.\n\nTotusi, puteti contribui activ la raspandirea aplicatiei prin distribuirea acesteia pe Facebook sau Twitter."/>
 
     <LinearLayout
         android:layout_width="match_parent"

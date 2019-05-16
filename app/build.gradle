@@ -47,5 +47,6 @@ dependencies {
     implementation 'com.pkmmte.view:circularimageview:1.1'
     implementation 'com.github.barteksc:android-pdf-viewer:2.8.2'
     implementation 'com.itextpdf:itextg:5.5.10'
+    implementation 'me.dm7.barcodescanner:zbar:1.9.13'
 
 }

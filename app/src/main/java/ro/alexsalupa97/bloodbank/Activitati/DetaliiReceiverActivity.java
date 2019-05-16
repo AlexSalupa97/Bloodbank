@@ -75,7 +75,7 @@ public class DetaliiReceiverActivity extends AppCompatActivity {
         tvEmail = (TextView) findViewById(R.id.tvEmail);
         tvTelefon = (TextView) findViewById(R.id.tvTelefon);
 
-        tvNumeReceiver.setText(Utile.preluareUsername(getApplicationContext()));
+        tvNumeReceiver.setText(receiver.getNumeReceiver());
         tvEmail.setText(tvEmail.getText() + " " + receiver.getEmailReceiver());
         tvTelefon.setText(tvTelefon.getText() + " " + receiver.getTelefonReceiver());
         tvAdresa.setText(tvAdresa.getText() + " " + receiver.getCts().getAdresaCTS());
