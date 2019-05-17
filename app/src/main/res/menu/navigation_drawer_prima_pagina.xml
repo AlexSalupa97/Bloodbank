@@ -9,6 +9,14 @@
             android:icon="@drawable/ic_person"
             android:title="Profilul meu"/>
 
+
+
+    </group>
+
+    <group
+        android:id="@+id/menu_undeva"
+        android:checkableBehavior="none">
+
         <item
             android:id="@+id/stareAnalize"
             android:icon="@drawable/account_edit"

@@ -26,6 +26,7 @@ import android.os.Bundle;
 import android.os.SystemClock;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.NotificationCompat;
 import android.support.v4.content.ContextCompat;
@@ -136,7 +137,7 @@ public class PrimaPaginaActivity extends AppCompatActivity implements Navigation
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_prima_pagina);
 
-        context=getApplicationContext();
+        context = getApplicationContext();
 
         if (ContextCompat.checkSelfPermission(getApplicationContext(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
 
@@ -176,9 +177,23 @@ public class PrimaPaginaActivity extends AppCompatActivity implements Navigation
 //        Intent serviceIntent = new Intent(this, TestJobIntentService.class);
 //        TestJobIntentService.enqueueWork(this, serviceIntent);
 
-        scheduleNotification(triggerNotification());
 
-        if(Utile.firstTimeDonator){
+
+
+        scheduleNotification(triggerNotification(), false);
+        //##########################################################################################
+
+        if (Utile.firstTimeDonator) {
+            Utile.firstTimeDonator=false;
+            View parentLayout = findViewById(android.R.id.content);
+            Snackbar.make(parentLayout, "Cont creat cu succes", Snackbar.LENGTH_LONG)
+                    .setAction("CLOSE", new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                        }
+                    })
+                    .setActionTextColor(getResources().getColor(android.R.color.holo_red_light ))
+                    .show();
             Thread t = new Thread(new Runnable() {
                 @Override
                 public void run() {
@@ -193,9 +208,9 @@ public class PrimaPaginaActivity extends AppCompatActivity implements Navigation
                         JSONObject response1 = future.get();
                         String idStareAnalize = response1.getString("idstareanaliza");
                         String dataStareAnaliza = response1.getString("dataefectuareanaliza");
-                        JSONObject jsonDonator=response1.getJSONObject("iddonator");
+                        JSONObject jsonDonator = response1.getJSONObject("iddonator");
                         SharedPreferences.Editor editor = sharedPreferences.edit();
-                        editor.putString("donator",jsonDonator.toString());
+                        editor.putString("donator", jsonDonator.toString());
                         editor.putString("dataanalize", dataStareAnaliza);
                         editor.putString("idanalize", idStareAnalize);
                         editor.commit();
@@ -389,10 +404,9 @@ public class PrimaPaginaActivity extends AppCompatActivity implements Navigation
         } else if (id == R.id.listaCentre) {
             Intent intent = new Intent(getApplicationContext(), ListaCentreActivity.class);
             startActivity(intent);
-        }else if(id==R.id.stareAnalize){
-            startActivity(new Intent(getApplicationContext(),ActualizareStareAnalizeActivity.class));
-        }
-        else if (id == R.id.compatibilitati) {
+        } else if (id == R.id.stareAnalize) {
+            startActivity(new Intent(getApplicationContext(), ActualizareStareAnalizeActivity.class));
+        } else if (id == R.id.compatibilitati) {
             String url = Utile.URL + "domain.compatibilitati/" + Utile.preluareGrupaSanguina(getApplicationContext());
 
             final RequestQueue requestQueue = Volley.newRequestQueue(PrimaPaginaActivity.this);
@@ -620,7 +634,7 @@ public class PrimaPaginaActivity extends AppCompatActivity implements Navigation
                 PendingIntent.getBroadcast(context, 0, listaCentreActionIntent, 0);
 
 
-         NotificationCompat.Builder mBuilder =
+        NotificationCompat.Builder mBuilder =
                 new NotificationCompat.Builder(context, "test")
                         .setSmallIcon(R.drawable.blood)
                         .setColor(context.getColor(R.color.colorPrimary))
@@ -754,7 +768,7 @@ public class PrimaPaginaActivity extends AppCompatActivity implements Navigation
         alarmManager.set(AlarmManager.ELAPSED_REALTIME_WAKEUP, futureInMillis, pendingIntent);
     }
 
-    private void scheduleNotification(Notification notification) {
+    private void scheduleNotification(Notification notification, boolean isActive) {
 
         Intent notificationIntent = new Intent(this, NotificariBroadcast.class);
         notificationIntent.putExtra(NotificariBroadcast.NOTIFICATION_ID, 1);
@@ -764,16 +778,20 @@ public class PrimaPaginaActivity extends AppCompatActivity implements Navigation
         AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
         Calendar calendar = Calendar.getInstance();
         calendar.setTimeInMillis(System.currentTimeMillis());
-        calendar.set(Calendar.HOUR_OF_DAY, 13);
-        calendar.set(Calendar.MINUTE, 24);
-        calendar.set(Calendar.SECOND, 0);
-        calendar.set(Calendar.MILLISECOND, 0);
+//        calendar.set(Calendar.HOUR_OF_DAY, 13);
+//        calendar.set(Calendar.MINUTE, 24);
+//        calendar.set(Calendar.SECOND, 0);
+//        calendar.set(Calendar.MILLISECOND, 0);
 
 //        alarmManager.set(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), pendingIntent);
-        alarmManager.setInexactRepeating(AlarmManager.RTC_WAKEUP,
-                calendar.getTimeInMillis(), 60*1000, pendingIntent);
+        if (isActive)
+            alarmManager.setInexactRepeating(AlarmManager.RTC_WAKEUP,
+                    calendar.getTimeInMillis(), 60 * 1000, pendingIntent);
 
-        Log.d("notificare","triggered");
+        else
+            alarmManager.cancel(pendingIntent);
+
+        Log.d("notificare", "triggered");
     }
 
     @Override

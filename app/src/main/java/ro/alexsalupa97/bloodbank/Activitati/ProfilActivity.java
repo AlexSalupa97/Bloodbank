@@ -3,6 +3,7 @@ package ro.alexsalupa97.bloodbank.Activitati;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.support.design.widget.Snackbar;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -71,6 +72,7 @@ public class ProfilActivity extends AppCompatActivity {
         setContentView(R.layout.activity_profil);
 
         getSupportActionBar().setElevation(0);
+
 
         dialogInfo = new Dialog(ProfilActivity.this);
         dialogInfo.setContentView(R.layout.dialog_info);

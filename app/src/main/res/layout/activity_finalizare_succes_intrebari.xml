@@ -4,27 +4,45 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@android:color/white"
+    android:background="@drawable/shadow"
     android:orientation="vertical"
     tools:context="ro.alexsalupa97.bloodbank.Activitati.FinalizareSuccesIntrebariActivity">
 
-    <TextView
-
+    <View
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="10"
+        android:layout_weight="1.2"
+        android:visibility="invisible"/>
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="3"
+        android:src="@drawable/check_red"
+        android:layout_gravity="bottom"/>
+    <TextView
+        android:textColor="@android:color/black"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="6.5"
         android:textAlignment="center"
         android:textSize="18sp"
-        android:textStyle="bold|italic"
+        android:textStyle="bold"
         android:layout_marginLeft="8dp"
         android:gravity="center_vertical"
         android:layout_marginRight="8dp"
-        android:text="Indrumare catre un centru pentru realizarea programarii donatiei"/>
+        android:text="Pe baza raspunsurilor dvs., este posibila efectuarea unei donatii.\n\nVeti fi indrumati catre lista centrelor de transfuzie sanguina in vederea programarii."/>
+
 
     <Button
         android:id="@+id/btnCentreRecoltare"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
-        android:text="Vezi centrele in vederea realizarii donatiei"/>
+        android:paddingLeft="80dp"
+        android:paddingRight="80dp"
+        android:background="@drawable/gradient_azur"
+        android:textColor="@color/colorPrimaryDark"
+        android:drawableStart="@drawable/hospital_building"
+        android:text="Listare centre"/>
 </LinearLayout>

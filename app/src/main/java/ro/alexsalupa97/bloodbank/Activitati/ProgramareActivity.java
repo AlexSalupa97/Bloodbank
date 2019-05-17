@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Resources;
 import android.graphics.Color;
+import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -124,7 +125,7 @@ public class ProgramareActivity extends AppCompatActivity {
                 tvVerificareDisponibilitate.setVisibility(View.GONE);
                 btnVerificareDisponibilitate.setVisibility(View.VISIBLE);
                 btnEfectuareProgramare.setVisibility(View.GONE);
-                Toast.makeText(getApplicationContext(), dataSelectata, Toast.LENGTH_SHORT).show();
+//                Toast.makeText(getApplicationContext(), dataSelectata, Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -138,9 +139,9 @@ public class ProgramareActivity extends AppCompatActivity {
 
 
         if (calendar.get(Calendar.HOUR_OF_DAY) < 10)
-            ora = "0" + (1+calendar.get(Calendar.HOUR_OF_DAY));
+            ora = "0" + (calendar.get(Calendar.HOUR_OF_DAY));
         else
-            ora = String.valueOf(1+calendar.get(Calendar.HOUR_OF_DAY));
+            ora = String.valueOf(calendar.get(Calendar.HOUR_OF_DAY));
 
         if (getMinute() < 10)
             minut = "0" + getMinute();
@@ -168,7 +169,7 @@ public class ProgramareActivity extends AppCompatActivity {
                 tvVerificareDisponibilitate.setVisibility(View.GONE);
                 btnEfectuareProgramare.setVisibility(View.GONE);
                 btnVerificareDisponibilitate.setVisibility(View.VISIBLE);
-                Toast.makeText(getApplicationContext(), oraSelectata, Toast.LENGTH_SHORT).show();
+//                Toast.makeText(getApplicationContext(), oraSelectata, Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -205,7 +206,7 @@ public class ProgramareActivity extends AppCompatActivity {
                                     btnVerificareDisponibilitate.setVisibility(View.GONE);
                                     btnEfectuareProgramare.setVisibility(View.GONE);
                                     tvVerificareDisponibilitate.setVisibility(View.VISIBLE);
-                                    tvVerificareDisponibilitate.setBackgroundColor(Color.RED);
+                                    tvVerificareDisponibilitate.setBackgroundColor(Color.parseColor("#F44236"));
                                     tvVerificareDisponibilitate.setTextColor(Color.WHITE);
                                     tvVerificareDisponibilitate.setText("Indisponibil");
                                 }
@@ -291,8 +292,15 @@ public class ProgramareActivity extends AppCompatActivity {
                                 public void onResponse(JSONObject response) {
 
 
-                                    Toast.makeText(getApplicationContext(), "Programare facuta cu succes", Toast.LENGTH_LONG).show();
-
+                                    View parentLayout = findViewById(android.R.id.content);
+                                    Snackbar.make(parentLayout, "Programare facuta cu succes", Snackbar.LENGTH_LONG)
+                                            .setAction("CLOSE", new View.OnClickListener() {
+                                                @Override
+                                                public void onClick(View view) {
+                                                }
+                                            })
+                                            .setActionTextColor(getResources().getColor(android.R.color.holo_red_light ))
+                                            .show();
                                 }
                             },
                             new Response.ErrorListener() {

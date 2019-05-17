@@ -8,6 +8,7 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
 import android.widget.Toast;
 
 import com.android.volley.NetworkResponse;
@@ -154,7 +155,7 @@ public class QRActivity extends AppCompatActivity implements ZBarScannerView.Res
 
                                 editor.commit();
 
-                                Toast.makeText(getApplicationContext(), "Actualizare facuta cu succes", Toast.LENGTH_LONG).show();
+
 
                             }
                         },
@@ -198,6 +199,7 @@ public class QRActivity extends AppCompatActivity implements ZBarScannerView.Res
                     }
                 };
                 requestQueue.add(jsonObjReq);
+                setResult(1);
                 finish();
 
             }
@@ -206,7 +208,15 @@ public class QRActivity extends AppCompatActivity implements ZBarScannerView.Res
             final AlertDialog alert = builder.create();
             alert.show();
         }else {
-            Toast.makeText(getApplicationContext(), "Codul este necorespunzator", Toast.LENGTH_SHORT).show();
+            View parentLayout = findViewById(android.R.id.content);
+            Snackbar.make(parentLayout, "Codul este necorespunzator", Snackbar.LENGTH_LONG)
+                    .setAction("CLOSE", new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                        }
+                    })
+                    .setActionTextColor(getResources().getColor(android.R.color.holo_red_light ))
+                    .show();
                     mScannerView.resumeCameraPreview(this);
         }
     }

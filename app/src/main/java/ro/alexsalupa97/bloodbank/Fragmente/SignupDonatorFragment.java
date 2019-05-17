@@ -187,7 +187,6 @@ public class SignupDonatorFragment extends Fragment {
                                 editor.commit();
 
                                 Utile.firstTimeDonator=true;
-                                Toast.makeText(getActivity(), "Inregistrare facuta cu succes", Toast.LENGTH_LONG).show();
 
                                 Intent intent = new Intent(getActivity(), PrimaPaginaActivity.class);
                                 startActivity(intent);

@@ -12,6 +12,7 @@ import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.content.CursorLoader;
@@ -30,16 +31,20 @@ import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.HttpHeaderParser;
+import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 import com.github.barteksc.pdfviewer.PDFView;
 import com.github.barteksc.pdfviewer.listener.OnLoadCompleteListener;
 import com.github.barteksc.pdfviewer.listener.OnPageChangeListener;
 import com.github.barteksc.pdfviewer.scroll.DefaultScrollHandle;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.itextpdf.text.pdf.PdfReader;
 import com.itextpdf.text.pdf.parser.PdfTextExtractor;
 import com.shockwave.pdfium.PdfDocument;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -50,9 +55,12 @@ import java.io.IOException;
 import java.io.StringReader;
 import java.io.UnsupportedEncodingException;
 import java.nio.file.Path;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import ro.alexsalupa97.bloodbank.Clase.Donatori;
+import ro.alexsalupa97.bloodbank.Clase.IstoricDonatii;
 import ro.alexsalupa97.bloodbank.R;
 import ro.alexsalupa97.bloodbank.Utile.RealPath;
 import ro.alexsalupa97.bloodbank.Utile.Utile;
@@ -71,6 +79,8 @@ public class ActualizareStareAnalizeActivity extends AppCompatActivity {
     String stareAnalize = "";
 
     String fisier = "SharedPreferences";
+
+    Gson gson;
 
 
     @Override
@@ -183,7 +193,7 @@ public class ActualizareStareAnalizeActivity extends AppCompatActivity {
 
                                                     editor.commit();
 
-                                                    Toast.makeText(getApplicationContext(), "Actualizare facuta cu succes", Toast.LENGTH_LONG).show();
+                                                    createSnackBarSucces();
 
                                                 }
                                             },
@@ -235,8 +245,17 @@ public class ActualizareStareAnalizeActivity extends AppCompatActivity {
                     final AlertDialog alert = builder.create();
                     alert.show();
                 }
-                else
-                    Toast.makeText(getApplicationContext(),"Fisierul selectat este necorespunzator",Toast.LENGTH_SHORT).show();
+                else {
+                    View parentLayout = findViewById(android.R.id.content);
+                    Snackbar.make(parentLayout, "Fisierul selectat este necorespunzatorqr", Snackbar.LENGTH_LONG)
+                            .setAction("CLOSE", new View.OnClickListener() {
+                                @Override
+                                public void onClick(View view) {
+                                }
+                            })
+                            .setActionTextColor(getResources().getColor(android.R.color.holo_red_light))
+                            .show();
+                }
             }
 
 
@@ -254,7 +273,7 @@ public class ActualizareStareAnalizeActivity extends AppCompatActivity {
 
                 }
                 else
-                    startActivity(new Intent(getApplicationContext(),QRActivity.class));
+                    startActivityForResult(new Intent(getApplicationContext(),QRActivity.class),1947);
 
             }
         });
@@ -316,6 +335,11 @@ public class ActualizareStareAnalizeActivity extends AppCompatActivity {
             btnActualizare.setVisibility(View.VISIBLE);
         }
 
+        if(requestCode==1947&&resultCode==1){
+            createSnackBarSucces();
+
+        }
+
     }
 
     public void printBookmarksTree(List<PdfDocument.Bookmark> tree, String sep) {
@@ -332,5 +356,54 @@ public class ActualizareStareAnalizeActivity extends AppCompatActivity {
         if(requestCode==3&&grantResults.length>0 && grantResults[0]==PackageManager.PERMISSION_GRANTED){
             startActivity(new Intent(getApplicationContext(),QRActivity.class));
         }
+    }
+
+    private void createSnackBarSucces(){
+        View parentLayout = findViewById(android.R.id.content);
+        Snackbar.make(parentLayout, "Actualizare facuta cu succes", Snackbar.LENGTH_LONG)
+                .setAction("PROFIL", new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        String url = Utile.URL + "domain.istoricdonatii/donator/" + Utile.preluareEmail(getApplicationContext());
+
+                        final RequestQueue requestQueue = Volley.newRequestQueue(ActualizareStareAnalizeActivity.this);
+
+
+                        JsonArrayRequest objectRequest = new JsonArrayRequest(
+                                Request.Method.GET,
+                                url,
+                                null,
+                                new Response.Listener<JSONArray>() {
+
+                                    @Override
+                                    public void onResponse(JSONArray response) {
+                                        GsonBuilder gsonBuilder = new GsonBuilder();
+                                        gsonBuilder.setDateFormat("M/d/yy hh:mm a");
+                                        gson = gsonBuilder.create();
+
+
+                                        Utile.listaIstoricDonatii = new ArrayList<>(Arrays.asList(gson.fromJson(response.toString(),IstoricDonatii[].class)));
+
+
+                                        Intent intent = new Intent(getApplicationContext(), ProfilActivity.class);
+                                        startActivity(intent);
+
+
+                                    }
+                                },
+                                new Response.ErrorListener() {
+                                    @Override
+                                    public void onErrorResponse(VolleyError error) {
+                                        Log.d("RestResponse", error.toString());
+                                    }
+                                }
+
+                        );
+
+                        requestQueue.add(objectRequest);
+                    }
+                })
+                .setActionTextColor(getResources().getColor(android.R.color.holo_red_light ))
+                .show();
     }
 }
