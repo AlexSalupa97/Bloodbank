@@ -12,9 +12,13 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.Volley;
+
 import ro.alexsalupa97.bloodbank.Activitati.ListaCentreActivity;
 import ro.alexsalupa97.bloodbank.Clase.CTS;
+import ro.alexsalupa97.bloodbank.Fragmente.MapsCTSFragment;
+import ro.alexsalupa97.bloodbank.Utile.CalculDistante;
 import ro.alexsalupa97.bloodbank.Utile.Utile;
+
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
@@ -22,6 +26,7 @@ import org.json.JSONArray;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 
 public class ActionCentreBroadcast extends BroadcastReceiver {
 

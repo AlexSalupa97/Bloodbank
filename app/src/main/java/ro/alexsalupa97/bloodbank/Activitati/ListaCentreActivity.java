@@ -23,7 +23,7 @@ public class ListaCentreActivity extends AppCompatActivity {
     ViewPager viewPager;
 
     public static CTS closestCTS;
-    HashMap<CTS,Double> mapListaDistante;
+    public static HashMap<CTS,Double> mapListaDistante;
 
 
     @Override
@@ -35,17 +35,11 @@ public class ListaCentreActivity extends AppCompatActivity {
 
         mapListaDistante=new HashMap<>();
         try {
+            MapsCTSFragment.locatieCurenta = CalculDistante.getMyLocation(ListaCentreActivity.this);
             for (CTS cts : Utile.CTS) {
                 mapListaDistante.put(cts, CalculDistante.distanceBetweenTwoCoordinates(MapsCTSFragment.locatieCurenta.getLatitude(), MapsCTSFragment.locatieCurenta.getLongitude(), cts.getCoordonataXCTS(), cts.getCoordonataYCTS()));
             }
         }catch (Exception ex){
-
-        }
-
-        try {
-            MapsCTSFragment.locatieCurenta = CalculDistante.getMyLocation(ListaCentreActivity.this);
-        }
-        catch (Exception ex){
 
         }
 

@@ -8,6 +8,9 @@ import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.app.ProgressDialog;
+import android.app.job.JobInfo;
+import android.app.job.JobScheduler;
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -62,6 +65,8 @@ import ro.alexsalupa97.bloodbank.Notificari.ActionAlerteBroadcast;
 import ro.alexsalupa97.bloodbank.Notificari.ActionCentreBroadcast;
 import ro.alexsalupa97.bloodbank.Notificari.NotificariBroadcast;
 import ro.alexsalupa97.bloodbank.Notificari.NotifyingDailyService;
+import ro.alexsalupa97.bloodbank.Notificari.TestJobIntentService;
+import ro.alexsalupa97.bloodbank.Notificari.TestJobService;
 import ro.alexsalupa97.bloodbank.Utile.CalculDistante;
 import ro.alexsalupa97.bloodbank.Utile.Utile;
 import ro.alexsalupa97.bloodbank.R;
@@ -152,7 +157,26 @@ public class PrimaPaginaActivity extends AppCompatActivity implements Navigation
 //        NotifyingDailyService mSensorService = new NotifyingDailyService();
 //        Intent mServiceIntent = new Intent(getApplicationContext(), mSensorService.getClass());
 //        startService(mServiceIntent);
+//
+//        ComponentName componentName = new ComponentName(this, TestJobService.class);
+//        JobInfo info = new JobInfo.Builder(123, componentName)
+//                .setRequiredNetworkType(JobInfo.NETWORK_TYPE_ANY)
+//                .setPersisted(true)
+//                .build();
+//
+//        JobScheduler scheduler = (JobScheduler) getSystemService(JOB_SCHEDULER_SERVICE);
+//        int resultCode = scheduler.schedule(info);
+//        if (resultCode == JobScheduler.RESULT_SUCCESS) {
+//            Log.d("jobservice", "Job scheduled");
+//        } else {
+//            Log.d("jobservice", "Job scheduling failed");
+//        }
 
+
+//        Intent serviceIntent = new Intent(this, TestJobIntentService.class);
+//        TestJobIntentService.enqueueWork(this, serviceIntent);
+
+        scheduleNotification(triggerNotification());
 
         if(Utile.firstTimeDonator){
             Thread t = new Thread(new Runnable() {
@@ -295,9 +319,8 @@ public class PrimaPaginaActivity extends AppCompatActivity implements Navigation
         });
 
 
-        btnNotificari = (Button)
-
-                findViewById(R.id.btnNotificari);
+        btnNotificari = (Button) findViewById(R.id.btnNotificari);
+        btnNotificari.setVisibility(View.GONE);
         btnNotificari.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -326,9 +349,7 @@ public class PrimaPaginaActivity extends AppCompatActivity implements Navigation
             }
         });
 
-        btnReceiveri = (Button)
-
-                findViewById(R.id.btnReceiveri);
+        btnReceiveri = (Button) findViewById(R.id.btnReceiveri);
         btnReceiveri.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -345,6 +366,11 @@ public class PrimaPaginaActivity extends AppCompatActivity implements Navigation
         return true;
     }
 
+    @Override
+    protected void onResume() {
+        invalidateOptionsMenu();
+        super.onResume();
+    }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -644,10 +670,10 @@ public class PrimaPaginaActivity extends AppCompatActivity implements Navigation
     private Notification triggerNotification() {
         Intent resultIntent = new Intent(getApplicationContext(), ActionAlerteBroadcast.class);
         resultIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-
-        Intent backIntent = new Intent(this, PrimaPaginaActivity.class);
-
-        AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
+//
+//        Intent backIntent = new Intent(this, PrimaPaginaActivity.class);
+//
+//        AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
 
         Intent listaCentreActionIntent = new Intent(getApplicationContext(), ActionCentreBroadcast.class);
         PendingIntent listaCentreActionPendingIntent =
@@ -668,6 +694,8 @@ public class PrimaPaginaActivity extends AppCompatActivity implements Navigation
         NotificationCompat.Builder mBuilder =
                 new NotificationCompat.Builder(getApplicationContext(), "test")
                         .setSmallIcon(R.drawable.blood)
+                        .setWhen(System.currentTimeMillis())
+                        .setShowWhen(true)
                         .setColor(getResources().getColor(R.color.colorPrimary))
                         .setContentTitle("Alerta de sange")
                         .setContentText("Vezi situatia actuala")
@@ -735,52 +763,18 @@ public class PrimaPaginaActivity extends AppCompatActivity implements Navigation
 
         AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
         Calendar calendar = Calendar.getInstance();
-
         calendar.setTimeInMillis(System.currentTimeMillis());
-        calendar.set(Calendar.HOUR_OF_DAY, 11);
-        calendar.set(Calendar.MINUTE, 56);
+        calendar.set(Calendar.HOUR_OF_DAY, 13);
+        calendar.set(Calendar.MINUTE, 24);
         calendar.set(Calendar.SECOND, 0);
         calendar.set(Calendar.MILLISECOND, 0);
 
-        alarmManager.set(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), pendingIntent);
+//        alarmManager.set(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), pendingIntent);
+        alarmManager.setInexactRepeating(AlarmManager.RTC_WAKEUP,
+                calendar.getTimeInMillis(), 60*1000, pendingIntent);
+
+        Log.d("notificare","triggered");
     }
-
-
-    private Intent getShareIntent(String type, String subject, String text) {
-        boolean found = false;
-        Intent share = new Intent(android.content.Intent.ACTION_SEND);
-        share.setType("text/plain");
-
-        // gets the list of intents that can be loaded.
-        List<ResolveInfo> resInfo = getApplicationContext().getPackageManager().queryIntentActivities(share, 0);
-        System.out.println("resinfo: " + resInfo);
-        if (!resInfo.isEmpty()) {
-            for (ResolveInfo info : resInfo) {
-                if (info.activityInfo.packageName.toLowerCase().contains(type) ||
-                        info.activityInfo.name.toLowerCase().contains(type)) {
-                    share.putExtra(Intent.EXTRA_SUBJECT, subject);
-                    share.putExtra(Intent.EXTRA_TEXT, text);
-                    share.setPackage(info.activityInfo.packageName);
-                    found = true;
-                    break;
-                }
-            }
-            if (!found)
-                return null;
-
-            return share;
-        }
-        return null;
-    }
-//    private Handler handler = new Handler() {
-//        @Override
-//        public void handleMessage(Message msg) {
-//            pd.dismiss();
-//            Intent intent = new Intent(getApplicationContext(), AlerteActivity.class);
-//            startActivity(intent);
-//
-//        }
-//    };
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
