@@ -24,6 +24,7 @@ import com.android.volley.toolbox.Volley;
 import com.google.gson.Gson;
 
 import ro.alexsalupa97.bloodbank.Clase.CTS;
+import ro.alexsalupa97.bloodbank.Clase.Donatori;
 import ro.alexsalupa97.bloodbank.R;
 import ro.alexsalupa97.bloodbank.Utile.Utile;
 
@@ -117,9 +118,10 @@ public class SigninActivity extends AppCompatActivity {
                                         DBOras = jsonOras.getString("numeoras");
                                         DBIDStareAnalize=response.getString("idstareanaliza");
                                         DBDataAnalize=response.getString("dataefectuareanaliza");
+                                        DBParola=jsonDonator.getString("paroladonator");
 
 
-                                        if (DBUsername.equals(etUsername.getText().toString())) {
+                                        if (DBUsername.equals(etUsername.getText().toString()) && DBParola.equals(etPassword.getText().toString())) {
 
 
                                             SharedPreferences sharedPreferences = getSharedPreferences(fisier, Context.MODE_PRIVATE);
@@ -184,6 +186,7 @@ public class SigninActivity extends AppCompatActivity {
 
                                     String DBUsername = null;
                                     String DBParola = null;
+                                    String DBStareRecevier=null;
                                     String DBNume = null;
                                     String DBGrupaSanguina = null;
                                     String DBCTS = null;
@@ -198,9 +201,12 @@ public class SigninActivity extends AppCompatActivity {
                                         DBUsername = response.getString("emailreceiver");
                                         DBNume = response.getString("numereceiver");
                                         DBID = response.getString("idreceiver");
+                                        DBParola=response.getString("parolareceiver");
+                                        DBStareRecevier=response.getString("starereceiver");
 
 
-                                        if (DBUsername.equals(etUsername.getText().toString())) {
+
+                                        if (DBUsername.equals(etUsername.getText().toString())&& DBParola.equals(etPassword.getText().toString())) {
 
 
                                             SharedPreferences sharedPreferences = getSharedPreferences(fisier, Context.MODE_PRIVATE);
@@ -212,6 +218,7 @@ public class SigninActivity extends AppCompatActivity {
                                             editor.putString("cts", DBCTS);
                                             editor.putString("email", DBUsername);
                                             editor.putString("telefon", DBTelefon);
+                                            editor.putString("starereceiver",DBStareRecevier);
                                             editor.putString("id", DBID);
 
                                             editor.commit();
@@ -260,24 +267,30 @@ public class SigninActivity extends AppCompatActivity {
                                 @Override
                                 public void onResponse(JSONObject response) {
 
-                                    if (response.length() != 0) {
+                                    try {
+                                        if (response.length() != 0&&response.getString("parolacts").equals(etPassword.getText().toString())) {
 
 
-                                        SharedPreferences sharedPreferences = getSharedPreferences(fisier, Context.MODE_PRIVATE);
-                                        SharedPreferences.Editor editor = sharedPreferences.edit();
+                                            SharedPreferences sharedPreferences = getSharedPreferences(fisier, Context.MODE_PRIVATE);
+                                            SharedPreferences.Editor editor = sharedPreferences.edit();
 
-                                        editor.putString("login_name", response.toString());
-
-
-                                        editor.commit();
+                                            editor.putString("login_name", response.toString());
 
 
-                                        Intent intent = new Intent(getApplicationContext(), DetaliiCTSMainActivity.class);
-                                        startActivity(intent);
-                                        finish();
 
-                                    } else
-                                        Toast.makeText(getApplicationContext(), "Introduceti credentialele corecte", Toast.LENGTH_LONG).show();
+
+                                            editor.commit();
+
+
+                                            Intent intent = new Intent(getApplicationContext(), DetaliiCTSMainActivity.class);
+                                            startActivity(intent);
+                                            finish();
+
+                                        } else
+                                            Toast.makeText(getApplicationContext(), "Introduceti credentialele corecte", Toast.LENGTH_LONG).show();
+                                    } catch (JSONException e) {
+                                        e.printStackTrace();
+                                    }
 
 
                                 }

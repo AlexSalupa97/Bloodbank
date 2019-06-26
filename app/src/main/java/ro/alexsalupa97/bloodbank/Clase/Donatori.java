@@ -19,19 +19,41 @@ public class Donatori {
     @SerializedName("numedonator")
     private String numeDonator;
 
+    @SerializedName("paroladonator")
+    private String parolaDonator;
+
     @SerializedName("telefondonator")
     private String telefonDonator;
 
-    public Donatori(String emailDonator, int idDonator, GrupeSanguine grupaSanguina, Orase orasDonator, String numeDonator, String telefonDonator) {
+//    public Donatori(String emailDonator, int idDonator, GrupeSanguine grupaSanguina, Orase orasDonator, String numeDonator, String telefonDonator) {
+//        this.emailDonator = emailDonator;
+//        this.idDonator = idDonator;
+//        this.grupaSanguina = grupaSanguina;
+//        this.orasDonator = orasDonator;
+//        this.numeDonator = numeDonator;
+//        this.telefonDonator = telefonDonator;
+//    }
+
+
+    public Donatori(String emailDonator, int idDonator, GrupeSanguine grupaSanguina, Orase orasDonator, String numeDonator, String parolaDonator, String telefonDonator) {
         this.emailDonator = emailDonator;
         this.idDonator = idDonator;
         this.grupaSanguina = grupaSanguina;
         this.orasDonator = orasDonator;
         this.numeDonator = numeDonator;
+        this.parolaDonator = parolaDonator;
         this.telefonDonator = telefonDonator;
     }
 
     public Donatori() {
+    }
+
+    public String getParolaDonator() {
+        return parolaDonator;
+    }
+
+    public void setParolaDonator(String parolaDonator) {
+        this.parolaDonator = parolaDonator;
     }
 
     public String getEmailDonator() {

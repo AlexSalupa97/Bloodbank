@@ -67,6 +67,10 @@ public class DetaliiCTSMainActivity extends AppCompatActivity implements Navigat
     ActionBarDrawerToggle toggle;
     TextView tvNavDrawer;
 
+    TextView tvAdresa;
+    TextView tvEmail;
+    TextView tvTelefon;
+
     Map<CTS, Map<GrupeSanguine, Integer>> mapCantitatiDisponibilePerCTSPerGrupa;
     Map<CTS, Map<GrupeSanguine, Integer>> mapLimitePerCTSPerGrupa;
 
@@ -120,6 +124,13 @@ public class DetaliiCTSMainActivity extends AppCompatActivity implements Navigat
 
         swiperefreshRVSituatieSanguinaCTS = (SwipeRefreshLayout) findViewById(R.id.swiperefreshRVSituatieSanguinaCTS);
         swiperefreshRVSituatieSanguinaCTS.setColorSchemeColors(getResources().getColor(R.color.colorPrimary));
+
+        tvAdresa=(TextView)findViewById(R.id.tvAdresa);
+        tvAdresa.setText(ctsActual.getAdresaCTS());
+        tvEmail=(TextView)findViewById(R.id.tvEmail);
+        tvEmail.setText(ctsActual.getEmailCTS());
+        tvTelefon=(TextView)findViewById(R.id.tvTelefon);
+        tvTelefon.setText(ctsActual.getTelefonCTS());
 
         Thread thread = new Thread(new Runnable() {
             @Override
