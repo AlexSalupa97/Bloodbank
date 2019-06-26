@@ -30,6 +30,7 @@ import java.util.Collections;
 import java.util.Date;
 import java.util.Locale;
 
+import ro.alexsalupa97.bloodbank.Activitati.StatisticiCTSActivity;
 import ro.alexsalupa97.bloodbank.Activitati.StatisticiReceiverActivity;
 import ro.alexsalupa97.bloodbank.Clase.IesiriCTS;
 import ro.alexsalupa97.bloodbank.Clase.IntrariCTS;
@@ -174,12 +175,17 @@ public class StatisticiZilniceCTSFragment extends Fragment {
 //            }
 //        });
 
-//        if (StatisticiZilniceReceiverFragment.valoareData != null&&!StatisticiReceiverActivity.dejaAdaugatZilnic) {
-//            StatisticiReceiverActivity.listaStatistici.add("In aceasta zi, ora cea mai \"bogata\" in donatii a fost " + StatisticiZilniceReceiverFragment.valoareData + ", cu o cantitate de sange primita de " + StatisticiZilniceReceiverFragment.valoareCantitateML + "ml.");
-//            StatisticiReceiverActivity.dejaAdaugatZilnic=true;
-//        }
-//        Collections.shuffle(StatisticiReceiverActivity.listaStatistici);
-//        StatisticiReceiverActivity.tvStatistici.setText(StatisticiReceiverActivity.listaStatistici.get(0));
+
+        if (Integer.parseInt(StatisticiZilniceCTSFragment.valoareCantitateML) != 0&&!StatisticiCTSActivity.dejaAdaugatZilnic) {
+            StatisticiCTSActivity.listaStatistici.add("In aceasta zi, ora cea mai \"bogata\" in donatii a fost " + StatisticiZilniceCTSFragment.valoareData + ", cu o cantitate de sange primita de " + StatisticiZilniceCTSFragment.valoareCantitateML + "ml.");
+            StatisticiCTSActivity.dejaAdaugatZilnic=true;
+        }
+        Collections.shuffle(StatisticiCTSActivity.listaStatistici);
+        try {
+            StatisticiCTSActivity.tvStatistici.setText(StatisticiCTSActivity.listaStatistici.get(0));
+        }catch (Exception ex){
+
+        }
 
 
         return rootView;

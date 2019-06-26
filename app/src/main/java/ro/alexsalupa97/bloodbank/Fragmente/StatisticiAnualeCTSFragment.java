@@ -31,6 +31,7 @@ import java.util.Collections;
 import java.util.Date;
 import java.util.Locale;
 
+import ro.alexsalupa97.bloodbank.Activitati.StatisticiCTSActivity;
 import ro.alexsalupa97.bloodbank.Activitati.StatisticiReceiverActivity;
 import ro.alexsalupa97.bloodbank.Clase.IesiriCTS;
 import ro.alexsalupa97.bloodbank.Clase.IntrariCTS;
@@ -227,12 +228,16 @@ public class StatisticiAnualeCTSFragment extends Fragment {
 //            }
 //        });
 //
-//        if (StatisticiAnualeReceiverFragment.valoareData != null&&!StatisticiReceiverActivity.dejaAdaugatAnual) {
-//            StatisticiReceiverActivity.listaStatistici.add("In ultimul an, cele mai multe donatii s-au inregistrat in luna " + StatisticiAnualeReceiverFragment.valoareData + ", cu " + StatisticiAnualeReceiverFragment.valoareCantitateML + "ml primiti.");
-//            StatisticiReceiverActivity.dejaAdaugatAnual=true;
-//        }
-//        Collections.shuffle(StatisticiReceiverActivity.listaStatistici);
-//        StatisticiReceiverActivity.tvStatistici.setText(StatisticiReceiverActivity.listaStatistici.get(0));
+        if (Integer.parseInt(StatisticiAnualeCTSFragment.valoareCantitateML) != 0&&!StatisticiCTSActivity.dejaAdaugatAnual) {
+            StatisticiCTSActivity.listaStatistici.add("In ultimul an, cea mai mare cantitate de sange s-a inregistrat in luna " + StatisticiAnualeCTSFragment.valoareData + ", cu " + StatisticiAnualeCTSFragment.valoareCantitateML + "ml primiti.");
+            StatisticiCTSActivity.dejaAdaugatAnual=true;
+        }
+        Collections.shuffle(StatisticiCTSActivity.listaStatistici);
+        try {
+            StatisticiCTSActivity.tvStatistici.setText(StatisticiCTSActivity.listaStatistici.get(0));
+        }catch (Exception ex){
+
+        }
 
 
         return rootView;
