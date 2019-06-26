@@ -1,12 +1,18 @@
 package ro.alexsalupa97.bloodbank.Activitati;
 
 import android.annotation.SuppressLint;
+import android.app.AlarmManager;
+import android.app.Notification;
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Resources;
 import android.graphics.Color;
 import android.support.design.widget.Snackbar;
+import android.support.v4.app.NotificationCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -41,11 +47,13 @@ import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
+import java.util.Date;
 
 import ro.alexsalupa97.bloodbank.Clase.CTS;
 import ro.alexsalupa97.bloodbank.Clase.Donatori;
 import ro.alexsalupa97.bloodbank.Clase.GrupeSanguine;
 import ro.alexsalupa97.bloodbank.Clase.Programari;
+import ro.alexsalupa97.bloodbank.Notificari.NotificariBroadcast;
 import ro.alexsalupa97.bloodbank.R;
 import ro.alexsalupa97.bloodbank.Utile.Utile;
 
@@ -76,6 +84,8 @@ public class ProgramareActivity extends AppCompatActivity {
 
     String fisier = "SharedPreferences";
 
+    private static Context context;
+
 
     @SuppressLint("NewApi")
     @Override
@@ -84,6 +94,8 @@ public class ProgramareActivity extends AppCompatActivity {
         setContentView(R.layout.activity_programare);
 
         getSupportActionBar().setElevation(0);
+
+        context = getApplicationContext();
 
         tvVerificareDisponibilitate = (Button) findViewById(R.id.tvVerificareDisponibilitate);
 
@@ -147,11 +159,12 @@ public class ProgramareActivity extends AppCompatActivity {
 
         if (getMinute() < 10)
             minut = "0" + getMinute();
-        else
+        else {
             minut = String.valueOf(getMinute());
+        }
 
         oraSelectata = ora + minut;
-//        Toast.makeText(getApplicationContext(),oraSelectata,Toast.LENGTH_SHORT).show();
+        Toast.makeText(getApplicationContext(),oraSelectata,Toast.LENGTH_SHORT).show();
 
 
         tpProgramare.setOnTimeChangedListener(new TimePicker.OnTimeChangedListener() {
@@ -171,7 +184,7 @@ public class ProgramareActivity extends AppCompatActivity {
                 tvVerificareDisponibilitate.setVisibility(View.GONE);
                 btnEfectuareProgramare.setVisibility(View.GONE);
                 btnVerificareDisponibilitate.setVisibility(View.VISIBLE);
-//                Toast.makeText(getApplicationContext(), oraSelectata, Toast.LENGTH_SHORT).show();
+                Toast.makeText(getApplicationContext(), oraSelectata, Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -299,6 +312,8 @@ public class ProgramareActivity extends AppCompatActivity {
                                     editor.putString("programare", data);
                                     editor.commit();
 
+                                    scheduleNotification(sendNotification(),true);
+
                                     View parentLayout = findViewById(android.R.id.content);
                                     Snackbar.make(parentLayout, "Programare facuta cu succes", Snackbar.LENGTH_LONG)
                                             .setAction("CLOSE", new View.OnClickListener() {
@@ -410,5 +425,77 @@ public class ProgramareActivity extends AppCompatActivity {
         } else {
             return tpProgramare.getCurrentMinute();
         }
+    }
+
+    @SuppressLint("NewApi")
+    public Notification sendNotification() {
+        String programare=Utile.preluareProgramare(ProgramareActivity.context);
+
+        NotificationCompat.Builder mBuilder =
+                new NotificationCompat.Builder(getApplicationContext(), "test")
+                        .setSmallIcon(R.drawable.blood)
+                        .setColor(getApplicationContext().getColor(R.color.colorPrimary))
+                        .setContentTitle("Reminder Programare")
+                        .setContentText(programare.substring(0,2)+":"+programare.substring(2,4)+" "+programare.substring(4,6)+"/"+programare.substring(6,8)+"/"+programare.substring(8))
+                        .setChannelId("test")
+                        .setAutoCancel(true)
+                        .setVisibility(Notification.VISIBILITY_PUBLIC);
+
+
+
+        // Gets an instance of the NotificationManager service//
+
+        NotificationManager mNotificationManager =
+
+                (NotificationManager) getApplicationContext().getSystemService(Context.NOTIFICATION_SERVICE);
+
+
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
+            int importance = NotificationManager.IMPORTANCE_HIGH;
+            NotificationChannel notificationChannel = new NotificationChannel("test", "NOTIFICATION_CHANNEL_NAME", importance);
+            notificationChannel.enableLights(true);
+            notificationChannel.setLightColor(Color.RED);
+            notificationChannel.setLockscreenVisibility(Notification.VISIBILITY_PUBLIC);
+            assert mNotificationManager != null;
+            mBuilder.setChannelId("test");
+            mNotificationManager.createNotificationChannel(notificationChannel);
+        }
+        assert mNotificationManager != null;
+
+        // When you issue multiple notifications about the same type of event,
+        // it’s best practice for your app to try to update an existing notification
+        // with this new information, rather than immediately creating a new notification.
+        // If you want to update this notification at a later date, you need to assign it an ID.
+        // You can then use this ID whenever you issue a subsequent notification.
+        // If the previous notification is still visible, the system will update this existing notification,
+        // rather than create a new one. In this example, the notification’s ID is 001//
+
+        mBuilder.build().flags |= Notification.FLAG_AUTO_CANCEL;
+
+        return mBuilder.build();
+    }
+
+    public static void scheduleNotification(Notification notification, boolean isActive) {
+
+        Intent notificationIntent = new Intent(ProgramareActivity.context, NotificariBroadcast.class);
+        notificationIntent.putExtra(NotificariBroadcast.NOTIFICATION_ID, 2);
+        notificationIntent.putExtra(NotificariBroadcast.NOTIFICATION, notification);
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(ProgramareActivity.context, 0, notificationIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+
+        AlarmManager alarmManager = (AlarmManager) ProgramareActivity.context.getSystemService(Context.ALARM_SERVICE);
+        String programare=Utile.preluareProgramare(ProgramareActivity.context);
+        Date date=new Date();
+        date.setSeconds(0);
+        date.setHours(Integer.parseInt(programare.substring(0,2)));
+        date.setMinutes(Integer.parseInt(programare.substring(2,4)));
+        date.setDate(Integer.parseInt(programare.substring(4,6)));
+        date.setMonth(Integer.parseInt(programare.substring(6,8))-1);
+        date.setYear(Integer.parseInt(programare.substring(8))-1900);
+        date.setTime(date.getTime()-1000*60*12);
+        if (isActive)
+                alarmManager.set(AlarmManager.RTC_WAKEUP, date.getTime(), pendingIntent);
+
+        else
+            alarmManager.cancel(pendingIntent);
     }
 }
