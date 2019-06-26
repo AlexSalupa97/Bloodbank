@@ -39,7 +39,9 @@ public class AnalizeNotOkActivity extends AppCompatActivity {
         twitterShareBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent twitterIntent = getShareIntent("twitter", "subject", "mesaj generic twitter de la "+ Utile.preluareUsername(getApplicationContext())+" din Bloodbank" + "\nhttps://play.google.com/store/apps/developer?id=AlexSalupa97");
+                Intent twitterIntent = getShareIntent("twitter", "subject", "mesaj generic twitter de la "+
+                        Utile.preluareUsername(getApplicationContext())+" din Bloodbank" +
+                        "\nhttps://play.google.com/store/apps/developer?id=AlexSalupa97");
                 if (twitterIntent != null)
                     startActivity(twitterIntent);
 

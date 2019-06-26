@@ -140,17 +140,11 @@ public class PrimaPaginaActivity extends AppCompatActivity implements Navigation
         context = getApplicationContext();
 
         if (ContextCompat.checkSelfPermission(getApplicationContext(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-
-            int x = 1;
-            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
-                    x);
+            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 1);
         }
 
         if (ContextCompat.checkSelfPermission(getApplicationContext(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-
-            int x = 1;
-            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_COARSE_LOCATION},
-                    x);
+            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_COARSE_LOCATION}, 1);
         }
 
         statusCheck();
@@ -684,23 +678,11 @@ public class PrimaPaginaActivity extends AppCompatActivity implements Navigation
     private Notification triggerNotification() {
         Intent resultIntent = new Intent(getApplicationContext(), ActionAlerteBroadcast.class);
         resultIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-//
-//        Intent backIntent = new Intent(this, PrimaPaginaActivity.class);
-//
-//        AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
 
         Intent listaCentreActionIntent = new Intent(getApplicationContext(), ActionCentreBroadcast.class);
         PendingIntent listaCentreActionPendingIntent =
                 PendingIntent.getBroadcast(this, 0, listaCentreActionIntent, 0);
 
-
-//        PendingIntent resultPendingIntent = PendingIntent.getActivities(getApplicationContext(),
-//                0 /* Request code */, new Intent[]{backIntent, resultIntent},
-//                PendingIntent.FLAG_ONE_SHOT);
-
-//        PendingIntent resultPendingIntent = PendingIntent.getBroadcast(getApplicationContext(),
-//                0 /* Request code */, resultIntent,
-//                PendingIntent.FLAG_ONE_SHOT);
 
         PendingIntent listaAlerteActionPendingIntent =
                 PendingIntent.getBroadcast(this, 0, resultIntent, 0);
@@ -790,8 +772,6 @@ public class PrimaPaginaActivity extends AppCompatActivity implements Navigation
 
         else
             alarmManager.cancel(pendingIntent);
-
-        Log.d("notificare", "triggered");
     }
 
     @Override

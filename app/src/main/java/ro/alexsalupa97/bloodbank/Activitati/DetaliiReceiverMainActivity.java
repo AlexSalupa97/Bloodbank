@@ -365,7 +365,6 @@ public class DetaliiReceiverMainActivity extends AppCompatActivity implements Na
             }
         });
 
-        try {
             final Receiveri receiverFinal = receiver;
 
             fbShareBtn = (ShareButton) findViewById(R.id.fbShareBtn);
@@ -387,9 +386,6 @@ public class DetaliiReceiverMainActivity extends AppCompatActivity implements Na
 
                 }
             });
-        }catch (Exception ex){
-
-        }
     }
 
 

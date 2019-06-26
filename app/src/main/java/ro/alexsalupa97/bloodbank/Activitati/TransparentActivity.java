@@ -3,6 +3,8 @@ package ro.alexsalupa97.bloodbank.Activitati;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.content.pm.ActivityInfo;
+import android.os.Build;
 import android.os.Handler;
 import android.os.Message;
 import android.support.v7.app.AppCompatActivity;
@@ -43,6 +45,10 @@ public class TransparentActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_transparent);
+
+        if(android.os.Build.VERSION.SDK_INT < Build.VERSION_CODES.O) {
+            this.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+        }
 
         getSupportActionBar().hide();
 

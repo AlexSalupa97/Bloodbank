@@ -96,7 +96,7 @@ public class QRActivity extends AppCompatActivity implements ZBarScannerView.Res
         }
         Donatori donator = Utile.preluareDonator(getApplicationContext());
         final AlertDialog.Builder builder = new AlertDialog.Builder(QRActivity.this);
-        builder.setMessage("Verificati validitatea datelor preluate din fisierul PDF: \nEmail: " + emailDonator + "\nStare analize: " + stareAnalize);
+        builder.setMessage("Verificati validitatea datelor preluate din codul QR: \nEmail: " + emailDonator + "\nStare analize: " + stareAnalize);
         builder.setCancelable(true);
         builder.setNeutralButton("Cancel", new DialogInterface.OnClickListener() {
             @Override

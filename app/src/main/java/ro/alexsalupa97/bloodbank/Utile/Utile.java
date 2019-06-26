@@ -52,8 +52,8 @@ public class Utile {
 
     public static String fisier = "SharedPreferences";
     //    public static String URL = "http://192.168.43.154:8080/ProiectLicentaBloodbank/webresources/";  // hotspot
-    public static String URL = "http://192.168.1.149:8080/ProiectLicentaBloodbank/webresources/";  // alexapn
-//    public static String URL = "http://8f3d406c.ngrok.io/ProiectLicentaBloodbank/webresources/";
+//    public static String URL = "http://192.168.1.149:8080/ProiectLicentaBloodbank/webresources/";  // alexapn
+    public static String URL = "http://9ab6191d.ngrok.io/ProiectLicentaBloodbank/webresources/";
 
     public static ArrayList<Intrebari> intrebari;
     public static ArrayList<Compatibilitati> compatibilitati;

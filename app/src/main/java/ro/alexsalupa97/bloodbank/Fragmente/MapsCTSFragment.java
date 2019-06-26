@@ -107,7 +107,8 @@ public class MapsCTSFragment extends Fragment {
                 });
 
                 for (CTS cts : Utile.CTS) {
-                    googleMap.addMarker(new MarkerOptions().position(new LatLng(cts.getCoordonataXCTS(), cts.getCoordonataYCTS())).title(cts.getNumeCTS()).snippet(cts.getAdresaCTS()));
+                    googleMap.addMarker(new MarkerOptions().position(new LatLng(cts.getCoordonataXCTS(),
+                            cts.getCoordonataYCTS())).title(cts.getNumeCTS()).snippet(cts.getAdresaCTS()));
                 }
 
 

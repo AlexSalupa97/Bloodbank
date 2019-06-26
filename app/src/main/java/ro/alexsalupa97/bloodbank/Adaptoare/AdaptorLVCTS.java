@@ -73,17 +73,12 @@ public class AdaptorLVCTS extends ArrayAdapter<CTS> {
 
         try {
             if (curent.getNumeCTS().equals(ListaCentreActivity.closestCTS.getNumeCTS())) {
-//            viewRefolosibil.setPadding(4,4,4,4);
-//            viewRefolosibil.setBackgroundColor(context.getResources().getColor(R.color.celalaltRosu));
                 holder.ivRecomandat.setImageResource(R.drawable.recomandat);
                 holder.ivRecomandat.setPadding(20, 0, 0, 0);
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
                     holder.cvCTS.setOutlineSpotShadowColor(Color.parseColor("#B10000"));
                 }
             } else {
-//                holder.ivRecomandat.setImageResource(R.mipmap.ic_bloodbank_launcher_round);
-////            viewRefolosibil.setBackgroundColor(Color.WHITE);
-//                holder.ivRecomandat.setPadding(0, 0, 0, 0);
                 holder.ivRecomandat.setVisibility(View.GONE);
             }
         }catch (Exception ex){

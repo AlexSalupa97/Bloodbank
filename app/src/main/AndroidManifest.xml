@@ -68,7 +68,6 @@
             android:screenOrientation="portrait" />
         <activity
             android:name=".Activitati.TransparentActivity"
-            android:screenOrientation="portrait"
             android:theme="@style/TransparentCompat" />
         <activity
             android:name=".Activitati.DetaliiSuplimentareIstoricActivity"
