@@ -36,6 +36,7 @@ import android.support.v4.widget.ViewDragHelper;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.LinearLayoutManager;
 import android.util.Base64;
 import android.util.Log;
 import android.view.Menu;
@@ -79,6 +80,7 @@ import com.google.gson.GsonBuilder;
 import com.pkmmte.view.CircularImageView;
 
 
+import org.joda.time.Instant;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -94,6 +96,7 @@ import java.util.List;
 import java.util.concurrent.ExecutionException;
 
 import static java.lang.Thread.sleep;
+import static ro.alexsalupa97.bloodbank.Utile.Utile.preluareEmail;
 
 public class PrimaPaginaActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
@@ -173,7 +176,7 @@ public class PrimaPaginaActivity extends AppCompatActivity implements Navigation
 
 
         if (Utile.firstTimeDonator) {
-            Utile.firstTimeDonator=false;
+            Utile.firstTimeDonator = false;
             View parentLayout = findViewById(android.R.id.content);
             Snackbar.make(parentLayout, "Cont creat cu succes", Snackbar.LENGTH_LONG)
                     .setAction("CLOSE", new View.OnClickListener() {
@@ -181,7 +184,7 @@ public class PrimaPaginaActivity extends AppCompatActivity implements Navigation
                         public void onClick(View view) {
                         }
                     })
-                    .setActionTextColor(getResources().getColor(android.R.color.holo_red_light ))
+                    .setActionTextColor(getResources().getColor(android.R.color.holo_red_light))
                     .show();
             Thread t = new Thread(new Runnable() {
                 @Override
@@ -192,7 +195,7 @@ public class PrimaPaginaActivity extends AppCompatActivity implements Navigation
 
                         RequestQueue requestQueue = Volley.newRequestQueue(PrimaPaginaActivity.this);
                         RequestFuture<JSONObject> future = RequestFuture.newFuture();
-                        JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, Utile.URL + "domain.stareanalize/" + Utile.preluareEmail(getApplicationContext()), null, future, future);
+                        JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, Utile.URL + "domain.stareanalize/" + preluareEmail(getApplicationContext()), null, future, future);
                         requestQueue.add(request);
                         JSONObject response1 = future.get();
                         String idStareAnalize = response1.getString("idstareanaliza");
@@ -439,7 +442,7 @@ public class PrimaPaginaActivity extends AppCompatActivity implements Navigation
             requestQueue.add(objectRequest);
 
         } else if (id == R.id.profil) {
-            String url = Utile.URL + "domain.istoricdonatii/donator/" + Utile.preluareEmail(getApplicationContext());
+            String url = Utile.URL + "domain.istoricdonatii/donator/" + preluareEmail(getApplicationContext());
 
             final RequestQueue requestQueue = Volley.newRequestQueue(PrimaPaginaActivity.this);
 
@@ -523,75 +526,123 @@ public class PrimaPaginaActivity extends AppCompatActivity implements Navigation
 
     private void buildAlertMessageVreauSaDonez() {
         if (Utile.preluareStareAnalize(getApplicationContext()).equals("ok")) {
-            final AlertDialog.Builder builder = new AlertDialog.Builder(this);
-            builder.setMessage("Urmeaza un set de 10 intrebari pentru a va informa de conditiile necesare pentru a putea dona, doriti sa le abordati? (1 minut)")
-                    .setCancelable(false)
-                    .setNeutralButton("Cancel", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            dialog.cancel();
-                        }
-                    })
-                    .setPositiveButton("Da", new DialogInterface.OnClickListener() {
-                        public void onClick(final DialogInterface dialog, final int id) {
-                            String url = Utile.URL + "domain.intrebari";
+            final boolean[] eligibil = new boolean[1];
+            final long[] perioadaRamasa = new long[1];
+            Thread thread = new Thread(new Thread() {
+                @Override
+                public void run() {
 
-                            final RequestQueue requestQueue = Volley.newRequestQueue(PrimaPaginaActivity.this);
+                    try {
+                        gson = new Gson();
 
+                        RequestQueue requestQueue = Volley.newRequestQueue(context);
+                        RequestFuture<JSONObject> future = RequestFuture.newFuture();
+                        JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, Utile.URL + "domain.istoricdonatii/last/donator/" + preluareEmail(context), null, future, future);
+                        requestQueue.add(request);
+                        JSONObject response = future.get();
 
-                            if (Utile.preluareStareAnalize(getApplicationContext()).equals("ok")) {
-                                JsonArrayRequest objectRequest = new JsonArrayRequest(
-                                        Request.Method.GET,
-                                        url,
-                                        null,
-                                        new Response.Listener<JSONArray>() {
+                        IstoricDonatii istoricDonatie = gson.fromJson(response.toString(), IstoricDonatii.class);
+                        Calendar curent = Calendar.getInstance();
+                        Calendar donatie = Calendar.getInstance();
+                        Instant instant = Instant.parse(istoricDonatie.getDataDonatie());
+                        donatie.setTimeInMillis(instant.getMillis());
 
-                                            @Override
-                                            public void onResponse(JSONArray response) {
-                                                GsonBuilder gsonBuilder = new GsonBuilder();
-                                                gsonBuilder.setDateFormat("M/d/yy hh:mm a");
-                                                gsonIntrebari = gsonBuilder.create();
+                        eligibil[0] = curent.getTimeInMillis() - donatie.getTimeInMillis() >= 1000L * 60 * 60 * 24 * 56;
+                        perioadaRamasa[0] =curent.getTimeInMillis() - donatie.getTimeInMillis();
+                        if (eligibil[0]) {
+                            runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    final AlertDialog.Builder builder = new AlertDialog.Builder(PrimaPaginaActivity.this);
+                                    builder.setMessage("Urmeaza un set de 10 intrebari pentru a va informa de conditiile necesare pentru a putea dona, doriti sa le abordati? (1 minut)")
+                                            .setCancelable(false)
+                                            .setNeutralButton("Cancel", new DialogInterface.OnClickListener() {
+                                                @Override
+                                                public void onClick(DialogInterface dialog, int which) {
+                                                    dialog.cancel();
+                                                }
+                                            })
+                                            .setPositiveButton("Da", new DialogInterface.OnClickListener() {
+                                                public void onClick(final DialogInterface dialog, final int id) {
+                                                    String url = Utile.URL + "domain.intrebari";
 
-                                                intrebariList = Arrays.asList(gsonIntrebari.fromJson(response.toString(), Intrebari[].class));
-                                                Utile.intrebari = new ArrayList<>(intrebariList);
-
-                                                Intent intent = new Intent(getApplicationContext(), IntrebariActivity.class);
-                                                //intent.putParcelableArrayListExtra("listaIntrebari", Utile.intrebari);
-
-                                                startActivity(intent);
-
-
-                                            }
-                                        },
-                                        new Response.ErrorListener() {
-                                            @Override
-                                            public void onErrorResponse(VolleyError error) {
-                                                Log.d("RestResponse", error.toString());
-                                            }
-                                        }
-
-                                );
-
-                                requestQueue.add(objectRequest);
+                                                    final RequestQueue requestQueue = Volley.newRequestQueue(PrimaPaginaActivity.this);
 
 
-                            }
+                                                    if (Utile.preluareStareAnalize(getApplicationContext()).equals("ok")) {
+                                                        JsonArrayRequest objectRequest = new JsonArrayRequest(
+                                                                Request.Method.GET,
+                                                                url,
+                                                                null,
+                                                                new Response.Listener<JSONArray>() {
+
+                                                                    @Override
+                                                                    public void onResponse(JSONArray response) {
+                                                                        GsonBuilder gsonBuilder = new GsonBuilder();
+                                                                        gsonBuilder.setDateFormat("M/d/yy hh:mm a");
+                                                                        gsonIntrebari = gsonBuilder.create();
+
+                                                                        intrebariList = Arrays.asList(gsonIntrebari.fromJson(response.toString(), Intrebari[].class));
+                                                                        Utile.intrebari = new ArrayList<>(intrebariList);
+
+                                                                        Intent intent = new Intent(getApplicationContext(), IntrebariActivity.class);
+                                                                        //intent.putParcelableArrayListExtra("listaIntrebari", Utile.intrebari);
+
+                                                                        startActivity(intent);
 
 
-                        }
-                    })
-                    .setNegativeButton("Nu", new DialogInterface.OnClickListener() {
-                        public void onClick(final DialogInterface dialog, final int id) {
+                                                                    }
+                                                                },
+                                                                new Response.ErrorListener() {
+                                                                    @Override
+                                                                    public void onErrorResponse(VolleyError error) {
+                                                                        Log.d("RestResponse", error.toString());
+                                                                    }
+                                                                }
+
+                                                        );
+
+                                                        requestQueue.add(objectRequest);
 
 
-                            Intent intent = new Intent(getApplicationContext(), ListaCentreActivity.class);
+                                                    }
+
+                                                }
+                                            })
+                                            .setNegativeButton("Nu", new DialogInterface.OnClickListener() {
+                                                public void onClick(final DialogInterface dialog, final int id) {
+
+
+                                                    Intent intent = new Intent(getApplicationContext(), ListaCentreActivity.class);
+                                                    startActivity(intent);
+
+
+                                                }
+                                            });
+                                    final AlertDialog alert = builder.create();
+                                    alert.show();
+                                }
+                            });
+
+                        } else {
+
+                            Intent intent = new Intent(getApplicationContext(), OptSaptamaniActivity.class);
+                            intent.putExtra("perioadaramasa",perioadaRamasa[0]);
                             startActivity(intent);
-
-
                         }
-                    });
-            final AlertDialog alert = builder.create();
-            alert.show();
+
+
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    } catch (ExecutionException e) {
+                        e.printStackTrace();
+                    }
+
+
+                }
+            });
+            thread.start();
+
         } else if (Utile.preluareStareAnalize(getApplicationContext()).equals("!ok")) {
             Intent intent = new Intent(getApplicationContext(), AnalizeNotOkActivity.class);
             startActivity(intent);
@@ -752,7 +803,7 @@ public class PrimaPaginaActivity extends AppCompatActivity implements Navigation
         notificationIntent.putExtra(NotificariBroadcast.NOTIFICATION, notification);
         PendingIntent pendingIntent = PendingIntent.getBroadcast(PrimaPaginaActivity.context, 0, notificationIntent, PendingIntent.FLAG_UPDATE_CURRENT);
 
-        AlarmManager alarmManager = (AlarmManager)PrimaPaginaActivity.context.getSystemService(Context.ALARM_SERVICE);
+        AlarmManager alarmManager = (AlarmManager) PrimaPaginaActivity.context.getSystemService(Context.ALARM_SERVICE);
         Calendar calendar = Calendar.getInstance();
         calendar.setTimeInMillis(System.currentTimeMillis());
 //        calendar.set(Calendar.HOUR_OF_DAY, 13);

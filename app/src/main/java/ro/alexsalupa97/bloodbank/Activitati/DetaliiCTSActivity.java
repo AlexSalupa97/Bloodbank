@@ -1,11 +1,13 @@
 package ro.alexsalupa97.bloodbank.Activitati;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.ActionBar;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -18,15 +20,22 @@ import android.widget.TextView;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonArrayRequest;
+import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.RequestFuture;
 import com.android.volley.toolbox.Volley;
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 
+import org.joda.time.Instant;
 import org.json.JSONArray;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Calendar;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
@@ -38,11 +47,15 @@ import ro.alexsalupa97.bloodbank.Clase.CantitatiCTS;
 import ro.alexsalupa97.bloodbank.Clase.GrupeSanguine;
 import ro.alexsalupa97.bloodbank.Clase.IesiriCTS;
 import ro.alexsalupa97.bloodbank.Clase.IntrariCTS;
+import ro.alexsalupa97.bloodbank.Clase.Intrebari;
+import ro.alexsalupa97.bloodbank.Clase.IstoricDonatii;
 import ro.alexsalupa97.bloodbank.Clase.LimiteCTS;
 import ro.alexsalupa97.bloodbank.R;
 import ro.alexsalupa97.bloodbank.RecyclerViewOrizontal.ItemModelAlerte;
 import ro.alexsalupa97.bloodbank.RecyclerViewOrizontal.SectionModelAlerte;
 import ro.alexsalupa97.bloodbank.Utile.Utile;
+
+import static ro.alexsalupa97.bloodbank.Utile.Utile.preluareEmail;
 
 public class DetaliiCTSActivity extends AppCompatActivity {
 
@@ -80,62 +93,113 @@ public class DetaliiCTSActivity extends AppCompatActivity {
 
         rvAlerte = (RecyclerView) findViewById(R.id.rvSituatieSanguinaCTS);
 
-        ctsCurent= getIntent().getExtras().getParcelable("cts");
+        ctsCurent = getIntent().getExtras().getParcelable("cts");
 
-        tvNumeCTS=(TextView)findViewById(R.id.tvNumeCTS);
-        tvAdresa=(TextView)findViewById(R.id.tvAdresa);
-        tvEmail=(TextView)findViewById(R.id.tvEmail);
-        tvTelefon=(TextView)findViewById(R.id.tvTelefon);
+        tvNumeCTS = (TextView) findViewById(R.id.tvNumeCTS);
+        tvAdresa = (TextView) findViewById(R.id.tvAdresa);
+        tvEmail = (TextView) findViewById(R.id.tvEmail);
+        tvTelefon = (TextView) findViewById(R.id.tvTelefon);
 
         tvNumeCTS.setText(ctsCurent.getNumeCTS());
-        tvAdresa.setText(tvAdresa.getText()+ctsCurent.getAdresaCTS());
-        tvEmail.setText(tvEmail.getText()+ctsCurent.getEmailCTS());
-        tvTelefon.setText(tvTelefon.getText()+ctsCurent.getTelefonCTS());
+        tvAdresa.setText(tvAdresa.getText() + ctsCurent.getAdresaCTS());
+        tvEmail.setText(tvEmail.getText() + ctsCurent.getEmailCTS());
+        tvTelefon.setText(tvTelefon.getText() + ctsCurent.getTelefonCTS());
 
-        btnEmail=(ImageButton)findViewById(R.id.btnEmail);
+        btnEmail = (ImageButton) findViewById(R.id.btnEmail);
 
         btnEmail.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String mailto = "mailto:" + ctsCurent.getEmailCTS()+
+                String mailto = "mailto:" + ctsCurent.getEmailCTS() +
                         "?cc=" + "alex.salupa@yahoo.com" +
                         "&subject=" + Uri.encode("Programare donatie") +
                         "&body=" + Uri.encode("Programare");
-                Intent intent=new Intent(Intent.ACTION_SENDTO);
+                Intent intent = new Intent(Intent.ACTION_SENDTO);
                 intent.setData(Uri.parse(mailto));
                 startActivity(intent);
             }
         });
 
-        btnTelefon=(ImageButton)findViewById(R.id.btnTelefon);
+        btnTelefon = (ImageButton) findViewById(R.id.btnTelefon);
 
         btnTelefon.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(Intent.ACTION_DIAL);
-                intent.setData(Uri.parse("tel:"+ctsCurent.getTelefonCTS()));
+                intent.setData(Uri.parse("tel:" + ctsCurent.getTelefonCTS()));
                 startActivity(intent);
             }
         });
 
-        btnProgramare=(Button)findViewById(R.id.btnProgramare);
+        btnProgramare = (Button) findViewById(R.id.btnProgramare);
         btnProgramare.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(Utile.preluareStareAnalize(getApplicationContext()).equals("!ok")) {
+                if (Utile.preluareStareAnalize(getApplicationContext()).equals("ok")) {
+                    final boolean[] eligibil = new boolean[1];
+                    final long[] perioadaRamasa = new long[1];
+                    Thread thread = new Thread(new Thread() {
+                        @Override
+                        public void run() {
+
+                            try {
+                                gson = new Gson();
+
+                                RequestQueue requestQueue = Volley.newRequestQueue(getApplicationContext());
+                                RequestFuture<JSONObject> future = RequestFuture.newFuture();
+                                JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, Utile.URL + "domain.istoricdonatii/last/donator/" + preluareEmail(getApplicationContext()), null, future, future);
+                                requestQueue.add(request);
+                                JSONObject response = future.get();
+
+                                IstoricDonatii istoricDonatie = gson.fromJson(response.toString(), IstoricDonatii.class);
+                                Calendar curent = Calendar.getInstance();
+                                Calendar donatie = Calendar.getInstance();
+                                Instant instant = Instant.parse(istoricDonatie.getDataDonatie());
+                                donatie.setTimeInMillis(instant.getMillis());
+
+                                eligibil[0] = curent.getTimeInMillis() - donatie.getTimeInMillis() >= 1000L * 60 * 60 * 24 * 56;
+                                perioadaRamasa[0] = curent.getTimeInMillis() - donatie.getTimeInMillis();
+                                if (eligibil[0]) {
+                                    Intent intent = new Intent(getApplicationContext(), ProgramareActivity.class);
+                                    intent.putExtra("cts", ctsCurent);
+                                    startActivity(intent);
+
+                                } else {
+
+                                    Intent intent = new Intent(getApplicationContext(), OptSaptamaniActivity.class);
+                                    intent.putExtra("perioadaramasa", perioadaRamasa[0]);
+                                    startActivity(intent);
+                                }
+
+
+                            } catch (InterruptedException e) {
+                                e.printStackTrace();
+                            } catch (ExecutionException e) {
+                                e.printStackTrace();
+                            }
+
+
+                        }
+                    });
+                    thread.start();
+                } else if (Utile.preluareStareAnalize(getApplicationContext()).equals("!ok")) {
                     Intent intent = new Intent(getApplicationContext(), AnalizeNotOkActivity.class);
                     startActivity(intent);
-
-                }else {
-                    Intent intent = new Intent(getApplicationContext(), ProgramareActivity.class);
-                    intent.putExtra("cts", ctsCurent);
+                } else if (Utile.preluareStareAnalize(getApplicationContext()).equals("neefectuate")) {
+                    Intent intent = new Intent(getApplicationContext(), AnalizeNeefectuateActivity.class);
                     startActivity(intent);
                 }
             }
         });
 
-        swiperefreshRVSituatieSanguinaCTS = (SwipeRefreshLayout) findViewById(R.id.swiperefreshRVSituatieSanguinaCTS);
-        swiperefreshRVSituatieSanguinaCTS.setColorSchemeColors(getResources().getColor(R.color.colorPrimary));
+        swiperefreshRVSituatieSanguinaCTS = (SwipeRefreshLayout)
+
+                findViewById(R.id.swiperefreshRVSituatieSanguinaCTS);
+        swiperefreshRVSituatieSanguinaCTS.setColorSchemeColors(
+
+                getResources().
+
+                        getColor(R.color.colorPrimary));
 
         Thread thread = new Thread(new Runnable() {
             @Override
@@ -167,7 +231,7 @@ public class DetaliiCTSActivity extends AppCompatActivity {
                     JSONArray response2 = future2.get();
                     JSONArray response3 = future3.get();
 
-                    gson=new Gson();
+                    gson = new Gson();
 
                     Utile.listaLimiteCTS = new ArrayList<>(Arrays.asList(gson.fromJson(response.toString(), LimiteCTS[].class)));
                     Utile.listaIntrariCTS = new ArrayList<>(Arrays.asList(gson.fromJson(response1.toString(), IntrariCTS[].class)));
@@ -290,7 +354,7 @@ public class DetaliiCTSActivity extends AppCompatActivity {
                             JSONArray response2 = future2.get();
                             JSONArray response3 = future3.get();
 
-                            gson=new Gson();
+                            gson = new Gson();
 
                             Utile.listaLimiteCTS = new ArrayList<>(Arrays.asList(gson.fromJson(response.toString(), LimiteCTS[].class)));
                             Utile.listaIntrariCTS = new ArrayList<>(Arrays.asList(gson.fromJson(response1.toString(), IntrariCTS[].class)));
@@ -388,8 +452,13 @@ public class DetaliiCTSActivity extends AppCompatActivity {
             }
         });
 
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setDisplayShowHomeEnabled(true);
+        getSupportActionBar().
+
+                setDisplayHomeAsUpEnabled(true);
+
+        getSupportActionBar().
+
+                setDisplayShowHomeEnabled(true);
     }
 
     @Override

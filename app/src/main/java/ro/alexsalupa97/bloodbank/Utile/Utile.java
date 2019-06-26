@@ -17,9 +17,12 @@ import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonArrayRequest;
+import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.RequestFuture;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 
+import ro.alexsalupa97.bloodbank.Activitati.TransparentActivity;
 import ro.alexsalupa97.bloodbank.Clase.CTS;
 import ro.alexsalupa97.bloodbank.Clase.Compatibilitati;
 import ro.alexsalupa97.bloodbank.Clase.Donatori;
@@ -39,19 +42,25 @@ import ro.alexsalupa97.bloodbank.R;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
+import org.joda.time.Instant;
 import org.json.JSONArray;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
+import java.util.concurrent.ExecutionException;
 
 public class Utile {
 
     public static String fisier = "SharedPreferences";
-//        public static String URL = "http://192.168.43.154:8080/ProiectLicentaBloodbank/webresources/";  // hotspot
+    //        public static String URL = "http://192.168.43.154:8080/ProiectLicentaBloodbank/webresources/";  // hotspot
 //    public static String URL = "http://192.168.1.149:8080/ProiectLicentaBloodbank/webresources/";  // alexapn
     public static String URL = "http://d69a5068.ngrok.io/ProiectLicentaBloodbank/webresources/";
 
@@ -731,6 +740,46 @@ public class Utile {
 
         requestQueue.add(objectRequest);
     }
+
+//    public static boolean verificareUltimaDonatie(Context context) {
+//        final boolean[] eligibil = new boolean[1];
+//        Thread thread = new Thread(new Thread() {
+//            @Override
+//            public void run() {
+//
+//                try {
+//                    gson = new Gson();
+//
+//                    RequestQueue requestQueue = Volley.newRequestQueue(context);
+//                    RequestFuture<JSONObject> future = RequestFuture.newFuture();
+//                    JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, Utile.URL + "domain.istoricdonatii/last/donator/" + preluareEmail(context), null, future, future);
+//                    requestQueue.add(request);
+//                    JSONObject response = future.get();
+//
+//                    IstoricDonatii istoricDonatie = gson.fromJson(response.toString(), IstoricDonatii.class);
+//                    Calendar curent = Calendar.getInstance();
+//                    Calendar donatie = Calendar.getInstance();
+//                    Instant instant = Instant.parse(istoricDonatie.getDataDonatie());
+//                    donatie.setTimeInMillis(instant.getMillis());
+//
+//                    eligibil[0] = curent.getTimeInMillis() - donatie.getTimeInMillis() >= 1000L * 60 * 60 * 24 * 56;
+//
+//
+//
+//                } catch (InterruptedException e) {
+//                    e.printStackTrace();
+//                } catch (ExecutionException e) {
+//                    e.printStackTrace();
+//                }
+//
+//
+//            }
+//        });
+//        thread.start();
+//        return eligibil[0];
+//
+//
+//    }
 
 
 }

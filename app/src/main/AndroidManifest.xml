@@ -21,9 +21,11 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:replace="android:allowBackup">
-        <activity android:name=".Activitati.QRActivity"
+        <activity android:name=".Activitati.OptSaptamaniActivity"></activity>
+        <activity
+            android:name=".Activitati.QRActivity"
             android:label="Scanati codul QR"
-            android:screenOrientation="portrait"></activity>
+            android:screenOrientation="portrait" />
         <activity
             android:name=".Activitati.ActualizareStareAnalizeActivity"
             android:label=""
@@ -74,8 +76,9 @@
             android:label="Istoric donatii"
             android:screenOrientation="portrait" />
 
-        <receiver android:name=".Notificari.NotificariBroadcast"
-            android:exported="true"/>
+        <receiver
+            android:name=".Notificari.NotificariBroadcast"
+            android:exported="true" />
         <receiver android:name=".Notificari.ActionCentreBroadcast" />
         <receiver android:name=".Notificari.ActionAlerteBroadcast" />
         <receiver
@@ -91,10 +94,9 @@
         <service
             android:name=".Notificari.NotifyingDailyService"
             android:enabled="true" />
-
-        <service android:name=".Notificari.TestJobService"
-            android:permission="android.permission.BIND_JOB_SERVICE"/>
-
+        <service
+            android:name=".Notificari.TestJobService"
+            android:permission="android.permission.BIND_JOB_SERVICE" />
         <service
             android:name=".Notificari.TestJobIntentService"
             android:permission="android.permission.BIND_JOB_SERVICE" />
