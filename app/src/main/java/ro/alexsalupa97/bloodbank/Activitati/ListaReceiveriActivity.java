@@ -12,7 +12,10 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
 
+import ro.alexsalupa97.bloodbank.Adaptoare.AdaptorReceiveriLV;
 import ro.alexsalupa97.bloodbank.Clase.Receiveri;
 import ro.alexsalupa97.bloodbank.R;
 import ro.alexsalupa97.bloodbank.Utile.Utile;
@@ -21,8 +24,11 @@ import ro.alexsalupa97.bloodbank.Utile.Utile;
 public class ListaReceiveriActivity extends AppCompatActivity {
 
     ListView lvReceiveri;
-    ArrayList<String> listaReceiveri;
-    ArrayAdapter<String> adaptor;
+    AdaptorReceiveriLV adaptor;
+    ArrayList<Receiveri> listaReceiveri;
+
+//    ArrayList<String> listaReceiveri;
+//    ArrayAdapter<String> adaptor;
 
     SwipeRefreshLayout srlListaReceiveri;
 
@@ -31,7 +37,7 @@ public class ListaReceiveriActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_lista_receiveri);
 
-        srlListaReceiveri=(SwipeRefreshLayout)findViewById(R.id.srlListaReceiveri);
+        srlListaReceiveri = (SwipeRefreshLayout) findViewById(R.id.srlListaReceiveri);
         srlListaReceiveri.setColorSchemeColors(getResources().getColor(R.color.colorPrimary));
 
         srlListaReceiveri.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
@@ -58,30 +64,40 @@ public class ListaReceiveriActivity extends AppCompatActivity {
             }
         });
 
-        listaReceiveri=new ArrayList<>();
-        for(Receiveri receiver: Utile.listaReceiveri)
-            listaReceiveri.add(receiver.getNumeReceiver());
-
-        lvReceiveri=(ListView)findViewById(R.id.lvReceiveri);
-
-        adaptor=new ArrayAdapter<String>(getApplicationContext(),android.R.layout.simple_list_item_1,listaReceiveri);
+        lvReceiveri = (ListView) findViewById(R.id.lvReceiveri);
+        listaReceiveri = new ArrayList<>();
+        for (Receiveri receiver : Utile.listaReceiveri)
+            if (receiver.getCts().getOras().getOras().equals(Utile.preluareOras(getApplicationContext())))
+                listaReceiveri.add(receiver);
+        Collections.sort(listaReceiveri);
+        adaptor = new AdaptorReceiveriLV(getApplicationContext(), listaReceiveri);
         lvReceiveri.setAdapter(adaptor);
 
-        lvReceiveri.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                String numePreluat=lvReceiveri.getItemAtPosition(position).toString();
-                for(Receiveri receiver:Utile.listaReceiveri)
-                    if(receiver.getNumeReceiver().equals(numePreluat))
-                    {
+//        listaReceiveri=new ArrayList<>();
+//        for(Receiveri receiver: Utile.listaReceiveri)
+//            listaReceiveri.add(receiver.getNumeReceiver());
+//
+//        lvReceiveri=(ListView)findViewById(R.id.lvReceiveri);
+//
+//        adaptor=new ArrayAdapter<String>(getApplicationContext(),android.R.layout.simple_list_item_1,listaReceiveri);
+//        lvReceiveri.setAdapter(adaptor);
 
-                        Intent intent=new Intent(getApplicationContext(),DetaliiReceiverActivity.class);
-                        intent.putExtra("receiver",receiver);
-                        startActivity(intent);
-                    }
-            }
-        });
+//        lvReceiveri.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+//            @Override
+//            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+//                String numePreluat=lvReceiveri.getItemAtPosition(position).toString();
+//                for(Receiveri receiver:Utile.listaReceiveri)
+//                    if(receiver.getNumeReceiver().equals(numePreluat))
+//                    {
+//
+//                        Intent intent=new Intent(getApplicationContext(),DetaliiReceiverActivity.class);
+//                        intent.putExtra("receiver",receiver);
+//                        startActivity(intent);
+//                    }
+//            }
+//        });
 
+        getSupportActionBar().setElevation(0);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
 

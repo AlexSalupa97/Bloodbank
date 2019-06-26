@@ -5,7 +5,7 @@ import android.os.Parcelable;
 
 import com.google.gson.annotations.SerializedName;
 
-public class Receiveri implements Parcelable {
+public class Receiveri implements Parcelable, Comparable {
 
     @SerializedName("emailreceiver")
     private String emailReceiver;
@@ -156,4 +156,10 @@ public class Receiveri implements Parcelable {
             return new Receiveri[size];
         }
     };
+
+    @Override
+    public int compareTo(Object o) {
+        Receiveri r=(Receiveri)o;
+        return this.stareReceiver-r.stareReceiver;
+    }
 }
