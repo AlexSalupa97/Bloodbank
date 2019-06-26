@@ -17,14 +17,13 @@
 
     </PreferenceCategory>
 
-    <PreferenceCategory android:title="General">
+    <PreferenceCategory android:title="Notificari">
 
         <SwitchPreference
-            android:icon="@drawable/blood_red"
+            android:icon="@drawable/bell_outline"
             android:defaultValue="false"
-            android:summary="Test"
-            app:key="test"
-            app:title="test" />
+            android:summary="Notificari pentru alertele de sange"
+            app:key="notificari"/>
 
     </PreferenceCategory>
 </PreferenceScreen>

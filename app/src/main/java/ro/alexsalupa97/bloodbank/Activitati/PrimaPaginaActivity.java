@@ -172,11 +172,6 @@ public class PrimaPaginaActivity extends AppCompatActivity implements Navigation
 //        TestJobIntentService.enqueueWork(this, serviceIntent);
 
 
-
-
-        scheduleNotification(triggerNotification(), false);
-        //##########################################################################################
-
         if (Utile.firstTimeDonator) {
             Utile.firstTimeDonator=false;
             View parentLayout = findViewById(android.R.id.content);
@@ -675,24 +670,24 @@ public class PrimaPaginaActivity extends AppCompatActivity implements Navigation
 
     }
 
-    private Notification triggerNotification() {
-        Intent resultIntent = new Intent(getApplicationContext(), ActionAlerteBroadcast.class);
+    public static Notification triggerNotification() {
+        Intent resultIntent = new Intent(PrimaPaginaActivity.context, ActionAlerteBroadcast.class);
         resultIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 
-        Intent listaCentreActionIntent = new Intent(getApplicationContext(), ActionCentreBroadcast.class);
+        Intent listaCentreActionIntent = new Intent(PrimaPaginaActivity.context, ActionCentreBroadcast.class);
         PendingIntent listaCentreActionPendingIntent =
-                PendingIntent.getBroadcast(this, 0, listaCentreActionIntent, 0);
+                PendingIntent.getBroadcast(PrimaPaginaActivity.context, 0, listaCentreActionIntent, 0);
 
 
         PendingIntent listaAlerteActionPendingIntent =
-                PendingIntent.getBroadcast(this, 0, resultIntent, 0);
+                PendingIntent.getBroadcast(PrimaPaginaActivity.context, 0, resultIntent, 0);
 
         NotificationCompat.Builder mBuilder =
-                new NotificationCompat.Builder(getApplicationContext(), "test")
+                new NotificationCompat.Builder(PrimaPaginaActivity.context, "test")
                         .setSmallIcon(R.drawable.blood)
                         .setWhen(System.currentTimeMillis())
                         .setShowWhen(true)
-                        .setColor(getResources().getColor(R.color.colorPrimary))
+                        .setColor(PrimaPaginaActivity.context.getResources().getColor(R.color.colorPrimary))
                         .setContentTitle("Alerta de sange")
                         .setContentText("Vezi situatia actuala")
                         .setChannelId("test")
@@ -707,7 +702,7 @@ public class PrimaPaginaActivity extends AppCompatActivity implements Navigation
 
         NotificationManager mNotificationManager =
 
-                (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+                (NotificationManager) PrimaPaginaActivity.context.getSystemService(Context.NOTIFICATION_SERVICE);
 
 
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
@@ -750,14 +745,14 @@ public class PrimaPaginaActivity extends AppCompatActivity implements Navigation
         alarmManager.set(AlarmManager.ELAPSED_REALTIME_WAKEUP, futureInMillis, pendingIntent);
     }
 
-    private void scheduleNotification(Notification notification, boolean isActive) {
+    public static void scheduleNotification(Notification notification, boolean isActive) {
 
-        Intent notificationIntent = new Intent(this, NotificariBroadcast.class);
+        Intent notificationIntent = new Intent(PrimaPaginaActivity.context, NotificariBroadcast.class);
         notificationIntent.putExtra(NotificariBroadcast.NOTIFICATION_ID, 1);
         notificationIntent.putExtra(NotificariBroadcast.NOTIFICATION, notification);
-        PendingIntent pendingIntent = PendingIntent.getBroadcast(this, 0, notificationIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(PrimaPaginaActivity.context, 0, notificationIntent, PendingIntent.FLAG_UPDATE_CURRENT);
 
-        AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
+        AlarmManager alarmManager = (AlarmManager)PrimaPaginaActivity.context.getSystemService(Context.ALARM_SERVICE);
         Calendar calendar = Calendar.getInstance();
         calendar.setTimeInMillis(System.currentTimeMillis());
 //        calendar.set(Calendar.HOUR_OF_DAY, 13);

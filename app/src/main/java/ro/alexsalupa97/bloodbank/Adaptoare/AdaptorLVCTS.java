@@ -11,6 +11,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -36,7 +37,7 @@ public class AdaptorLVCTS extends ArrayAdapter<CTS> {
         public TextView numeCTS;
         public TextView adresaCTS;
         public TextView telefonCTS;
-        public Button btnApelare;
+        public ImageButton btnApelare;
         public ImageView ivRecomandat;
         public CardView cvCTS;
     }
@@ -55,7 +56,7 @@ public class AdaptorLVCTS extends ArrayAdapter<CTS> {
             viewHolder.numeCTS = (TextView) viewRefolosibil.findViewById(R.id.lvNumeCTS);
             viewHolder.adresaCTS = (TextView) viewRefolosibil.findViewById(R.id.lvAdresaCTS);
             viewHolder.telefonCTS = (TextView) viewRefolosibil.findViewById(R.id.lvTelefonCTS);
-            viewHolder.btnApelare = (Button) viewRefolosibil.findViewById(R.id.btnApelare);
+            viewHolder.btnApelare = (ImageButton) viewRefolosibil.findViewById(R.id.btnApelare);
             viewHolder.ivRecomandat = (ImageView) viewRefolosibil.findViewById(R.id.ivRecomandat);
             viewHolder.cvCTS=(CardView)viewRefolosibil.findViewById(R.id.cvCTS);
 

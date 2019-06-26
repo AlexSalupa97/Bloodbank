@@ -3,11 +3,13 @@ package ro.alexsalupa97.bloodbank.Activitati;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.support.v14.preference.SwitchPreference;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.preference.ListPreference;
 import android.support.v7.preference.Preference;
 import android.support.v7.preference.PreferenceFragmentCompat;
+import android.support.v7.preference.SwitchPreferenceCompat;
 
 import ro.alexsalupa97.bloodbank.Clase.GrupeSanguine;
 import ro.alexsalupa97.bloodbank.Clase.Orase;
@@ -22,6 +24,7 @@ public class SetariActivity extends AppCompatActivity {
 
     static ListPreference listPreferenceLocatie;
     static ListPreference listPreferenceGrupaSanguina;
+    static SwitchPreference spNotificari;
 
     String fisier = "SharedPreferences";
     static SharedPreferences.Editor editor;
@@ -59,6 +62,7 @@ public class SetariActivity extends AppCompatActivity {
 
             listPreferenceLocatie.setSummary(Utile.preluareOras(getActivity()));
             listPreferenceLocatie.setDefaultValue(Utile.preluareOras(getActivity()));
+            listPreferenceLocatie.setValue(Utile.preluareOras(getActivity()));
 
             ArrayList<String> listaOrase=new ArrayList<>();
             try {
@@ -94,6 +98,7 @@ public class SetariActivity extends AppCompatActivity {
 
             listPreferenceGrupaSanguina.setSummary(Utile.preluareGrupaSanguina(getActivity()));
             listPreferenceGrupaSanguina.setDefaultValue(Utile.preluareGrupaSanguina(getActivity()));
+            listPreferenceGrupaSanguina.setValue(Utile.preluareGrupaSanguina(getActivity()));
 
             ArrayList<String> listaGrupe=new ArrayList<>();
             try {
@@ -125,6 +130,24 @@ public class SetariActivity extends AppCompatActivity {
             });
 
 
+            spNotificari=(SwitchPreference) findPreference("notificari");
+            spNotificari.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
+                @Override
+                public boolean onPreferenceChange(Preference preference, Object o) {
+                    if(spNotificari.isChecked()) {
+                        PrimaPaginaActivity.scheduleNotification(PrimaPaginaActivity.triggerNotification(), false);
+                        spNotificari.setChecked(false);
+
+                    }
+                    else{
+                        PrimaPaginaActivity.scheduleNotification(PrimaPaginaActivity.triggerNotification(), true);
+                        spNotificari.setChecked(true);
+
+                    }
+
+                    return false;
+                }
+            });
 
         }
     }

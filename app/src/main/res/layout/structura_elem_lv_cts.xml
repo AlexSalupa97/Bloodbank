@@ -116,16 +116,26 @@
                         android:textColor="@android:color/black" />
 
                 </LinearLayout>
-
-                <Button
+                <ImageButton
                     android:id="@+id/btnApelare"
+                    android:background="@drawable/rounded_button"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="12dp"
                     android:layout_marginRight="12dp"
                     android:gravity="end"
                     android:minHeight="25dp"
-                    android:text="Apeleaza" />
+                    android:src="@drawable/phone_red" />
+
+                <!--<Button-->
+                    <!--android:id="@+id/btnApelare"-->
+                    <!--android:layout_width="match_parent"-->
+                    <!--android:layout_height="wrap_content"-->
+                    <!--android:layout_marginLeft="12dp"-->
+                    <!--android:layout_marginRight="12dp"-->
+                    <!--android:gravity="end"-->
+                    <!--android:minHeight="25dp"-->
+                    <!--android:text="Apeleaza" />-->
             </LinearLayout>
         </LinearLayout>
 
