@@ -74,6 +74,8 @@ public class ProgramareActivity extends AppCompatActivity {
 
     static Gson gson;
 
+    String fisier = "SharedPreferences";
+
 
     @SuppressLint("NewApi")
     @Override
@@ -291,6 +293,11 @@ public class ProgramareActivity extends AppCompatActivity {
                                 @Override
                                 public void onResponse(JSONObject response) {
 
+                                    SharedPreferences sharedPreferences = getSharedPreferences(fisier, Context.MODE_PRIVATE);
+                                    SharedPreferences.Editor editor = sharedPreferences.edit();
+
+                                    editor.putString("programare", data);
+                                    editor.commit();
 
                                     View parentLayout = findViewById(android.R.id.content);
                                     Snackbar.make(parentLayout, "Programare facuta cu succes", Snackbar.LENGTH_LONG)
@@ -301,6 +308,7 @@ public class ProgramareActivity extends AppCompatActivity {
                                             })
                                             .setActionTextColor(getResources().getColor(android.R.color.holo_red_light ))
                                             .show();
+                                    finish();
                                 }
                             },
                             new Response.ErrorListener() {

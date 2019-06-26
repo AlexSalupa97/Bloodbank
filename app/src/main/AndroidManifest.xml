@@ -21,7 +21,8 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:replace="android:allowBackup">
-        <activity android:name=".Activitati.OptSaptamaniActivity"></activity>
+        <activity android:name=".Activitati.ProgramareEfectuataActivity"></activity>
+        <activity android:name=".Activitati.OptSaptamaniActivity" />
         <activity
             android:name=".Activitati.QRActivity"
             android:label="Scanati codul QR"

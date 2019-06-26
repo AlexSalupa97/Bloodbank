@@ -22,9 +22,11 @@ import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.location.LocationManager;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.SystemClock;
 import android.support.annotation.NonNull;
+import android.support.annotation.RequiresApi;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
@@ -333,7 +335,7 @@ public class PrimaPaginaActivity extends AppCompatActivity implements Navigation
             public void onClick(View v) {
 //                scheduleNotificationWithDelay(triggerNotification(),3000);
 //                scheduleNotification(triggerNotification());
-                triggerBasicNotification();
+//                triggerBasicNotification();
 
             }
         });
@@ -344,13 +346,7 @@ public class PrimaPaginaActivity extends AppCompatActivity implements Navigation
             @Override
             public void onClick(View v) {
 
-//                Intent twitterIntent = getShareIntent("twitter", "subject", "text: " + "https://play.google.com/store/apps/developer?id=AlexSalupa97");
-//                if (twitterIntent != null)
-//                    startActivity(twitterIntent);
-
-//                Intent facebookIntent = getShareIntent("facebook", "", "https://play.google.com/store/apps/developer?id=AlexSalupa97");
-//                if(facebookIntent != null)
-//                    startActivity(facebookIntent);
+                sendNotification();
 
 
             }
@@ -653,6 +649,54 @@ public class PrimaPaginaActivity extends AppCompatActivity implements Navigation
     }
 
     @SuppressLint("NewApi")
+    public void sendNotification() {
+
+        NotificationCompat.Builder mBuilder =
+                new NotificationCompat.Builder(context, "test")
+                        .setSmallIcon(R.drawable.blood)
+                        .setColor(context.getColor(R.color.colorPrimary))
+                        .setContentTitle("Reminder Programare")
+                        .setContentText("10:30 24/10/2020")
+                        .setChannelId("test")
+                        .setAutoCancel(true)
+                        .setVisibility(Notification.VISIBILITY_PUBLIC);
+
+
+
+        // Gets an instance of the NotificationManager service//
+
+        NotificationManager mNotificationManager =
+
+                (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
+
+
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
+            int importance = NotificationManager.IMPORTANCE_HIGH;
+            NotificationChannel notificationChannel = new NotificationChannel("test", "NOTIFICATION_CHANNEL_NAME", importance);
+            notificationChannel.enableLights(true);
+            notificationChannel.setLightColor(Color.RED);
+            notificationChannel.setLockscreenVisibility(Notification.VISIBILITY_PUBLIC);
+            assert mNotificationManager != null;
+            mBuilder.setChannelId("test");
+            mNotificationManager.createNotificationChannel(notificationChannel);
+        }
+        assert mNotificationManager != null;
+
+        // When you issue multiple notifications about the same type of event,
+        // it’s best practice for your app to try to update an existing notification
+        // with this new information, rather than immediately creating a new notification.
+        // If you want to update this notification at a later date, you need to assign it an ID.
+        // You can then use this ID whenever you issue a subsequent notification.
+        // If the previous notification is still visible, the system will update this existing notification,
+        // rather than create a new one. In this example, the notification’s ID is 001//
+
+        mBuilder.build().flags |= Notification.FLAG_AUTO_CANCEL;
+
+        mNotificationManager.notify(2, mBuilder.build());
+    }
+
+
+    @SuppressLint("NewApi")
     public static void triggerBasicNotification() {
         Intent resultIntent = new Intent(context, ActionAlerteBroadcast.class);
         resultIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
@@ -860,5 +904,7 @@ public class PrimaPaginaActivity extends AppCompatActivity implements Navigation
         byte[] decodedByte = Base64.decode(input, 0);
         return BitmapFactory.decodeByteArray(decodedByte, 0, decodedByte.length);
     }
+
+
 
 }
