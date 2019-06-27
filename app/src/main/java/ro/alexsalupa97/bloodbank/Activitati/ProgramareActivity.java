@@ -54,6 +54,7 @@ import ro.alexsalupa97.bloodbank.Clase.Donatori;
 import ro.alexsalupa97.bloodbank.Clase.GrupeSanguine;
 import ro.alexsalupa97.bloodbank.Clase.Programari;
 import ro.alexsalupa97.bloodbank.Notificari.NotificariBroadcast;
+import ro.alexsalupa97.bloodbank.Notificari.NotificariProgramareBroadcast;
 import ro.alexsalupa97.bloodbank.R;
 import ro.alexsalupa97.bloodbank.Utile.Utile;
 
@@ -470,10 +471,10 @@ public class ProgramareActivity extends AppCompatActivity {
 
     public static void scheduleNotification(Notification notification, boolean isActive) {
 
-        Intent notificationIntent = new Intent(ProgramareActivity.context, NotificariBroadcast.class);
+        Intent notificationIntent = new Intent(ProgramareActivity.context, NotificariProgramareBroadcast.class);
         notificationIntent.putExtra(NotificariBroadcast.NOTIFICATION_ID, 2);
         notificationIntent.putExtra(NotificariBroadcast.NOTIFICATION, notification);
-        PendingIntent pendingIntent = PendingIntent.getBroadcast(ProgramareActivity.context, 0, notificationIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(ProgramareActivity.context, 1, notificationIntent, PendingIntent.FLAG_UPDATE_CURRENT);
 
         AlarmManager alarmManager = (AlarmManager) ProgramareActivity.context.getSystemService(Context.ALARM_SERVICE);
         String programare=Utile.preluareProgramare(ProgramareActivity.context);
