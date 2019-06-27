@@ -55,6 +55,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
+import java.util.TreeSet;
 import java.util.concurrent.ExecutionException;
 
 public class Utile {
@@ -67,7 +68,7 @@ public class Utile {
     public static ArrayList<Intrebari> intrebari;
     public static ArrayList<Compatibilitati> compatibilitati;
     public static ArrayList<CTS> CTS;
-    public static Set<Orase> orase;
+    public static TreeSet<Orase> orase;
     public static ArrayList<IstoricDonatii> listaIstoricDonatii;
     public static ArrayList<IstoricReceiver> listaIstoricReceiver;
     public static ArrayList<IntrariCTS> listaIntrariCTS;
@@ -495,7 +496,7 @@ public class Utile {
 
 
                         Utile.CTS = new ArrayList<>(Arrays.asList(gson.fromJson(response.toString(), CTS[].class)));
-                        Utile.orase = new HashSet<>();
+                        Utile.orase = new TreeSet<>();
 
                         for (CTS cts : Utile.CTS)
                             orase.add(cts.getOras());

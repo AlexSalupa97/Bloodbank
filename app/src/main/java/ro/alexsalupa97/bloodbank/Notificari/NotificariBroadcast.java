@@ -20,6 +20,7 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
+import java.util.TreeSet;
 import java.util.concurrent.ExecutionException;
 
 import ro.alexsalupa97.bloodbank.Clase.CTS;
@@ -91,7 +92,7 @@ public class NotificariBroadcast extends BroadcastReceiver {
                 Utile.listaLimiteCTS = new ArrayList<>(Arrays.asList(gson.fromJson(response2.toString(), LimiteCTS[].class)));
                 Utile.compatibilitati = new ArrayList<>(Arrays.asList(gson.fromJson(response3.toString(), Compatibilitati[].class)));
                 Utile.CTS = new ArrayList<>(Arrays.asList(gson.fromJson(response4.toString(), CTS[].class)));
-                Utile.orase = new HashSet<>();
+                Utile.orase = new TreeSet<>();
                 for (CTS cts : Utile.CTS)
                     Utile.orase.add(cts.getOras());
                 Utile.listaGrupeSanguine = new ArrayList<>(Arrays.asList(gson.fromJson(response5.toString(), GrupeSanguine[].class)));

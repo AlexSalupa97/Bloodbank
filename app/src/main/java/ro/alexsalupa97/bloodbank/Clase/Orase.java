@@ -5,7 +5,7 @@ import android.os.Parcelable;
 
 import com.google.gson.annotations.SerializedName;
 
-public class Orase implements Parcelable {
+public class Orase implements Parcelable,Comparable {
 
     @SerializedName("idoras")
     private int idOras;
@@ -79,4 +79,16 @@ public class Orase implements Parcelable {
             return new Orase[size];
         }
     };
+
+    @Override
+    public int compareTo(Object o) {
+        Orase orase=(Orase)o;
+        return this.oras.compareTo(orase.oras);
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        Orase orase=(Orase)obj;
+        return this.oras.compareTo(orase.oras)==0;
+    }
 }

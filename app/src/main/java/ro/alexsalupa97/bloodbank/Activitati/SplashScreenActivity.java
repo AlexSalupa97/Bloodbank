@@ -29,10 +29,12 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
+import java.util.TreeSet;
 import java.util.concurrent.ExecutionException;
 
 import ro.alexsalupa97.bloodbank.Clase.CTS;
 import ro.alexsalupa97.bloodbank.Clase.GrupeSanguine;
+import ro.alexsalupa97.bloodbank.Clase.Orase;
 import ro.alexsalupa97.bloodbank.R;
 import ro.alexsalupa97.bloodbank.Utile.Utile;
 
@@ -51,7 +53,7 @@ public class SplashScreenActivity extends AppCompatActivity {
         Utile.firstTimeReceiver = true;
 
 
-        if(isNetworkAvailable()) {
+        if (isNetworkAvailable()) {
             Thread t = new Thread() {
                 @Override
                 public void run() {
@@ -72,9 +74,10 @@ public class SplashScreenActivity extends AppCompatActivity {
                         JSONArray response1 = future1.get();
 
                         Utile.CTS = new ArrayList<>(Arrays.asList(gson.fromJson(response.toString(), CTS[].class)));
-                        Utile.orase = new HashSet<>();
+                        Utile.orase = new TreeSet<>();
                         for (CTS cts : Utile.CTS)
                             Utile.orase.add(cts.getOras());
+
 
                         Utile.listaGrupeSanguine = new ArrayList<>(Arrays.asList(gson.fromJson(response1.toString(), GrupeSanguine[].class)));
 
@@ -132,7 +135,7 @@ public class SplashScreenActivity extends AppCompatActivity {
 
             };
             t.start();
-        }else{
+        } else {
             final AlertDialog.Builder builder = new AlertDialog.Builder(this);
             builder.setMessage("Este necesara o conexiune la internet pentru a putea utiliza aplicatia")
                     .setCancelable(false)
@@ -144,7 +147,7 @@ public class SplashScreenActivity extends AppCompatActivity {
                     })
                     .setPositiveButton("OK", new DialogInterface.OnClickListener() {
                         public void onClick(final DialogInterface dialog, final int id) {
-                            startActivityForResult(new Intent(android.provider.Settings.ACTION_WIRELESS_SETTINGS),47);
+                            startActivityForResult(new Intent(android.provider.Settings.ACTION_WIRELESS_SETTINGS), 47);
                         }
                     });
             final AlertDialog alert = builder.create();
@@ -162,7 +165,7 @@ public class SplashScreenActivity extends AppCompatActivity {
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        if(isNetworkAvailable()) {
+        if (isNetworkAvailable()) {
             Thread t = new Thread() {
                 @Override
                 public void run() {
@@ -183,7 +186,7 @@ public class SplashScreenActivity extends AppCompatActivity {
                         JSONArray response1 = future1.get();
 
                         Utile.CTS = new ArrayList<>(Arrays.asList(gson.fromJson(response.toString(), CTS[].class)));
-                        Utile.orase = new HashSet<>();
+                        Utile.orase = new TreeSet<>();
                         for (CTS cts : Utile.CTS)
                             Utile.orase.add(cts.getOras());
 
@@ -243,7 +246,7 @@ public class SplashScreenActivity extends AppCompatActivity {
 
             };
             t.start();
-        }else{
+        } else {
             final AlertDialog.Builder builder = new AlertDialog.Builder(this);
             builder.setMessage("Este necesara o conexiune la internet pentru a putea utiliza aplicatia")
                     .setCancelable(false)
@@ -255,7 +258,7 @@ public class SplashScreenActivity extends AppCompatActivity {
                     })
                     .setPositiveButton("OK", new DialogInterface.OnClickListener() {
                         public void onClick(final DialogInterface dialog, final int id) {
-                            startActivityForResult(new Intent(android.provider.Settings.ACTION_WIRELESS_SETTINGS),47);
+                            startActivityForResult(new Intent(android.provider.Settings.ACTION_WIRELESS_SETTINGS), 47);
                         }
                     });
             final AlertDialog alert = builder.create();
