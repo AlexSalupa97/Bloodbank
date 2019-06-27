@@ -5,6 +5,8 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
+import android.support.annotation.Nullable;
+import android.support.design.widget.Snackbar;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AlertDialog;
@@ -178,7 +180,7 @@ public class DetaliiCTSActivity extends AppCompatActivity {
                                     {
                                         Intent intent = new Intent(getApplicationContext(), ProgramareActivity.class);
                                         intent.putExtra("cts", ctsCurent);
-                                        startActivity(intent);
+                                        startActivityForResult(intent,1);
                                     }
 
                                 } else {
@@ -484,4 +486,18 @@ public class DetaliiCTSActivity extends AppCompatActivity {
         return true;
     }
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        if(resultCode==1&&requestCode==1){
+            View parentLayout = findViewById(android.R.id.content);
+            Snackbar.make(parentLayout, "Programare facuta cu succes", Snackbar.LENGTH_LONG)
+                    .setAction("CLOSE", new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                        }
+                    })
+                    .setActionTextColor(getResources().getColor(android.R.color.holo_red_light ))
+                    .show();
+        }
+    }
 }

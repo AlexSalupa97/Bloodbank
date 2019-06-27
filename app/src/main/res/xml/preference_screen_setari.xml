@@ -22,7 +22,7 @@
         <SwitchPreference
             android:icon="@drawable/bell_outline"
             android:defaultValue="false"
-            android:summary="Notificari pentru alertele de sange"
+            android:title="Notificari pentru alertele de sange"
             app:key="notificari"/>
 
     </PreferenceCategory>

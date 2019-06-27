@@ -314,15 +314,8 @@ public class ProgramareActivity extends AppCompatActivity {
 
                                     scheduleNotification(sendNotification(),true);
 
-                                    View parentLayout = findViewById(android.R.id.content);
-                                    Snackbar.make(parentLayout, "Programare facuta cu succes", Snackbar.LENGTH_LONG)
-                                            .setAction("CLOSE", new View.OnClickListener() {
-                                                @Override
-                                                public void onClick(View view) {
-                                                }
-                                            })
-                                            .setActionTextColor(getResources().getColor(android.R.color.holo_red_light ))
-                                            .show();
+
+                                    setResult(1);
                                     finish();
                                 }
                             },
