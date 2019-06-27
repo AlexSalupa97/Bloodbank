@@ -250,7 +250,7 @@
         android:background="@android:color/white"
         app:headerLayout="@layout/navigation_drawer_layout"
         app:itemIconTint="@color/colorPrimaryDark"
-        app:itemTextColor="@color/colorPrimaryDark"
-        app:menu="@menu/meniu_receiver"></android.support.design.widget.NavigationView>
+        app:itemTextColor="#000"
+        app:menu="@menu/meniu_receiver"/>
 
 </android.support.v4.widget.DrawerLayout>

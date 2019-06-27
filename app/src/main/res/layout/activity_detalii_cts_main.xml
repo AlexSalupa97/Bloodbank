@@ -231,6 +231,6 @@
         android:background="@android:color/white"
         app:headerLayout="@layout/navigation_drawer_layout"
         app:itemIconTint="@color/colorPrimaryDark"
-        app:itemTextColor="@color/colorPrimaryDark"
+        app:itemTextColor="#000"
         app:menu="@menu/meniu_cts" />
 </android.support.v4.widget.DrawerLayout>

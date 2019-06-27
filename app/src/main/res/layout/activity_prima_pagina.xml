@@ -97,7 +97,7 @@
         android:background="@android:color/white"
         app:headerLayout="@layout/navigation_drawer_layout"
         app:itemIconTint="@color/colorPrimaryDark"
-        app:itemTextColor="@color/colorPrimaryDark"
-        app:menu="@menu/navigation_drawer_prima_pagina"></android.support.design.widget.NavigationView>
+        app:itemTextColor="#000"
+        app:menu="@menu/navigation_drawer_prima_pagina"/>
 
 </android.support.v4.widget.DrawerLayout>
