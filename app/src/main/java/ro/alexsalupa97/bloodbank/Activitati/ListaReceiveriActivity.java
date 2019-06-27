@@ -1,15 +1,23 @@
 package ro.alexsalupa97.bloodbank.Activitati;
 
+import android.app.SearchManager;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.SearchView;
+import android.text.TextUtils;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -26,6 +34,7 @@ public class ListaReceiveriActivity extends AppCompatActivity {
     ListView lvReceiveri;
     AdaptorReceiveriLV adaptor;
     ArrayList<Receiveri> listaReceiveri;
+    SearchView searchView;
 
 //    ArrayList<String> listaReceiveri;
 //    ArrayAdapter<String> adaptor;
@@ -109,4 +118,41 @@ public class ListaReceiveriActivity extends AppCompatActivity {
         finish();
         return true;
     }
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.meniu_search, menu);
+
+        MenuItem myActionMenuItem = menu.findItem(R.id.svActionbar);
+        searchView = (SearchView)myActionMenuItem.getActionView();
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String s) {
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String s) {
+                if (TextUtils.isEmpty(s)){
+                    adaptor.filter("",listaReceiveri);
+                    adaptor=new AdaptorReceiveriLV(getApplicationContext(),listaReceiveri);
+                    lvReceiveri.setAdapter(adaptor);
+                    lvReceiveri.clearTextFilter();
+                }
+                else {
+                    ArrayList<Receiveri> newList=adaptor.filter(s,listaReceiveri);
+                    adaptor=new AdaptorReceiveriLV(getApplicationContext(),newList);
+                    lvReceiveri.setAdapter(adaptor);
+                }
+                return true;
+            }
+        });
+        return true;
+    }
+
+//    @Override
+//    protected void onResume() {
+//        super.onResume();
+//        String cautare = searchView.getQuery().toString();
+//        searchView.setQuery(cautare, false);
+//    }
 }
