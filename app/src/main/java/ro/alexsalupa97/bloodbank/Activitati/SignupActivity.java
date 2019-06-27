@@ -20,6 +20,8 @@ public class SignupActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_signup);
 
+        getSupportActionBar().setElevation(0);
+
 
         adaptor = new AdaptorFragmenteSignup(getSupportFragmentManager());
         viewPager = (ViewPager) findViewById(R.id.loginViewpager);

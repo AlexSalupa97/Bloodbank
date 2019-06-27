@@ -15,6 +15,8 @@
 
         <LinearLayout
             android:layout_width="match_parent"
+            android:layout_marginLeft="48dp"
+            android:layout_marginRight="48dp"
             android:layout_height="wrap_content"
             android:orientation="horizontal">
 
@@ -29,8 +31,8 @@
                 android:id="@+id/etNume"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:textCursorDrawable="@null"
                 android:layout_weight="5"
-                android:hint="Introduceti numele dvs."
                 android:singleLine="true"
                 android:textColor="@android:color/white"
                 android:inputType="textCapSentences"
@@ -40,6 +42,8 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginLeft="48dp"
+            android:layout_marginRight="48dp"
             android:orientation="horizontal">
 
             <TextView
@@ -54,8 +58,8 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:inputType="textCapSentences"
+                android:textCursorDrawable="@null"
                 android:layout_weight="5"
-                android:hint="Introduceti prenumele dvs."
                 android:singleLine="true"
                 android:textColor="@android:color/white"
                 android:textColorHint="@android:color/white" />
@@ -64,6 +68,8 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginLeft="48dp"
+            android:layout_marginRight="48dp"
             android:orientation="horizontal">
 
             <TextView
@@ -78,8 +84,8 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="5"
-                android:hint="Introduceti email-ul dvs."
                 android:inputType="textEmailAddress"
+                android:textCursorDrawable="@null"
                 android:singleLine="true"
                 android:textColor="@android:color/white"
                 android:textColorHint="@android:color/white" />
@@ -87,6 +93,8 @@
 
         <LinearLayout
             android:layout_width="match_parent"
+            android:layout_marginLeft="48dp"
+            android:layout_marginRight="48dp"
             android:layout_height="wrap_content"
             android:orientation="horizontal">
 
@@ -102,8 +110,42 @@
                 android:layout_width="0dp"
                 android:inputType="number"
                 android:layout_height="wrap_content"
+                android:textCursorDrawable="@null"
                 android:layout_weight="5"
-                android:hint="Introduceti telefonul dvs."
+                android:singleLine="true"
+                android:textColor="@android:color/white"
+                android:textColorHint="@android:color/white" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_marginLeft="48dp"
+            android:layout_marginRight="48dp"
+            android:layout_marginTop="8dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <EditText
+                android:id="@+id/etPass1"
+                android:layout_width="0dp"
+                android:layout_marginRight="8dp"
+                android:inputType="textPassword"
+                android:hint="Parola"
+                android:layout_height="wrap_content"
+                android:textCursorDrawable="@null"
+                android:layout_weight="5"
+                android:singleLine="true"
+                android:textColor="@android:color/white"
+                android:textColorHint="@android:color/white" />
+
+            <EditText
+                android:hint="Confirmare"
+                android:id="@+id/etPass2"
+                android:layout_width="0dp"
+                android:inputType="textPassword"
+                android:layout_height="wrap_content"
+                android:textCursorDrawable="@null"
+                android:layout_weight="5"
                 android:singleLine="true"
                 android:textColor="@android:color/white"
                 android:textColorHint="@android:color/white" />
@@ -112,6 +154,8 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginLeft="48dp"
+            android:layout_marginRight="48dp"
             android:orientation="horizontal">
 
             <TextView
@@ -131,9 +175,12 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginLeft="48dp"
+            android:layout_marginRight="48dp"
             android:orientation="horizontal">
 
             <TextView
+
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="2"
@@ -154,9 +201,9 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1.2"
-        android:background="#F44236"
         android:text="Signup"
-        android:textColor="@android:color/white" />
+        android:background="@android:color/white"
+        android:textColor="@color/colorPrimaryDark" />
 
 
 

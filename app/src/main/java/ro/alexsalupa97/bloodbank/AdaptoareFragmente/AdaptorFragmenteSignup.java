@@ -18,24 +18,20 @@ public class AdaptorFragmenteSignup extends FragmentPagerAdapter {
     public CharSequence getPageTitle(int position) {
         if (position == 0)
             return "Donator";
-        else if (position == 1)
-            return "Receiver";
         else
-            return "CTS";
+            return "Receiver";
     }
 
     @Override
     public Fragment getItem(int position) {
         if (position == 0)
             return new SignupDonatorFragment();
-        else if (position == 1)
-            return new SignupReceiverFragment();
         else
-            return new SignupCTSFragment();
+            return new SignupReceiverFragment();
     }
 
     @Override
     public int getCount() {
-        return 3;
+        return 2;
     }
 }
