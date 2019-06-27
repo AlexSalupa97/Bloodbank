@@ -64,14 +64,6 @@ public class AdaptorReceiveriLV extends ArrayAdapter<Receiveri> {
             viewHolder.ivReceiver = (ImageView) viewRefolosibil.findViewById(R.id.ivPacient);
             viewHolder.vwMargine = (ImageView) viewRefolosibil.findViewById(R.id.vwMargine);
 
-            if (curent.getStareReceiver() == 1)
-                viewHolder.vwMargine.setBackground(context.getResources().getDrawable(R.drawable.gradient_orange_red_vertical));
-            else if (curent.getStareReceiver() == 2)
-                viewHolder.vwMargine.setBackground(context.getResources().getDrawable(R.drawable.gradient_yellow_red_vertical));
-            else
-                viewHolder.vwMargine.setBackground(context.getResources().getDrawable(R.drawable.gradient_red_vertical));
-
-
             viewRefolosibil.setTag(viewHolder);
         }
 
@@ -81,6 +73,12 @@ public class AdaptorReceiveriLV extends ArrayAdapter<Receiveri> {
 
         holder.tvNume.setText(curent.getNumeReceiver());
         holder.tvCTS.setText(curent.getCts().getNumeCTS());
+        if (curent.getStareReceiver() == 1)
+            holder.vwMargine.setBackground(context.getResources().getDrawable(R.drawable.gradient_orange_red_vertical));
+        else if (curent.getStareReceiver() == 2)
+            holder.vwMargine.setBackground(context.getResources().getDrawable(R.drawable.gradient_yellow_red_vertical));
+        else
+            holder.vwMargine.setBackground(context.getResources().getDrawable(R.drawable.gradient_red_vertical));
 //        holder.ivReceiver.(curent.getTelefonCTS());
 
 

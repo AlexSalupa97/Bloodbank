@@ -7,18 +7,10 @@
     android:layout_height="match_parent"
     tools:context=".Activitati.ListaReceiveriActivity">
 
-    <LinearLayout
+    <ListView
+        android:id="@+id/lvReceiveri"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical">
-
-        <ListView
-            android:id="@+id/lvReceiveri"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            />
-
-    </LinearLayout>
+        android:layout_height="match_parent" />
 
 
 </android.support.v4.widget.SwipeRefreshLayout>

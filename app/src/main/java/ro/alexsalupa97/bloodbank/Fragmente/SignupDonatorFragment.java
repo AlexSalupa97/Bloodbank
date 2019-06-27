@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -59,6 +60,8 @@ public class SignupDonatorFragment extends Fragment {
     EditText etPrenume;
     EditText etEmail;
     EditText etTelefon;
+    EditText etPass1;
+    EditText etPass2;
     Spinner spOras;
     Spinner spGrupaSanguina;
     Button btnSignup;
@@ -84,6 +87,8 @@ public class SignupDonatorFragment extends Fragment {
         etPrenume = (EditText) rootView.findViewById(R.id.etPrenume);
         etEmail = (EditText) rootView.findViewById(R.id.etEmail);
         etTelefon = (EditText) rootView.findViewById(R.id.etTelefon);
+        etPass1=(EditText)rootView.findViewById(R.id.etPass1);
+        etPass2=(EditText)rootView.findViewById(R.id.etPass2);
         spGrupaSanguina = (Spinner) rootView.findViewById(R.id.spGrupaSanguina);
         spOras = (Spinner) rootView.findViewById(R.id.spOras);
         btnSignup = (Button) rootView.findViewById(R.id.btnSignup);
@@ -124,115 +129,130 @@ public class SignupDonatorFragment extends Fragment {
             @Override
             public void onClick(View v) {
 
-                final Donatori donator = new Donatori();
-                donator.setEmailDonator(etEmail.getText().toString());
-                for (GrupeSanguine grupeSanguine : Utile.listaGrupeSanguine) {
-                    if (grupeSanguine.getGrupaSanguina().equals(spGrupaSanguina.getSelectedItem().toString()))
-                        donator.setGrupaSanguina(grupeSanguine);
-                }
-                //donator.setGrupaSanguina(new GrupeSanguine(spGrupaSanguina.getSelectedItem().toString()));
-                donator.setTelefonDonator(etTelefon.getText().toString());
-                for (Orase oras : Utile.orase) {
-                    if (oras.getOras().equals(spOras.getSelectedItem().toString()))
-                        donator.setOrasDonator(oras);
-                }
-                donator.setNumeDonator(etNume.getText().toString() + " " + etPrenume.getText().toString());
-
-                String url = Utile.URL + "domain.donatori/";
-
-                final RequestQueue requestQueue = Volley.newRequestQueue(getActivity());
-
-                final JSONObject jsonDonator = new JSONObject();
-                final JSONObject jsonOras = new JSONObject();
-                final JSONObject jsonGrupaSanguina = new JSONObject();
-                try {
-
-                    jsonGrupaSanguina.put("idgrupasanguina", donator.getGrupaSanguina().getGrupaSanguina());
-
-                    jsonOras.put("idoras", donator.getOrasDonator().getIdOras());
-                    jsonOras.put("judet", donator.getOrasDonator().getJudet());
-                    jsonOras.put("numeoras", donator.getOrasDonator().getOras());
-
-                    jsonDonator.put("emaildonator", donator.getEmailDonator());
-                    jsonDonator.put("iddonator", "");
-                    jsonDonator.put("idgrupasanguina", jsonGrupaSanguina);
-                    jsonDonator.put("idoras", jsonOras);
-                    jsonDonator.put("numedonator", donator.getNumeDonator());
-                    jsonDonator.put("telefondonator", donator.getTelefonDonator());
-
-                } catch (JSONException e) {
-
-                    e.printStackTrace();
-                }
-
-
-                JsonObjectRequest jsonObjReq = new JsonObjectRequest(Request.Method.POST,
-                        url, jsonDonator,
-                        new Response.Listener<JSONObject>() {
-                            @Override
-                            public void onResponse(JSONObject response) {
-
-                                SharedPreferences sharedPreferences = getActivity().getSharedPreferences(fisier, Context.MODE_PRIVATE);
-                                SharedPreferences.Editor editor = sharedPreferences.edit();
-
-                                editor.putString("login_name", donator.getNumeDonator());
-                                editor.putString("tip_user", "donator");
-                                editor.putString("grupaSanguina", donator.getGrupaSanguina().getGrupaSanguina());
-                                editor.putString("stareAnalize", "neefectuate");
-                                editor.putString("orasUser", donator.getOrasDonator().getOras());
-                                editor.putString("judetUser", donator.getOrasDonator().getJudet());
-                                editor.putString("email", donator.getEmailDonator());
-                                editor.putString("telefon", donator.getTelefonDonator());
-
-                                editor.commit();
-
-                                Utile.firstTimeDonator=true;
-
-                                Intent intent = new Intent(getActivity(), PrimaPaginaActivity.class);
-                                startActivity(intent);
-                                getActivity().finish();
-                            }
-                        },
-                        new Response.ErrorListener() {
-                            @Override
-                            public void onErrorResponse(VolleyError error) {
-
-                                if (error.toString().contains("ServerError")) {
-                                    Toast.makeText(getActivity(), "Eroare de server", Toast.LENGTH_LONG).show();
-                                    Log.d("restresponse", error.toString());
-                                }
-
-
-                            }
-                        }) {
-
-                    @Override
-                    protected Response<JSONObject> parseNetworkResponse(NetworkResponse response) {
-
-
-                        try {
-                            String json = new String(
-                                    response.data,
-                                    "UTF-8"
-                            );
-
-                            if (json.length() == 0) {
-                                return Response.success(
-                                        null,
-                                        HttpHeaderParser.parseCacheHeaders(response)
-                                );
-                            } else {
-                                return super.parseNetworkResponse(response);
-                            }
-                        } catch (UnsupportedEncodingException e) {
-                            return Response.error(new ParseError(e));
-                        }
-
-
+                if (etPass1.getText().toString().equals(etPass2.getText().toString())&&etPass1.getText().toString().length()>2) {
+                    final Donatori donator = new Donatori();
+                    donator.setEmailDonator(etEmail.getText().toString());
+                    for (GrupeSanguine grupeSanguine : Utile.listaGrupeSanguine) {
+                        if (grupeSanguine.getGrupaSanguina().equals(spGrupaSanguina.getSelectedItem().toString()))
+                            donator.setGrupaSanguina(grupeSanguine);
                     }
-                };
-                requestQueue.add(jsonObjReq);
+                    //donator.setGrupaSanguina(new GrupeSanguine(spGrupaSanguina.getSelectedItem().toString()));
+                    donator.setTelefonDonator(etTelefon.getText().toString());
+                    for (Orase oras : Utile.orase) {
+                        if (oras.getOras().equals(spOras.getSelectedItem().toString()))
+                            donator.setOrasDonator(oras);
+                    }
+                    donator.setNumeDonator(etNume.getText().toString() + " " + etPrenume.getText().toString());
+                    donator.setParolaDonator(etPass1.getText().toString());
 
+                    String url = Utile.URL + "domain.donatori/";
+
+                    final RequestQueue requestQueue = Volley.newRequestQueue(getActivity());
+
+                    final JSONObject jsonDonator = new JSONObject();
+                    final JSONObject jsonOras = new JSONObject();
+                    final JSONObject jsonGrupaSanguina = new JSONObject();
+                    try {
+
+                        jsonGrupaSanguina.put("idgrupasanguina", donator.getGrupaSanguina().getGrupaSanguina());
+
+                        jsonOras.put("idoras", donator.getOrasDonator().getIdOras());
+                        jsonOras.put("judet", donator.getOrasDonator().getJudet());
+                        jsonOras.put("numeoras", donator.getOrasDonator().getOras());
+
+                        jsonDonator.put("emaildonator", donator.getEmailDonator());
+                        jsonDonator.put("iddonator", "");
+                        jsonDonator.put("idgrupasanguina", jsonGrupaSanguina);
+                        jsonDonator.put("idoras", jsonOras);
+                        jsonDonator.put("numedonator", donator.getNumeDonator());
+                        jsonDonator.put("paroladonator", donator.getParolaDonator());
+                        jsonDonator.put("telefondonator", donator.getTelefonDonator());
+
+                    } catch (JSONException e) {
+
+                        e.printStackTrace();
+                    }
+
+
+                    JsonObjectRequest jsonObjReq = new JsonObjectRequest(Request.Method.POST,
+                            url, jsonDonator,
+                            new Response.Listener<JSONObject>() {
+                                @Override
+                                public void onResponse(JSONObject response) {
+
+                                    SharedPreferences sharedPreferences = getActivity().getSharedPreferences(fisier, Context.MODE_PRIVATE);
+                                    SharedPreferences.Editor editor = sharedPreferences.edit();
+
+                                    editor.putString("login_name", donator.getNumeDonator());
+                                    editor.putString("tip_user", "donator");
+                                    editor.putString("grupaSanguina", donator.getGrupaSanguina().getGrupaSanguina());
+                                    editor.putString("stareAnalize", "neefectuate");
+                                    editor.putString("orasUser", donator.getOrasDonator().getOras());
+                                    editor.putString("judetUser", donator.getOrasDonator().getJudet());
+                                    editor.putString("email", donator.getEmailDonator());
+                                    editor.putString("telefon", donator.getTelefonDonator());
+
+                                    editor.commit();
+
+                                    Utile.firstTimeDonator = true;
+
+                                    Intent intent = new Intent(getActivity(), PrimaPaginaActivity.class);
+                                    startActivity(intent);
+                                    getActivity().finish();
+                                }
+                            },
+                            new Response.ErrorListener() {
+                                @Override
+                                public void onErrorResponse(VolleyError error) {
+
+                                    if (error.toString().contains("ServerError")) {
+                                        Toast.makeText(getActivity(), "Eroare de server", Toast.LENGTH_LONG).show();
+                                        Log.d("restresponse", error.toString());
+                                    }
+
+
+                                }
+                            }) {
+
+                        @Override
+                        protected Response<JSONObject> parseNetworkResponse(NetworkResponse response) {
+
+
+                            try {
+                                String json = new String(
+                                        response.data,
+                                        "UTF-8"
+                                );
+
+                                if (json.length() == 0) {
+                                    return Response.success(
+                                            null,
+                                            HttpHeaderParser.parseCacheHeaders(response)
+                                    );
+                                } else {
+                                    return super.parseNetworkResponse(response);
+                                }
+                            } catch (UnsupportedEncodingException e) {
+                                return Response.error(new ParseError(e));
+                            }
+
+
+                        }
+                    };
+                    requestQueue.add(jsonObjReq);
+
+                }
+                else{
+                    View parentLayout = getActivity().findViewById(android.R.id.content);
+                    Snackbar.make(parentLayout, "Parolele nu corespund", Snackbar.LENGTH_LONG)
+                            .setAction("CLOSE", new View.OnClickListener() {
+                                @Override
+                                public void onClick(View view) {
+                                }
+                            })
+                            .setActionTextColor(getResources().getColor(android.R.color.holo_red_light ))
+                            .show();
+                }
             }
 
 

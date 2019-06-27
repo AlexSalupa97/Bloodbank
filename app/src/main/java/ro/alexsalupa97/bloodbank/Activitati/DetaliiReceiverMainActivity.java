@@ -165,7 +165,7 @@ public class DetaliiReceiverMainActivity extends AppCompatActivity implements Na
                             runOnUiThread(new Runnable() {
                                 @Override
                                 public void run() {
-                                    Toast.makeText(getApplicationContext(),String.valueOf(receiver.getIdReceiver()),Toast.LENGTH_SHORT).show();
+//                                    Toast.makeText(getApplicationContext(),String.valueOf(receiver.getIdReceiver()),Toast.LENGTH_SHORT).show();
                                     fbShareBtn = (ShareButton) findViewById(R.id.fbShareBtn);
                                     ShareLinkContent content = new ShareLinkContent.Builder()
                                             .setQuote("Doneaza pentru " + receiverFinal.getNumeReceiver())
