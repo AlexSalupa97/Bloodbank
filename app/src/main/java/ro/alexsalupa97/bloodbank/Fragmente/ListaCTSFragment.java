@@ -7,10 +7,16 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.LinkedHashMap;
+import java.util.Map;
+import java.util.stream.Collectors;
 
+import ro.alexsalupa97.bloodbank.Activitati.ListaCentreActivity;
 import ro.alexsalupa97.bloodbank.Adaptoare.AdaptorLVCTS;
+import ro.alexsalupa97.bloodbank.Clase.CTS;
 import ro.alexsalupa97.bloodbank.R;
 import ro.alexsalupa97.bloodbank.Utile.Utile;
 
@@ -19,6 +25,7 @@ public class ListaCTSFragment extends Fragment {
 
     AdaptorLVCTS adaptor;
     ListView listView;
+    ArrayList<CTS> listaCTS;
 
     public ListaCTSFragment() {
         // Required empty public constructor
@@ -30,8 +37,21 @@ public class ListaCTSFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         rootView = inflater.inflate(R.layout.fragment_cts_all, container, false);
-        Collections.sort(Utile.CTS);
-        adaptor = new AdaptorLVCTS(getActivity(), Utile.CTS);
+
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.N) {
+            listaCTS=new ArrayList<>();
+            LinkedHashMap<CTS,Double> mapCTSsortate =
+                    ListaCentreActivity.mapListaDistante.entrySet().stream()
+                            .sorted(Map.Entry.comparingByValue(Double::compareTo))
+                            .collect(Collectors.toMap(
+                                    Map.Entry::getKey, Map.Entry::getValue, (e1, e2) -> e1, LinkedHashMap::new));
+            listaCTS.addAll(mapCTSsortate.keySet());
+            adaptor = new AdaptorLVCTS(getActivity(), listaCTS);
+        }else {
+            Collections.sort(Utile.CTS);
+            adaptor = new AdaptorLVCTS(getActivity(), Utile.CTS);
+        }
+
         listView = (ListView) rootView.findViewById(R.id.lvCentreAll);
         listView.setAdapter(adaptor);
 

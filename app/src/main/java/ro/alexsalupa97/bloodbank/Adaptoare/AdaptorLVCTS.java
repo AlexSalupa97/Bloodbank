@@ -58,7 +58,7 @@ public class AdaptorLVCTS extends ArrayAdapter<CTS> {
             viewHolder.telefonCTS = (TextView) viewRefolosibil.findViewById(R.id.lvTelefonCTS);
             viewHolder.btnApelare = (ImageButton) viewRefolosibil.findViewById(R.id.btnApelare);
             viewHolder.ivRecomandat = (ImageView) viewRefolosibil.findViewById(R.id.ivRecomandat);
-            viewHolder.cvCTS=(CardView)viewRefolosibil.findViewById(R.id.cvCTS);
+            viewHolder.cvCTS = (CardView) viewRefolosibil.findViewById(R.id.cvCTS);
 
 
             viewRefolosibil.setTag(viewHolder);
@@ -72,18 +72,17 @@ public class AdaptorLVCTS extends ArrayAdapter<CTS> {
         holder.adresaCTS.setText(curent.getAdresaCTS());
         holder.telefonCTS.setText(curent.getTelefonCTS());
 
-        try {
-            if (curent.getNumeCTS().equals(ListaCentreActivity.closestCTS.getNumeCTS())) {
-                holder.ivRecomandat.setImageResource(R.drawable.recomandat);
-                holder.ivRecomandat.setPadding(20, 0, 0, 0);
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
-                    holder.cvCTS.setOutlineSpotShadowColor(Color.parseColor("#B10000"));
-                }
-            } else {
-                holder.ivRecomandat.setVisibility(View.GONE);
+        if (curent.getNumeCTS().equals(ListaCentreActivity.closestCTS.getNumeCTS())) {
+            holder.ivRecomandat.setImageResource(R.drawable.recomandat);
+            holder.ivRecomandat.setPadding(20, 0, 0, 0);
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
+                holder.cvCTS.setOutlineSpotShadowColor(Color.parseColor("#B10000"));
             }
-        }catch (Exception ex){
-
+        } else {
+            holder.ivRecomandat.setImageResource(0);
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
+                holder.cvCTS.setOutlineSpotShadowColor(Color.parseColor("#000000"));
+            }
         }
 
 
