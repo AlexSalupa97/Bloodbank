@@ -87,8 +87,8 @@ public class SignupDonatorFragment extends Fragment {
         etPrenume = (EditText) rootView.findViewById(R.id.etPrenume);
         etEmail = (EditText) rootView.findViewById(R.id.etEmail);
         etTelefon = (EditText) rootView.findViewById(R.id.etTelefon);
-        etPass1=(EditText)rootView.findViewById(R.id.etPass1);
-        etPass2=(EditText)rootView.findViewById(R.id.etPass2);
+        etPass1 = (EditText) rootView.findViewById(R.id.etPass1);
+        etPass2 = (EditText) rootView.findViewById(R.id.etPass2);
         spGrupaSanguina = (Spinner) rootView.findViewById(R.id.spGrupaSanguina);
         spOras = (Spinner) rootView.findViewById(R.id.spOras);
         btnSignup = (Button) rootView.findViewById(R.id.btnSignup);
@@ -129,7 +129,37 @@ public class SignupDonatorFragment extends Fragment {
             @Override
             public void onClick(View v) {
 
-                if (etPass1.getText().toString().equals(etPass2.getText().toString())&&etPass1.getText().toString().length()>2) {
+                if (etNume.getText().toString().length() == 0 || etPrenume.getText().toString().length() == 0) {
+                    View parentLayout = getActivity().findViewById(android.R.id.content);
+                    Snackbar.make(parentLayout, "Numele este necorespunzator", Snackbar.LENGTH_LONG)
+                            .setAction("CLOSE", new View.OnClickListener() {
+                                @Override
+                                public void onClick(View view) {
+                                }
+                            })
+                            .setActionTextColor(getResources().getColor(android.R.color.holo_red_light))
+                            .show();
+                } else if (!isEmailValid(etEmail.getText().toString())) {
+                    View parentLayout = getActivity().findViewById(android.R.id.content);
+                    Snackbar.make(parentLayout, "Email-ul este necorespunzator", Snackbar.LENGTH_LONG)
+                            .setAction("CLOSE", new View.OnClickListener() {
+                                @Override
+                                public void onClick(View view) {
+                                }
+                            })
+                            .setActionTextColor(getResources().getColor(android.R.color.holo_red_light))
+                            .show();
+                } else if (!etTelefon.getText().toString().matches("[0-9]+") || etTelefon.getText().toString().length() != 10) {
+                    View parentLayout = getActivity().findViewById(android.R.id.content);
+                    Snackbar.make(parentLayout, "Telefonul este necorespunzator", Snackbar.LENGTH_LONG)
+                            .setAction("CLOSE", new View.OnClickListener() {
+                                @Override
+                                public void onClick(View view) {
+                                }
+                            })
+                            .setActionTextColor(getResources().getColor(android.R.color.holo_red_light))
+                            .show();
+                } else if (etPass1.getText().toString().equals(etPass2.getText().toString()) && etPass1.getText().toString().length() > 2) {
                     final Donatori donator = new Donatori();
                     donator.setEmailDonator(etEmail.getText().toString());
                     for (GrupeSanguine grupeSanguine : Utile.listaGrupeSanguine) {
@@ -241,8 +271,7 @@ public class SignupDonatorFragment extends Fragment {
                     };
                     requestQueue.add(jsonObjReq);
 
-                }
-                else{
+                } else {
                     View parentLayout = getActivity().findViewById(android.R.id.content);
                     Snackbar.make(parentLayout, "Parolele nu corespund", Snackbar.LENGTH_LONG)
                             .setAction("CLOSE", new View.OnClickListener() {
@@ -250,15 +279,19 @@ public class SignupDonatorFragment extends Fragment {
                                 public void onClick(View view) {
                                 }
                             })
-                            .setActionTextColor(getResources().getColor(android.R.color.holo_red_light ))
+                            .setActionTextColor(getResources().getColor(android.R.color.holo_red_light))
                             .show();
                 }
             }
 
 
-        });
+    });
 
         return rootView;
+}
+
+    boolean isEmailValid(CharSequence email) {
+        return android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches();
     }
 
 }

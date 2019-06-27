@@ -70,7 +70,6 @@ public class AdaptorReceiveriLV extends ArrayAdapter<Receiveri> {
 
         ViewHolder holder = (ViewHolder) viewRefolosibil.getTag();
 
-
         holder.tvNume.setText(curent.getNumeReceiver());
         holder.tvCTS.setText(curent.getCts().getNumeCTS());
         if (curent.getStareReceiver() == 1)
