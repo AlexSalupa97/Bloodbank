@@ -149,10 +149,4 @@ public class ListaReceiveriActivity extends AppCompatActivity {
         return true;
     }
 
-//    @Override
-//    protected void onResume() {
-//        super.onResume();
-//        String cautare = searchView.getQuery().toString();
-//        searchView.setQuery(cautare, false);
-//    }
 }
