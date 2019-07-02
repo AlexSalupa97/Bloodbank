@@ -1,5 +1,7 @@
 package ro.alexsalupa97.bloodbank.Fragmente;
 
+import android.content.Context;
+import android.location.LocationManager;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -37,8 +39,9 @@ public class ListaCTSFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         rootView = inflater.inflate(R.layout.fragment_cts_all, container, false);
+        final LocationManager manager = (LocationManager) getActivity().getSystemService(Context.LOCATION_SERVICE);
 
-        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.N) {
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.N&& manager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
             listaCTS=new ArrayList<>();
             LinkedHashMap<CTS,Double> mapCTSsortate =
                     ListaCentreActivity.mapListaDistante.entrySet().stream()

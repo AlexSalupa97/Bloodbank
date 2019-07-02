@@ -72,17 +72,21 @@ public class AdaptorLVCTS extends ArrayAdapter<CTS> {
         holder.adresaCTS.setText(curent.getAdresaCTS());
         holder.telefonCTS.setText(curent.getTelefonCTS());
 
-        if (curent.getNumeCTS().equals(ListaCentreActivity.closestCTS.getNumeCTS())) {
-            holder.ivRecomandat.setImageResource(R.drawable.recomandat);
-            holder.ivRecomandat.setPadding(20, 0, 0, 0);
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
-                holder.cvCTS.setOutlineSpotShadowColor(Color.parseColor("#B10000"));
+        try {
+            if (curent.getNumeCTS().equals(ListaCentreActivity.closestCTS.getNumeCTS())) {
+                holder.ivRecomandat.setImageResource(R.drawable.recomandat);
+                holder.ivRecomandat.setPadding(20, 0, 0, 0);
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
+                    holder.cvCTS.setOutlineSpotShadowColor(Color.parseColor("#B10000"));
+                }
+            } else {
+                holder.ivRecomandat.setImageResource(0);
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
+                    holder.cvCTS.setOutlineSpotShadowColor(Color.parseColor("#000000"));
+                }
             }
-        } else {
-            holder.ivRecomandat.setImageResource(0);
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
-                holder.cvCTS.setOutlineSpotShadowColor(Color.parseColor("#000000"));
-            }
+        }catch (Exception ex){
+
         }
 
 

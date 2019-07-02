@@ -1,5 +1,7 @@
 package ro.alexsalupa97.bloodbank.Fragmente;
 
+import android.content.Context;
+import android.location.LocationManager;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -43,26 +45,27 @@ public class ListaCTSInApropiereFragment extends Fragment {
 
         ArrayList<CTS> listaCTSInApropiere = new ArrayList<>();
 
-        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.N) {
-            LinkedHashMap<CTS,Double> mapCTSsortate =
+        final LocationManager manager = (LocationManager) getActivity().getSystemService(Context.LOCATION_SERVICE);
+
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.N && manager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
+            LinkedHashMap<CTS, Double> mapCTSsortate =
                     ListaCentreActivity.mapListaDistante.entrySet().stream()
                             .sorted(Map.Entry.comparingByValue(Double::compareTo))
                             .collect(Collectors.toMap(
                                     Map.Entry::getKey, Map.Entry::getValue, (e1, e2) -> e1, LinkedHashMap::new));
-            for(CTS cts:mapCTSsortate.keySet())
+            for (CTS cts : mapCTSsortate.keySet())
                 if (cts.getOras().getOras().equals(Utile.preluareOras(getActivity())))
                     listaCTSInApropiere.add(cts);
-        }else {
+        } else {
 
             for (CTS c : Utile.CTS)
                 if (c.getOras().getOras().equals(Utile.preluareOras(getActivity())))
                     listaCTSInApropiere.add(c);
         }
 
-            adaptor = new AdaptorLVCTS(getActivity(), listaCTSInApropiere);
-            listView = (ListView) rootView.findViewById(R.id.lvCentreApropiate);
-            listView.setAdapter(adaptor);
-
+        adaptor = new AdaptorLVCTS(getActivity(), listaCTSInApropiere);
+        listView = (ListView) rootView.findViewById(R.id.lvCentreApropiate);
+        listView.setAdapter(adaptor);
 
 
         return rootView;
