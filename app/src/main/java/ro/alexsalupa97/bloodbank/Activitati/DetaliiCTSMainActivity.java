@@ -70,6 +70,7 @@ public class DetaliiCTSMainActivity extends AppCompatActivity implements Navigat
     TextView tvAdresa;
     TextView tvEmail;
     TextView tvTelefon;
+    TextView tvNumeCTS;
 
     Map<CTS, Map<GrupeSanguine, Integer>> mapCantitatiDisponibilePerCTSPerGrupa;
     Map<CTS, Map<GrupeSanguine, Integer>> mapLimitePerCTSPerGrupa;
@@ -96,7 +97,7 @@ public class DetaliiCTSMainActivity extends AppCompatActivity implements Navigat
         final CTS ctsActual = Utile.preluareCTSLogin(getApplicationContext());
 
 
-        getSupportActionBar().setTitle(ctsActual.getNumeCTS());
+        getSupportActionBar().setTitle("");
         rvAlerte = (RecyclerView) findViewById(R.id.rvSituatieSanguinaCTS);
 
 
@@ -131,6 +132,8 @@ public class DetaliiCTSMainActivity extends AppCompatActivity implements Navigat
         tvEmail.setText(ctsActual.getEmailCTS());
         tvTelefon=(TextView)findViewById(R.id.tvTelefon);
         tvTelefon.setText(ctsActual.getTelefonCTS());
+        tvNumeCTS = (TextView) findViewById(R.id.tvNumeCTS);
+        tvNumeCTS.setText(ctsActual.getNumeCTS());
 
         Thread thread = new Thread(new Runnable() {
             @Override
@@ -278,16 +281,20 @@ public class DetaliiCTSMainActivity extends AppCompatActivity implements Navigat
                             JsonArrayRequest request2 = new JsonArrayRequest(Request.Method.GET, Utile.URL + "domain.istoriciesiricts/cts/" + ctsActual.getEmailCTS(), null, future2, future2);
                             RequestFuture<JSONArray> future3 = RequestFuture.newFuture();
                             JsonArrayRequest request3 = new JsonArrayRequest(Request.Method.GET, Utile.URL + "domain.grupesanguine", null, future3, future3);
+                            RequestFuture<JSONObject> future4 = RequestFuture.newFuture();
+                            JsonObjectRequest request4 = new JsonObjectRequest(Request.Method.GET, Utile.URL + "domain.cts/"+ctsActual.getIdCTS(), null, future4, future4);
 
                             requestQueue.add(request);
                             requestQueue.add(request1);
                             requestQueue.add(request2);
                             requestQueue.add(request3);
+                            requestQueue.add(request4);
 
                             JSONArray response = future.get();
                             JSONArray response1 = future1.get();
                             JSONArray response2 = future2.get();
                             JSONArray response3 = future3.get();
+                            JSONObject response4=future4.get();
 
                             gson=new Gson();
 
@@ -295,6 +302,12 @@ public class DetaliiCTSMainActivity extends AppCompatActivity implements Navigat
                             Utile.listaIntrariCTS = new ArrayList<>(Arrays.asList(gson.fromJson(response1.toString(), IntrariCTS[].class)));
                             Utile.listaIesiriCTS = new ArrayList<>(Arrays.asList(gson.fromJson(response2.toString(), IesiriCTS[].class)));
                             Utile.listaGrupeSanguine = new ArrayList<>(Arrays.asList(gson.fromJson(response3.toString(), GrupeSanguine[].class)));
+                            CTS ctsCurent=gson.fromJson(response4.toString(), CTS.class);
+
+                            tvAdresa.setText(ctsCurent.getAdresaCTS());
+                            tvEmail.setText(ctsCurent.getEmailCTS());
+                            tvTelefon.setText(ctsCurent.getTelefonCTS());
+                            tvNumeCTS.setText(ctsCurent.getNumeCTS());
 
                             mapCantitatiDisponibilePerCTSPerGrupa = new HashMap<>(Utile.incarcareMapDisponibil_particular(ctsActual));
 

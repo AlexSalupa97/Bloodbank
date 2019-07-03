@@ -163,24 +163,22 @@ public class DetaliiCTSActivity extends AppCompatActivity {
                                 eligibil[0] = curent.getTimeInMillis() - donatie.getTimeInMillis() >= 1000L * 60 * 60 * 24 * 56;
                                 perioadaRamasa[0] = curent.getTimeInMillis() - donatie.getTimeInMillis();
                                 if (eligibil[0]) {
-                                    String programare=Utile.preluareProgramare(getApplicationContext());
-                                    Date date=new Date();
+                                    String programare = Utile.preluareProgramare(getApplicationContext());
+                                    Date date = new Date();
                                     date.setSeconds(0);
-                                    date.setHours(Integer.parseInt(programare.substring(0,2)));
-                                    date.setMinutes(Integer.parseInt(programare.substring(2,4)));
-                                    date.setDate(Integer.parseInt(programare.substring(4,6)));
-                                    date.setMonth(Integer.parseInt(programare.substring(6,8))-1);
-                                    date.setYear(Integer.parseInt(programare.substring(8))-1900);
-                                    if(new Date().getTime()-date.getTime()<0){
-                                        Intent intent=new Intent(getApplicationContext(),ProgramareEfectuataActivity.class);
+                                    date.setHours(Integer.parseInt(programare.substring(0, 2)));
+                                    date.setMinutes(Integer.parseInt(programare.substring(2, 4)));
+                                    date.setDate(Integer.parseInt(programare.substring(4, 6)));
+                                    date.setMonth(Integer.parseInt(programare.substring(6, 8)) - 1);
+                                    date.setYear(Integer.parseInt(programare.substring(8)) - 1900);
+                                    if (new Date().getTime() - date.getTime() < 0) {
+                                        Intent intent = new Intent(getApplicationContext(), ProgramareEfectuataActivity.class);
                                         intent.putExtra("cts", ctsCurent);
                                         startActivity(intent);
-                                    }
-                                    else
-                                    {
+                                    } else {
                                         Intent intent = new Intent(getApplicationContext(), ProgramareActivity.class);
                                         intent.putExtra("cts", ctsCurent);
-                                        startActivityForResult(intent,1);
+                                        startActivityForResult(intent, 1);
                                     }
 
                                 } else {
@@ -362,16 +360,20 @@ public class DetaliiCTSActivity extends AppCompatActivity {
                             JsonArrayRequest request2 = new JsonArrayRequest(Request.Method.GET, Utile.URL + "domain.istoriciesiricts/cts/" + ctsCurent.getEmailCTS(), null, future2, future2);
                             RequestFuture<JSONArray> future3 = RequestFuture.newFuture();
                             JsonArrayRequest request3 = new JsonArrayRequest(Request.Method.GET, Utile.URL + "domain.grupesanguine", null, future3, future3);
+                            RequestFuture<JSONObject> future4 = RequestFuture.newFuture();
+                            JsonObjectRequest request4 = new JsonObjectRequest(Request.Method.GET, Utile.URL + "domain.cts/"+ctsCurent.getIdCTS(), null, future4, future4);
 
                             requestQueue.add(request);
                             requestQueue.add(request1);
                             requestQueue.add(request2);
                             requestQueue.add(request3);
+                            requestQueue.add(request4);
 
                             JSONArray response = future.get();
                             JSONArray response1 = future1.get();
                             JSONArray response2 = future2.get();
                             JSONArray response3 = future3.get();
+                            JSONObject response4 = future4.get();
 
                             gson = new Gson();
 
@@ -379,6 +381,12 @@ public class DetaliiCTSActivity extends AppCompatActivity {
                             Utile.listaIntrariCTS = new ArrayList<>(Arrays.asList(gson.fromJson(response1.toString(), IntrariCTS[].class)));
                             Utile.listaIesiriCTS = new ArrayList<>(Arrays.asList(gson.fromJson(response2.toString(), IesiriCTS[].class)));
                             Utile.listaGrupeSanguine = new ArrayList<>(Arrays.asList(gson.fromJson(response3.toString(), GrupeSanguine[].class)));
+                            ctsCurent=gson.fromJson(response4.toString(), CTS.class);
+
+                            tvNumeCTS.setText(ctsCurent.getNumeCTS());
+                            tvAdresa.setText(ctsCurent.getAdresaCTS());
+                            tvEmail.setText(ctsCurent.getEmailCTS());
+                            tvTelefon.setText(ctsCurent.getTelefonCTS());
 
                             mapCantitatiDisponibilePerCTSPerGrupa = new HashMap<>(Utile.incarcareMapDisponibil_particular(ctsCurent));
 
@@ -488,7 +496,7 @@ public class DetaliiCTSActivity extends AppCompatActivity {
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        if(resultCode==1&&requestCode==1){
+        if (resultCode == 1 && requestCode == 1) {
             View parentLayout = findViewById(android.R.id.content);
             Snackbar.make(parentLayout, "Programare facuta cu succes", Snackbar.LENGTH_LONG)
                     .setAction("CLOSE", new View.OnClickListener() {
@@ -496,7 +504,7 @@ public class DetaliiCTSActivity extends AppCompatActivity {
                         public void onClick(View view) {
                         }
                     })
-                    .setActionTextColor(getResources().getColor(android.R.color.holo_red_light ))
+                    .setActionTextColor(getResources().getColor(android.R.color.holo_red_light))
                     .show();
         }
     }
