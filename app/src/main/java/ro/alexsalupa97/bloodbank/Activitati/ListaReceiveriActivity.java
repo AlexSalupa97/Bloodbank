@@ -37,15 +37,25 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.TreeSet;
+import java.util.concurrent.ExecutionException;
 
 import ro.alexsalupa97.bloodbank.Adaptoare.AdaptorIstoricDonatiiRV;
 import ro.alexsalupa97.bloodbank.Adaptoare.AdaptorReceiveriLV;
+import ro.alexsalupa97.bloodbank.Clase.CTS;
+import ro.alexsalupa97.bloodbank.Clase.Compatibilitati;
+import ro.alexsalupa97.bloodbank.Clase.GrupeSanguine;
+import ro.alexsalupa97.bloodbank.Clase.IesiriCTS;
+import ro.alexsalupa97.bloodbank.Clase.IntrariCTS;
 import ro.alexsalupa97.bloodbank.Clase.IstoricDonatii;
+import ro.alexsalupa97.bloodbank.Clase.LimiteCTS;
 import ro.alexsalupa97.bloodbank.Clase.Receiveri;
 import ro.alexsalupa97.bloodbank.R;
 import ro.alexsalupa97.bloodbank.RecyclerViewOrizontal.ItemModelIstoric;
 import ro.alexsalupa97.bloodbank.RecyclerViewOrizontal.SectionModelIstoric;
 import ro.alexsalupa97.bloodbank.Utile.Utile;
+
+import static java.lang.Thread.sleep;
 
 
 public class ListaReceiveriActivity extends AppCompatActivity {
@@ -71,12 +81,52 @@ public class ListaReceiveriActivity extends AppCompatActivity {
 
         lvReceiveri = (ListView) findViewById(R.id.lvReceiveri);
         listaReceiveri = new ArrayList<>();
-        for (Receiveri receiver : Utile.listaReceiveri)
-            if (receiver.getCts().getOras().getOras().equals(Utile.preluareOras(getApplicationContext())))
-                listaReceiveri.add(receiver);
-        Collections.sort(listaReceiveri);
-        adaptor = new AdaptorReceiveriLV(getApplicationContext(), listaReceiveri);
-        lvReceiveri.setAdapter(adaptor);
+
+
+        Thread thread = new Thread(new Runnable() {
+            @Override
+            public void run() {
+
+                try {
+                    gson=new Gson();
+
+                    RequestQueue requestQueue = Volley.newRequestQueue(ListaReceiveriActivity.this);
+                    RequestFuture<JSONArray> future = RequestFuture.newFuture();
+                    JsonArrayRequest request = new JsonArrayRequest(Request.Method.GET, Utile.URL + "domain.compatibilitati/"+Utile.preluareGrupaSanguina(getApplicationContext()), null, future, future);
+                    requestQueue.add(request);
+                    JSONArray response=future.get();
+
+
+                    Utile.compatibilitati = new ArrayList<>(Arrays.asList(gson.fromJson(response.toString(), Compatibilitati[].class)));
+                    ArrayList<String> listaCompatibilitati=new ArrayList<>();
+                    for(Compatibilitati c:Utile.compatibilitati)
+                        if(c.getGrupaSanguinaDonatoare().getGrupaSanguina().equals(Utile.preluareGrupaSanguina(getApplicationContext())))
+                            listaCompatibilitati.add(c.getGrupaSanguinaReceiver().getGrupaSanguina());
+                    for (Receiveri receiver : Utile.listaReceiveri)
+                        if (receiver.getCts().getOras().getOras().equals(Utile.preluareOras(getApplicationContext()))&&listaCompatibilitati.contains(receiver.getGrupaSanguina().getGrupaSanguina()))
+                            listaReceiveri.add(receiver);
+                    Collections.sort(listaReceiveri);
+                    adaptor = new AdaptorReceiveriLV(getApplicationContext(), listaReceiveri);
+
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            lvReceiveri.setAdapter(adaptor);
+
+                        }
+                    });
+
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                } catch (ExecutionException e) {
+                    e.printStackTrace();
+                }
+
+
+
+            }
+        });
+        thread.start();
 
         srlListaReceiveri = (SwipeRefreshLayout) findViewById(R.id.srlListaReceiveri);
         srlListaReceiveri.setColorSchemeColors(getResources().getColor(R.color.colorPrimary));
@@ -98,9 +148,19 @@ public class ListaReceiveriActivity extends AppCompatActivity {
 
                             Utile.listaReceiveri = new ArrayList<>(Arrays.asList(gson.fromJson(response1.toString(), Receiveri[].class)));
 
-                            listaReceiveri = new ArrayList<>();
+                            RequestFuture<JSONArray> future = RequestFuture.newFuture();
+                            JsonArrayRequest request = new JsonArrayRequest(Request.Method.GET, Utile.URL + "domain.compatibilitati/"+Utile.preluareGrupaSanguina(getApplicationContext()), null, future, future);
+                            requestQueue.add(request);
+                            JSONArray response=future.get();
+
+                            listaReceiveri=new ArrayList<>();
+                            Utile.compatibilitati = new ArrayList<>(Arrays.asList(gson.fromJson(response.toString(), Compatibilitati[].class)));
+                            ArrayList<String> listaCompatibilitati=new ArrayList<>();
+                            for(Compatibilitati c:Utile.compatibilitati)
+                                if(c.getGrupaSanguinaDonatoare().getGrupaSanguina().equals(Utile.preluareGrupaSanguina(getApplicationContext())))
+                                    listaCompatibilitati.add(c.getGrupaSanguinaReceiver().getGrupaSanguina());
                             for (Receiveri receiver : Utile.listaReceiveri)
-                                if (receiver.getCts().getOras().getOras().equals(Utile.preluareOras(getApplicationContext())))
+                                if (receiver.getCts().getOras().getOras().equals(Utile.preluareOras(getApplicationContext()))&&listaCompatibilitati.contains(receiver.getGrupaSanguina().getGrupaSanguina()))
                                     listaReceiveri.add(receiver);
                             Collections.sort(listaReceiveri);
                             adaptor = new AdaptorReceiveriLV(getApplicationContext(), listaReceiveri);
