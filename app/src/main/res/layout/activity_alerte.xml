@@ -7,17 +7,17 @@
     tools:context="ro.alexsalupa97.bloodbank.Activitati.AlerteActivity"
     android:orientation="vertical">
 
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="100dp"
-        android:background="@drawable/gradient_red_vertical"/>
+    <!--<View-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="100dp"-->
+        <!--android:background="@drawable/gradient_red_vertical"/>-->
 
     <android.support.design.widget.TabLayout
         android:id="@+id/tlAlerte"
         style="@style/CategoryTab"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:tabBackground="@color/celalaltRosu"
+        app:tabBackground="@drawable/gradient_red_vertical"
         />
 
     <android.support.v4.view.ViewPager

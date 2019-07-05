@@ -7,13 +7,18 @@
     tools:context="ro.alexsalupa97.bloodbank.Fragmente.ListaAlerteInApropiereFragment">
 
 
-    <LinearLayout
+    <android.support.v7.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:outlineSpotShadowColor="#b10000"
+        app:cardCornerRadius="12dp"
+        app:cardElevation="20dp"
+        android:layout_margin="8dp"
         android:orientation="vertical">
 
     <TextView
         android:id="@+id/tvAlerte"
+        android:gravity="center"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_gravity="center"
@@ -30,5 +35,5 @@
         android:scrollbars="none"
         android:visibility="gone" />
 
-    </LinearLayout>
+    </android.support.v7.widget.CardView>
 </ScrollView>

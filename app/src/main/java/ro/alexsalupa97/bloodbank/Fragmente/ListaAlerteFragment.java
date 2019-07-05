@@ -100,8 +100,8 @@ public class ListaAlerteFragment extends Fragment {
                             cantitateCTSCurent.setCantitateLimitaML(mapLimite.get(grupaSanguinaDonator.getGrupaSanguinaReceiver()));
                             listaCantitatiCTS.add(cantitateCTSCurent);
                             if (mapCantitatiDisponibile.get(grupaSanguinaDonator.getGrupaSanguinaReceiver()) < mapLimite.get(grupaSanguinaDonator.getGrupaSanguinaReceiver())) {
-                                listaAlerte.add(cts.getNumeCTS() + "\n\n\t\tprobleme cu " + grupaSanguinaDonator.getGrupaSanguinaReceiver().getGrupaSanguina() + "\n\t\tlimita: " + mapLimite.get(grupaSanguinaDonator.getGrupaSanguinaReceiver()) + "\n\t\tdisponibil: " + mapCantitatiDisponibile.get(grupaSanguinaDonator.getGrupaSanguinaReceiver()) + "\n");
-                                listaAlerte.add(cts.getNumeCTS() + "\n\n\t\tprobleme cu " + grupaSanguinaDonator.getGrupaSanguinaReceiver().getGrupaSanguina() + "\n\t\tlimita: " + mapLimite.get(grupaSanguinaDonator.getGrupaSanguinaReceiver()) + "\n\t\tdisponibil: " + mapCantitatiDisponibile.get(grupaSanguinaDonator.getGrupaSanguinaReceiver()) + "\n");
+                                listaAlerte.add(cts.getNumeCTS() + "\n\n\t\tprobleme cu " + grupaSanguinaDonator.getGrupaSanguinaReceiver().getGrupaSanguina() + "\n\t\tlimita: " + mapLimite.get(grupaSanguinaDonator.getGrupaSanguinaReceiver()) + "\n\t\tdisponibil: " + mapCantitatiDisponibile.get(grupaSanguinaDonator.getGrupaSanguinaReceiver()) + "\n\n\n");
+
                             }
                         } catch (Exception ex) {
 

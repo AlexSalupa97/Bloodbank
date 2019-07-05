@@ -107,7 +107,7 @@ public class ListaAlerteInApropiereFragment extends Fragment {
                                 listaCantitatiCTS.add(cantitateCTSCurent);
 
                                 if (mapCantitatiDisponibile.get(grupaSanguinaDonator.getGrupaSanguinaReceiver()) < mapLimite.get(grupaSanguinaDonator.getGrupaSanguinaReceiver()))
-                                    listaAlerte.add(cts.getNumeCTS()+"\n\n\t\tprobleme cu " + grupaSanguinaDonator.getGrupaSanguinaReceiver().getGrupaSanguina() + "\n\t\tlimita: " + mapLimite.get(grupaSanguinaDonator.getGrupaSanguinaReceiver()) + "\n\t\tdisponibil: " + mapCantitatiDisponibile.get(grupaSanguinaDonator.getGrupaSanguinaReceiver())+"\n");
+                                    listaAlerte.add(cts.getNumeCTS()+"\n\n\t\tprobleme cu " + grupaSanguinaDonator.getGrupaSanguinaReceiver().getGrupaSanguina() + "\n\t\tlimita: " + mapLimite.get(grupaSanguinaDonator.getGrupaSanguinaReceiver()) + "\n\t\tdisponibil: " + mapCantitatiDisponibile.get(grupaSanguinaDonator.getGrupaSanguinaReceiver())+"\n\n\n");
 //                                else
 //                                    deAfisat+="\n\t\t nu sunt probleme cu " + grupaSanguinaDonator.getGrupaSanguinaReceiver().getGrupaSanguina() + " limita: " + mapLimite.get(grupaSanguinaDonator.getGrupaSanguinaReceiver()) + " disponibil: " + mapCantitatiDisponibile.get(grupaSanguinaDonator.getGrupaSanguinaReceiver());
                             }
