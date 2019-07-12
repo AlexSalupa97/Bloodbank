@@ -61,7 +61,7 @@ import java.util.concurrent.ExecutionException;
 public class Utile {
 
     public static String fisier = "SharedPreferences";
-    //        public static String URL = "http://192.168.43.154:8080/ProiectLicentaBloodbank/webresources/";  // hotspot
+//            public static String URL = "http://192.168.43.154:8080/ProiectLicentaBloodbank/webresources/";  // hotspot
     public static String URL = "http://192.168.1.149:8080/ProiectLicentaBloodbank/webresources/";  // alexapn
 //    public static String URL = "http://d69a5068.ngrok.io/ProiectLicentaBloodbank/webresources/";
 

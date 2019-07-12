@@ -40,10 +40,8 @@ public class CalculDistante {
             lm.getLastKnownLocation(LocationManager.GPS_PROVIDER);
         }
         if (myLocation == null) {
-            Criteria criteria = new Criteria();
-            criteria.setAccuracy(Criteria.ACCURACY_COARSE);
-            String provider = lm.getBestProvider(criteria, true);
-            myLocation = lm.getLastKnownLocation(provider);
+
+            myLocation = lm.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
         }
         return myLocation;
     }

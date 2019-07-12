@@ -94,6 +94,7 @@ import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
+import java.util.HashMap;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 
@@ -218,6 +219,7 @@ public class PrimaPaginaActivity extends AppCompatActivity implements Navigation
 
 
         try {
+
             MapsCTSFragment.locatieCurenta = CalculDistante.getMyLocation(PrimaPaginaActivity.this);
         } catch (Exception ex) {
 
@@ -391,6 +393,21 @@ public class PrimaPaginaActivity extends AppCompatActivity implements Navigation
             startActivity(intent);
         } else if (id == R.id.listaCentre) {
             Intent intent = new Intent(getApplicationContext(), ListaCentreActivity.class);
+            ListaCentreActivity.mapListaDistante=new HashMap<>();
+            try {
+                MapsCTSFragment.locatieCurenta = CalculDistante.getMyLocation(PrimaPaginaActivity.this);
+                for (CTS cts : Utile.CTS) {
+                    ListaCentreActivity.mapListaDistante.put(cts, CalculDistante.distanceBetweenTwoCoordinates(MapsCTSFragment.locatieCurenta.getLatitude(), MapsCTSFragment.locatieCurenta.getLongitude(), cts.getCoordonataXCTS(), cts.getCoordonataYCTS()));
+                }
+            }catch (Exception ex){
+
+            }
+            double minDistance=Double.MAX_VALUE;
+            for(CTS cts:ListaCentreActivity.mapListaDistante.keySet())
+                if(ListaCentreActivity.mapListaDistante.get(cts)<minDistance){
+                    minDistance=ListaCentreActivity.mapListaDistante.get(cts);
+                    ListaCentreActivity.closestCTS=cts;
+                }
             startActivity(intent);
         } else if (id == R.id.stareAnalize) {
             startActivity(new Intent(getApplicationContext(), ActualizareStareAnalizeActivity.class));
