@@ -189,12 +189,32 @@ public class DetaliiCTSActivity extends AppCompatActivity {
                                 }
 
 
-                            } catch (InterruptedException e) {
-                                e.printStackTrace();
-                            } catch (ExecutionException e) {
-                                e.printStackTrace();
-                            }
+                            } catch (Exception e) {
+                                String programare = Utile.preluareProgramare(getApplicationContext());
+                                if (!programare.equals("N/A")) {
+                                    Date date = new Date();
+                                    date.setSeconds(0);
+                                    date.setHours(Integer.parseInt(programare.substring(0, 2)));
+                                    date.setMinutes(Integer.parseInt(programare.substring(2, 4)));
+                                    date.setDate(Integer.parseInt(programare.substring(4, 6)));
+                                    date.setMonth(Integer.parseInt(programare.substring(6, 8)) - 1);
+                                    date.setYear(Integer.parseInt(programare.substring(8)) - 1900);
 
+                                    if (new Date().getTime() - date.getTime() < 0) {
+                                        Intent intent = new Intent(getApplicationContext(), ProgramareEfectuataActivity.class);
+                                        intent.putExtra("cts", ctsCurent);
+                                        startActivity(intent);
+                                    } else {
+                                        Intent intent = new Intent(getApplicationContext(), ProgramareActivity.class);
+                                        intent.putExtra("cts", ctsCurent);
+                                        startActivityForResult(intent, 1);
+                                    }
+                                }else {
+                                    Intent intent = new Intent(getApplicationContext(), ProgramareActivity.class);
+                                    intent.putExtra("cts", ctsCurent);
+                                    startActivityForResult(intent, 1);
+                                }
+                            }
 
                         }
                     });

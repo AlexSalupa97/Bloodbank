@@ -165,7 +165,7 @@ public class ProgramareActivity extends AppCompatActivity {
         }
 
         oraSelectata = ora + minut;
-        Toast.makeText(getApplicationContext(),oraSelectata,Toast.LENGTH_SHORT).show();
+//        Toast.makeText(getApplicationContext(),oraSelectata,Toast.LENGTH_SHORT).show();
 
 
         tpProgramare.setOnTimeChangedListener(new TimePicker.OnTimeChangedListener() {
@@ -185,7 +185,7 @@ public class ProgramareActivity extends AppCompatActivity {
                 tvVerificareDisponibilitate.setVisibility(View.GONE);
                 btnEfectuareProgramare.setVisibility(View.GONE);
                 btnVerificareDisponibilitate.setVisibility(View.VISIBLE);
-                Toast.makeText(getApplicationContext(), oraSelectata, Toast.LENGTH_SHORT).show();
+//                Toast.makeText(getApplicationContext(), oraSelectata, Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -311,6 +311,7 @@ public class ProgramareActivity extends AppCompatActivity {
                                     SharedPreferences.Editor editor = sharedPreferences.edit();
 
                                     editor.putString("programare", data);
+                                    editor.putString("ctsprogramare",ctsCurent.getNumeCTS());
                                     editor.commit();
 
                                     scheduleNotification(sendNotification(),true);

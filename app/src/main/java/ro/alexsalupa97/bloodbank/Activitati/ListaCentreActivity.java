@@ -33,24 +33,24 @@ public class ListaCentreActivity extends AppCompatActivity {
 
         getSupportActionBar().setElevation(0);
 
-//        mapListaDistante=new HashMap<>();
-//        try {
-//            MapsCTSFragment.locatieCurenta = CalculDistante.getMyLocation(ListaCentreActivity.this);
-//            for (CTS cts : Utile.CTS) {
-//                mapListaDistante.put(cts, CalculDistante.distanceBetweenTwoCoordinates(MapsCTSFragment.locatieCurenta.getLatitude(), MapsCTSFragment.locatieCurenta.getLongitude(), cts.getCoordonataXCTS(), cts.getCoordonataYCTS()));
-//            }
-//        }catch (Exception ex){
-//
-//        }
-//
-//        double minDistance=Double.MAX_VALUE;
-//        for(CTS cts:mapListaDistante.keySet())
-//            if(mapListaDistante.get(cts)<minDistance){
-//                minDistance=mapListaDistante.get(cts);
-//                closestCTS=cts;
-//            }
+        mapListaDistante=new HashMap<>();
+        try {
+            MapsCTSFragment.locatieCurenta = CalculDistante.getMyLocation(ListaCentreActivity.this);
+            for (CTS cts : Utile.CTS) {
+                mapListaDistante.put(cts, CalculDistante.distanceBetweenTwoCoordinates(MapsCTSFragment.locatieCurenta.getLatitude(), MapsCTSFragment.locatieCurenta.getLongitude(), cts.getCoordonataXCTS(), cts.getCoordonataYCTS()));
+            }
+        }catch (Exception ex){
 
-        adaptor = new AdaptorFragmenteCTS(getSupportFragmentManager());
+        }
+
+        double minDistance=Double.MAX_VALUE;
+        for(CTS cts:mapListaDistante.keySet())
+            if(mapListaDistante.get(cts)<minDistance){
+                minDistance=mapListaDistante.get(cts);
+                closestCTS=cts;
+            }
+
+        adaptor = new AdaptorFragmenteCTS(getSupportFragmentManager(),getApplicationContext());
         viewPager = (ViewPager) findViewById(R.id.listaCTSViewPager);
         viewPager.setAdapter(adaptor);
 

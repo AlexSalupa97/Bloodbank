@@ -221,6 +221,8 @@ public class SignupDonatorFragment extends Fragment {
                                     editor.putString("judetUser", donator.getOrasDonator().getJudet());
                                     editor.putString("email", donator.getEmailDonator());
                                     editor.putString("telefon", donator.getTelefonDonator());
+                                    editor.putString("programare","N/A");
+                                    editor.putString("ctsprogramare","N/A");
 
                                     editor.commit();
 

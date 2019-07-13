@@ -32,7 +32,7 @@ public class ProgramareEfectuataActivity extends AppCompatActivity {
         tv8Saptamani=(TextView)findViewById(R.id.tv8Saptamani);
         CTS cts=getIntent().getExtras().getParcelable("cts");
         String programare=Utile.preluareProgramare(getApplicationContext());
-        tv8Saptamani.setText(tv8Saptamani.getText()+programare.substring(0,2)+":"+programare.substring(2,4)+" "+programare.substring(4,6)+"/"+programare.substring(6,8)+"/"+programare.substring(8)+", la "+cts.getNumeCTS());
+        tv8Saptamani.setText(tv8Saptamani.getText()+programare.substring(0,2)+":"+programare.substring(2,4)+" "+programare.substring(4,6)+"/"+programare.substring(6,8)+"/"+programare.substring(8)+", la "+Utile.preluareCTSProgramare(getApplicationContext()));
 
         fbShareBtn = (ShareButton) findViewById(R.id.fbShareBtn);
 

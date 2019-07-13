@@ -393,21 +393,6 @@ public class PrimaPaginaActivity extends AppCompatActivity implements Navigation
             startActivity(intent);
         } else if (id == R.id.listaCentre) {
             Intent intent = new Intent(getApplicationContext(), ListaCentreActivity.class);
-            ListaCentreActivity.mapListaDistante=new HashMap<>();
-            try {
-                MapsCTSFragment.locatieCurenta = CalculDistante.getMyLocation(PrimaPaginaActivity.this);
-                for (CTS cts : Utile.CTS) {
-                    ListaCentreActivity.mapListaDistante.put(cts, CalculDistante.distanceBetweenTwoCoordinates(MapsCTSFragment.locatieCurenta.getLatitude(), MapsCTSFragment.locatieCurenta.getLongitude(), cts.getCoordonataXCTS(), cts.getCoordonataYCTS()));
-                }
-            }catch (Exception ex){
-
-            }
-            double minDistance=Double.MAX_VALUE;
-            for(CTS cts:ListaCentreActivity.mapListaDistante.keySet())
-                if(ListaCentreActivity.mapListaDistante.get(cts)<minDistance){
-                    minDistance=ListaCentreActivity.mapListaDistante.get(cts);
-                    ListaCentreActivity.closestCTS=cts;
-                }
             startActivity(intent);
         } else if (id == R.id.stareAnalize) {
             startActivity(new Intent(getApplicationContext(), ActualizareStareAnalizeActivity.class));
@@ -645,10 +630,80 @@ public class PrimaPaginaActivity extends AppCompatActivity implements Navigation
                         }
 
 
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                    } catch (ExecutionException e) {
-                        e.printStackTrace();
+                    } catch (Exception e) {
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                final AlertDialog.Builder builder = new AlertDialog.Builder(PrimaPaginaActivity.this);
+                                builder.setMessage("Urmeaza un set de 10 intrebari pentru a va informa de conditiile necesare pentru a putea dona, doriti sa le abordati? (1 minut)")
+                                        .setCancelable(false)
+                                        .setNeutralButton("Cancel", new DialogInterface.OnClickListener() {
+                                            @Override
+                                            public void onClick(DialogInterface dialog, int which) {
+                                                dialog.cancel();
+                                            }
+                                        })
+                                        .setPositiveButton("Da", new DialogInterface.OnClickListener() {
+                                            public void onClick(final DialogInterface dialog, final int id) {
+                                                String url = Utile.URL + "domain.intrebari";
+
+                                                final RequestQueue requestQueue = Volley.newRequestQueue(PrimaPaginaActivity.this);
+
+
+                                                if (Utile.preluareStareAnalize(getApplicationContext()).equals("ok")) {
+                                                    JsonArrayRequest objectRequest = new JsonArrayRequest(
+                                                            Request.Method.GET,
+                                                            url,
+                                                            null,
+                                                            new Response.Listener<JSONArray>() {
+
+                                                                @Override
+                                                                public void onResponse(JSONArray response) {
+                                                                    GsonBuilder gsonBuilder = new GsonBuilder();
+                                                                    gsonBuilder.setDateFormat("M/d/yy hh:mm a");
+                                                                    gsonIntrebari = gsonBuilder.create();
+
+                                                                    intrebariList = Arrays.asList(gsonIntrebari.fromJson(response.toString(), Intrebari[].class));
+                                                                    Utile.intrebari = new ArrayList<>(intrebariList);
+
+                                                                    Intent intent = new Intent(getApplicationContext(), IntrebariActivity.class);
+                                                                    //intent.putParcelableArrayListExtra("listaIntrebari", Utile.intrebari);
+
+                                                                    startActivity(intent);
+
+
+                                                                }
+                                                            },
+                                                            new Response.ErrorListener() {
+                                                                @Override
+                                                                public void onErrorResponse(VolleyError error) {
+                                                                    Log.d("RestResponse", error.toString());
+                                                                }
+                                                            }
+
+                                                    );
+
+                                                    requestQueue.add(objectRequest);
+
+
+                                                }
+
+                                            }
+                                        })
+                                        .setNegativeButton("Nu", new DialogInterface.OnClickListener() {
+                                            public void onClick(final DialogInterface dialog, final int id) {
+
+
+                                                Intent intent = new Intent(getApplicationContext(), ListaCentreActivity.class);
+                                                startActivity(intent);
+
+
+                                            }
+                                        });
+                                final AlertDialog alert = builder.create();
+                                alert.show();
+                            }
+                        });
                     }
 
 

@@ -7,18 +7,20 @@ import android.support.v4.app.FragmentPagerAdapter;
 
 import ro.alexsalupa97.bloodbank.Fragmente.ListaAlerteFragment;
 import ro.alexsalupa97.bloodbank.Fragmente.ListaAlerteInApropiereFragment;
+import ro.alexsalupa97.bloodbank.Utile.Utile;
 
 public class AdaptorFragmenteAlerte extends FragmentPagerAdapter {
     private Context mContext;
 
-    public AdaptorFragmenteAlerte(FragmentManager fm) {
+    public AdaptorFragmenteAlerte(FragmentManager fm,Context context) {
         super(fm);
+        mContext=context;
     }
 
     @Override
     public CharSequence getPageTitle(int position) {
         if (position == 0)
-            return "In apropiere";
+            return "In "+ Utile.preluareOras(mContext);
         else
             return "Toate centrele";
     }

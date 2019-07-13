@@ -24,7 +24,7 @@ public class AlerteActivity extends AppCompatActivity {
 
         getSupportActionBar().setElevation(0);
 
-        adaptor = new AdaptorFragmenteAlerte(getSupportFragmentManager());
+        adaptor = new AdaptorFragmenteAlerte(getSupportFragmentManager(),getApplicationContext());
         viewPager = (ViewPager) findViewById(R.id.vpAlerte);
         viewPager.setAdapter(adaptor);
 

@@ -247,7 +247,7 @@ public class ActualizareStareAnalizeActivity extends AppCompatActivity {
                 }
                 else {
                     View parentLayout = findViewById(android.R.id.content);
-                    Snackbar.make(parentLayout, "Fisierul selectat este necorespunzatorqr", Snackbar.LENGTH_LONG)
+                    Snackbar.make(parentLayout, "Fisierul selectat este necorespunzator", Snackbar.LENGTH_LONG)
                             .setAction("CLOSE", new View.OnClickListener() {
                                 @Override
                                 public void onClick(View view) {
